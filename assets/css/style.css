@@ -1,0 +1,15 @@
+.title-p1{
+    font-weight: 800;
+}
+.title-p2{
+    font-weight: 100;
+}
+.brand-login{
+    margin-left: auto;
+    margin-right: auto;
+    width: 80px;
+}
+.fa, .fas {
+    font-weight: 900;
+    margin-right: 10px;
+}

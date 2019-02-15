@@ -1,0 +1,5 @@
+{
+    "autoload": {
+        "classmap" : ["controllers/class", "controllers/conn", "controllers/helpers"]
+    }
+}
