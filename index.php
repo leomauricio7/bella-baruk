@@ -28,7 +28,7 @@ require_once'./vendor/autoload.php';
     <style>body { display: none; }</style>
     
 
-    <title>Bella Baruk</title>
+    <title>Bella Baruk - Login</title>
   </head>
     <?php
         $pagina = Url::getURL(0);
