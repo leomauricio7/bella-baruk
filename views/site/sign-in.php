@@ -8,8 +8,7 @@
         <div class="col-12 col-md-5 col-lg-6 col-xl-4 px-lg-6 my-5">
          
           <h1 class="display-4 text-center mb-3">
-            <img class="brand-login" src="<?php echo Url::getBase(); ?>assets/img/logotipos/logo-teste.png" alt=""><br>
-            <span class="title-p1">BEM</span><span class="title-p2">-VINDO!</span>
+            <img class="brand-login" src="<?php echo Url::getBase(); ?>assets/img/logotipos/logo-bella-baruk.png" alt=""><br>
           </h1>
           <p class="text-muted text-center mb-5">
             BellaBaruk BackOffice
