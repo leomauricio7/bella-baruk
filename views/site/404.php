@@ -15,7 +15,7 @@
         <div class="col-12 col-md-5 col-xl-4 order-md-1 my-5">
           
           <div class="text-center">
-          <img class="brand-login" src="<?php echo Url::getBase(); ?>assets/img/logotipos/logo-teste.png" alt=""><br>
+          <img class="brand-login" src="<?php echo Url::getBase(); ?>assets/img/logotipos/logo-bella-baruk.png" alt=""><br>
             <!-- Preheading -->
             <h6 class="text-uppercase text-muted mb-4">
               404 error

@@ -5,7 +5,7 @@
  * chp - chave primaria da tabela
  * id = valor da chave primaria
  */
-require_once 'Conf.inc';
+require_once 'conf.inc';
 require_once '../vendor/autoload.php';
 
 if (isset($_GET) && !empty($_GET)) {
@@ -22,5 +22,5 @@ if (isset($_GET) && !empty($_GET)) {
                     <span aria-hidden="true" style="cursor: pointer;">&times;</span>
                 </button>
             </div>';
-    echo '<script>window.location.href="../' . $read_pag . '";</script>';
+    echo '<script>window.location.href="../panel/' . $read_pag . '";</script>';
 }

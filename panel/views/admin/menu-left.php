@@ -8,7 +8,7 @@
           </button>
           <!-- Brand -->
           <a class="navbar-brand" href="<?php echo Url::getBase() ?>">
-            <img src="<?php echo Url::getBase(); ?>../assets/img/logotipos/logo-teste.png" class="navbar-brand-img 
+            <img src="<?php echo Url::getBase(); ?>../assets/img/logotipos/logo-bella-baruk.png" class="navbar-brand-img 
             mx-auto" alt="...">
           </a>
           <!-- User (xs) menu celular-->
@@ -53,7 +53,7 @@
               </li>
               <li class="nav-item">
                 <a class="nav-link collapsed" href="#users" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarPages">
-                  <i class="fa fa-users"></i> Usuários
+                  <i class="fa fa-users"></i> Vendedores
                 </a>
                 <div class="collapse " id="users">
                   <ul class="nav nav-sm flex-column">
@@ -70,6 +70,11 @@
                     </li>
                   </ul>
                 </div>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="<?php echo Url::getBase() ?>niveis">
+                  <i class="fa fa-restroom"></i> Nivéis 
+                </a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="<?php echo Url::getBase() ?>profile">
@@ -106,7 +111,7 @@
                     </li>
                     <li class="nav-item">
                       <a href="<?php echo Url::getBase() ?>products" class="nav-link">
-                        Consultar Produtos
+                        Cátalogo
                       </a>
                     </li>
                   </ul>
