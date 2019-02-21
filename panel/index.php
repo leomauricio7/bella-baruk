@@ -62,6 +62,11 @@ require_once'../vendor/autoload.php';
 
     <!-- Theme JS -->
     <script src="<?php echo Url::getBase(); ?>../assets/js/theme.min.js"></script>
+    
+     <!--JqueryToSlug-->
+    <script src="<?php echo Url::getBase(); ?>../assets/js/jquery.stringToSlug.js"></script>
+    <script src="<?php echo Url::getBase(); ?>../assets/js/jquery.stringToSlug.min.js"></script>
+
     <script type="text/javascript">
         var settimmer = 0;
         $(function () {
@@ -76,7 +81,21 @@ require_once'../vendor/autoload.php';
             }, 1000);
 
         });
+    </script>
+    <script>
+      $("#text").stringToSlug({
+        setEvents: 'keyup keydown blur',
+        getPut: '#slug',
+        space: '-'
+      });
     </script> 
-
+    <script>
+    $(function(){
+        $('#x').click(function(){
+        var delta = Quill.getContents();
+        console.log(delta);
+        });
+    });
+    </script>
   </body>
 </html>

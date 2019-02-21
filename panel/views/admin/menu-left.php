@@ -118,8 +118,8 @@
                 </div>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="<?php echo Url::getBase() ?>vendas">
-                  <i class="fa fa-cart-plus"></i> Vendas
+                <a class="nav-link" href="<?php echo Url::getBase() ?>pedidos">
+                  <i class="fa fa-cart-plus"></i> Pedidos
                 </a>
               </li>
               <li class="nav-item">
