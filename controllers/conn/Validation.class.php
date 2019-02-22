@@ -351,6 +351,18 @@ class Validation extends Conn {
         return $name;
     }
 
+    public static function getIdIndicador($name) {
+        $id_user = null;
+        $read = new Read();
+        $read->ExeRead("users", "WHERE nome = '$name'");
+
+        foreach ($read->getResult() as $dados) {
+            extract($dados);
+            $id_user = $id;
+        }
+        return $id_user;
+    }
+
     public static function getSituacaoUsario($id_situacao) {
         $situacaoUser = null;
         $read = new Read();

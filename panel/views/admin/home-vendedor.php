@@ -5,9 +5,9 @@
         <div class="col-12">
             <div class="alert alert-dark" role="alert">
                 <h4 class="alert-heading">ATENÇÃO</h4>
-                <p>Seja bem vindo à área administratva do sistema, para indicar para algum amigo ou parente, copie o link abaixo.</p>
+                <p>Seja bem vindo a área administratva do sistema, para indicar copie o link abaixo.</p>
                 <hr>
-                <h2 class="mb-0"><i class="fa fa-anchor"></i><a href="http://localhost/bella_baruk/new-user/<?php echo Validation::getURI($_SESSION['idUser']) ?>"><span class="badge badge-pill badge-primary">http://localhost/bella_baruk/new-user/<?php echo Validation::getURI($_SESSION['idUser']) ?></span></a></h2>
+                <h2 class="mb-0"><i class="fa fa-anchor"></i><a href="http://localhost:8080/bella-baruk/new-user/<?php echo Validation::getURI($_SESSION['idUser']) ?>"><span class="badge badge-pill badge-primary">http://localhost:8080/bella-baruk/new-user/<?php echo Validation::getURI($_SESSION['idUser']) ?></span></a></h2>
             </div>
         </div>
     </div>

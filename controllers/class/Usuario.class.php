@@ -10,7 +10,7 @@ class User {
 
     function createUser(array $Dados) {
         $this->Dados = $Dados;
-        $this->Dados['avatar'] = $this->Dados['avatar']['name'];
+        $this->Dados['avatar'] = isset($this->Dados['avatar']) ? $this->Dados['avatar']['name'] : null;
 
         $create = new Create();
         $create->ExeCreate(self::Entity, $this->Dados);

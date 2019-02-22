@@ -4,8 +4,32 @@
       <div class="col-12 col-lg-10 col-xl-8">
       <br>
         <h1 class="display-4 text-center mb-3">
-            <img class="brand-login" src="<?php echo Url::getBase(); ?>assets/img/logotipos/logo-bella-baruk.png" alt=""><br>
-          </h1>
+            <a href="<?php echo Url::getBase() ?>"><img class="brand-login" src="<?php echo Url::getBase(); ?>assets/img/logotipos/logo-bella-baruk.png" alt=""></a><br>
+        </h1>
+      <?php
+        if ($_POST){
+            $dados = Validation::limpaDados(filter_input_array(INPUT_POST, FILTER_DEFAULT));
+            $dados['indicador'] = Validation::getIdIndicador($dados['indicador']);
+            //var_dump($dados);
+            $dados['senha'] = password_hash($dados['senha'], PASSWORD_DEFAULT);
+            unset( $dados['confirm_senha']);
+            $user = new User();
+            $user->CreateUser($dados);
+
+            if (!$user->getResult()):
+                echo $user->getMsg();
+            else:
+                echo $user->getMsg();
+                unset($dados);
+            endif;
+            unset($dados);
+
+        }
+        if (!empty($_SESSION['msg'])):
+            echo $_SESSION['msg'];
+            unset($_SESSION['msg']);
+        endif;
+    ?>  
         <div class="header">
             <div class="header-body">
                 <h6 class="header-pretitle">
@@ -18,7 +42,7 @@
         </div>
 
         <!-- Form -->
-        <form class="mb-4">
+        <form class="mb-4" method="post">
           <div class="row">
             <div class="col-12 col-md-6">
               <div class="form-group">
@@ -85,13 +109,13 @@
               <!-- New password -->
               <div class="form-group">
                 <label> Senha</label>
-                <input type="password" class="form-control" name="senha" required>
+                <input type="password" class="form-control" name="senha" id="senha" required>
               </div>
 
               <!-- Confirm new password -->
               <div class="form-group">
                 <label>Confirma senha</label>
-                <input type="password" class="form-control" name="confirm_senha" required>
+                <input type="password" class="form-control" name="confirm_senha" id="confirm_senha" required>
               </div>
 
               <!-- Submit -->
