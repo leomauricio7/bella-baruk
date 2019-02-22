@@ -36,6 +36,23 @@ class Validation extends Conn {
         return $this->email;
     }
 
+    public function validaEmail(){
+        $read = new Read();
+        $email_validate = $this->getEmail();
+        $read->ExeRead('users', "where email= '$email_validate'");
+        if($read->getRowCount() > 0){
+            return true;
+        }else{
+            $this->Msg = '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>ATENÇÃO</strong> Email não cadastrado no sistema.
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>';
+            return false;
+        }
+    }
+
     public function getCpf() {
         return $this->cpf;
     }
@@ -82,7 +99,6 @@ class Validation extends Conn {
     }
 
     /* Função de recuperar senha */
-
     public function recuperaSenha() {
         $pdo = parent::getConn();
 
@@ -99,21 +115,22 @@ class Validation extends Conn {
                 ':email' => $this->getEmail(),
                 ':_token' => $_token
             ));
-            $this->Msg = '<div class="alert alert-success">'
-                    . '<h5 align="center">'
-                    . 'Foi enviado para o email: <strong>' . $this->getEmail() . '</strong> '
-                    . 'um link para recuperação da senha.<br>'
-                    . 'Verifique sua caixa de entrada.<br>Demo: Link temporario:<strong>'
-                    . '<a href="localhost/lcte-v2/recupera-senha?_token=' . $_token . '">localhost/lcte-v2/recupera-senha?_token=' . $_token . '</a></strong>'
-                    . '</h5>'
-                    . '</div>';
+            $this->Msg = '<div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <p><strong>ATENÇÃO: </strong>
+                        Foi enviado para o email: <strong>'.$this->getEmail().'</strong>,
+                        um link para recuperação de sua senha. Verifique sua caixa de entrada,
+                        caso não tenha chegado, verifique se estar em spam.<br> Link de teste: <a href="?_token='.$_token.'">Clique aqui!</a></p>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>';
             return true;
-        //} else {
+        // } else {
         //    $_SESSION['erro'] = '<div class="alert alert-danger"><h5 align="center"><i class="fa fa-warning"></i> Erro ao enviar o email.</h5></div>';
         //    return false;
-        //}
+        // }
         else:
-            $this->Msg = '<div class="alert alert-danger"><h5 align="center"><i class="fa fa-warning"></i> Email ou CPF incorretos.</h5></div>';
+            $this->Msg = '<div class="alert alert-danger"><h5 align="center"><i class="fa fa-warning"></i> Email incorreto.</h5></div>';
             return false;
         endif;
     }
@@ -122,53 +139,14 @@ class Validation extends Conn {
 
     public function enviaEmail($_token, $user) {
         // emails para quem será enviado o formulário
-        $from = "suporte@lcte.com.br";
+        $from = "suporte@bellabaruk.com.br";
         $assunto = "Solicitação de Recuperação de Senha";
         $destino = $this->getEmail();
         // É necessário indicar que o formato do e-mail é html
         $headers = 'MIME-Version: 1.0' . "\r\n";
         $headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
         $headers .= "De: $from";
-        $msg = '
-            <!DOCTYPE html>
-            <html>
-            <head>
-                    <meta charset="utf-8">
-                    <title>Recuperação de Senha</title>
-            </head>
-            <body>
-                    <table border="1" cellspacing="0" class="MsoTableGrid" style="margin:auto; border-collapse:collapse; border:solid #a5a5a5 1.0pt">
-                            <tbody>
-                                    <tr style="border-bottom: 15px solid #dbdbdb;background-image: linear-gradient(to top, #15a5d4 0%, #007eb0 100%);">
-                                            <td style="width:424.7pt">
-                                                    <p style="text-align:center"><img src="https://ltec.000webhostapp.com/demo/lcte/img/logo-branco.png" width="200px" /></p>
-                                            </td>
-                                    </tr>
-                                    <tr>
-                                            <td style="width:424.7pt;padding:20px;">
-                                            <p style="text-align:center"><strong><span style="font-size:25pt"><span style="font-family:&quot;Arial&quot;,sans-serif">Recupera&ccedil;&atilde;o de Senha</span></span></strong></p>
-                                            <p style="text-align:left"><span style="font-size:15pt; font-weight:bold;"><span style="font-family:&quot;Arial&quot;,sans-serif">Prezado(a) <strong>' . $user . ',</strong></span></span></p>
-                                            <p style="text-align:left; text-ident: 5px;"><span style="font-size:10.0pt"><span style="font-family:&quot;Arial&quot;,sans-serif">Identificamos a solicita&ccedil;&atilde;o de recupera&ccedil;&atilde;o de senha no nosso sistema dia ' . date('d/m/Y H:i') . '.<br />
-                                            Solicitamos que verifique os dados abaixo e caso tenha alguma altera&ccedil;&atilde;o acesse (<a href="https://ltec.000webhostapp.com/demo/lcte" target="_blank"><span style="color:blue">https://ltec.000webhostapp.com/demo/lcte</span></a>). </span></span></p>
-                                            <p style="text-align:left; text-ident: 5px;"><span style="font-size:10.0pt"><span style="font-family:&quot;Arial&quot;,sans-serif">Para  confirmar a solicitação de recuperação de senha, clique no link abaixo e siga o passo a passo para realizar a recuperação.</span></span></p>
-                                            <a href="https://ltec.000webhostapp.com/demo/lcte/recupera-senha?_token=' . $_token . '">https://ltec.000webhostapp.com/demo/lcte/recupera-senha?_token=' . $_token . '</a>
-                                            <p style="text-align:left; text-ident: 5px;"><span style="font-size:10.0pt"><span style="font-family:&quot;Arial&quot;,sans-serif">Caso não tenha feito essa solicitação, desconsidere esse email, o link expirará em 2 horas.</span></span></p>
-                                            <p style="text-align:center"><span style="font-size:10.0pt"><span style="font-family:&quot;Arial&quot;,sans-serif">Atenciosamente,</span></span></p>
-                                            <p style="text-align:center"><img src="https://ltec.000webhostapp.com/demo/lcte/img/logo-ltec.png" width="100px"></p>
-                                            </td>
-                                    </tr>
-                                    <tr style="background-image: linear-gradient(to top, #15a5d4 0%, #007eb0 100%); color: #fff;">
-                                            <td style="width:424.7pt">
-                                            <p style="text-align:center"><br />
-                                            <span style="font-size:10.0pt"><span style="font-family:&quot;Arial&quot;,sans-serif">&copy;2018 LCT-e - Sistema de Processos Licitatórios<br />
-                                            &nbsp;</p>
-                                            </td>
-                                    </tr>
-                            </tbody>
-                    </table>
-            </body>
-            </html>
-          ';
+        $msg = 'corpo do email';
         $enviaremail = mail($destino, $assunto, $msg, $headers);
 
         if ($enviaremail) {
@@ -351,6 +329,18 @@ class Validation extends Conn {
         return $name;
     }
 
+    public static function getIndicador($id) {
+        $name = null;
+        $read = new Read();
+        $read->ExeRead("users", "WHERE id = '$id'");
+
+        foreach ($read->getResult() as $dados) {
+            extract($dados);
+            $name = $nome;
+        }
+        return $name;
+    }
+
     public static function getIdIndicador($name) {
         $id_user = null;
         $read = new Read();
@@ -407,6 +397,14 @@ class Validation extends Conn {
             return true;
         } else {//vendedor
             return false;
+        }   
+    }
+
+    public static function getPermisionTypeVendedor($id_tipo) {
+        if ($id_tipo == 1) {//administrador
+            return false;
+        } else {//vendedor
+            return true;
         }   
     }
 

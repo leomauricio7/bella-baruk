@@ -23,7 +23,7 @@
 <div class="container-fluid">
     <div class="alert alert-primary" role="alert">
         <h4 class="alert-heading">ATENÇÃO</h4>
-        <p>Nessa página você pode visualizar os franqueados.</p>
+        <p>Nessa página você pode visualizar todos os franqueados.</p>
         <hr>
         <p class="mb-0">Cada franquiado pode ser detalhado.</p>
     </div>

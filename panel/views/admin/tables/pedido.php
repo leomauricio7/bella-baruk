@@ -3,7 +3,7 @@
         <thead>
             <tr>
                 <th scope="col">
-                <a href="#" class="text-muted sort" data-sort="tables-row">ID-PEDIDO</a>
+                <a href="#" class="text-muted sort" data-sort="tables-row">ID PEDIDO</a>
                 </th>
                 <th scope="col">
                 <a href="#" class="text-muted sort" data-sort="tables-first">Valor</a>
@@ -22,9 +22,9 @@
         <tbody class="list">
             <!-- <?php 
             $read = new Read();
-            $read->ExeRead('niveis');
-            foreach($read->getResult() as $nivel){
-                extract($nivel);
+            $read->ExeRead('pedidos');
+            foreach($read->getResult() as $ped){
+                extract($ped);
             ?> -->
             <!-- <tr>
                 <th scope="row" class="tables-row">0<?php echo $id ?></th>

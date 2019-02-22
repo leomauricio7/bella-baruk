@@ -1,10 +1,19 @@
 <div class="card-body">  
-    <?php
-        if($_POST){
+    <?php 
+        if ($_POST) {
             $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);
-            var_dump($dados);
-        } 
-    ?>          
+            
+            $produto = new Produto();
+            $produto->createProduto($dados);
+            if (!$produto->getResult()):
+                echo $produto->getMsg();
+            else:
+                $produto->uploudMultiplo($_FILES['images'], $produto->getResult());
+                echo $produto->getMsg();
+                unset($dados);
+            endif;
+        }
+    ?>       
     <form method="post" action="" enctype="multipart/form-data">
         <div class="form-row">
             <div class="col-12 col-md-6 mb-3">
@@ -31,7 +40,8 @@
             </div>
             <div class="col-12 col-md-6 mb-3">
                 <label for="validationServer04">Responsavel</label>
-                <input type="text" class="form-control" name="id_responsavel" readonly value="54564656546">
+                <input type="hidden" class="form-control" name="id_responsavel" readonly value="<?php echo $_SESSION['idUser'] ?>">
+                <input type="text" class="form-control" readonly value="<?php echo Validation::getIndicador($_SESSION['idUser']) ?>">
             </div>
         </div>
         <button class="btn btn-primary" type="submit" id="x">Cadastrar Produto</button>

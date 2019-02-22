@@ -61,10 +61,10 @@
                 </div>
               </div> <!-- / .row -->
               <div class="input-group input-group-merge">
-                <input type="password" class="form-control form-control-appended" name="senha" placeholder="Digite sua senha" required>
+                <input type="password" id="senha" class="form-control form-control-appended" name="senha" placeholder="Digite sua senha" required>
                 <div class="input-group-append">
                   <span class="input-group-text">
-                    <i class="fa fa-eye"></i>
+                    <i class="fa fa-eye" id="olho"></i>
                   </span>
                 </div>
               </div>

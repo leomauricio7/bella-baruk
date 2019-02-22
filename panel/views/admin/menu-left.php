@@ -18,7 +18,11 @@
               <!-- Toggle -->
               <a href="#" id="sidebarIcon" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <div class="avatar avatar-sm avatar-online">
-                  <img src="<?php echo Url::getBase().'docs/users/'.$_SESSION['idUser'].'/'.$_SESSION['avatar'] ?>" class="avatar-img rounded-circle" alt="...">
+                  <img 
+                  src="<?php echo $_SESSION['avatar'] != null ? Url::getBase().'docs/users/'.$_SESSION['idUser'].'/'.$_SESSION['avatar'] : Url::getBase().'../assets/img/icons/user.png' ?>"
+                  class="avatar-img rounded-circle"
+                  alt="..."
+                  >
                 </div>
               </a>
               <!-- Menu -->
@@ -130,7 +134,7 @@
 
               <?php if(!Validation::getPermisionType($tipoUser)){ ?>
               <li class="nav-item">
-                <a class="nav-link" href="<?php echo Url::getBase() ?>loja">
+                <a class="nav-link" href="<?php echo Url::getBase() ?>products">
                   <i class="fa fa-cart-plus"></i> Loja
                 </a>
               </li>
@@ -162,7 +166,7 @@
                 <!-- Toggle -->
                 <a href="#" id="sidebarIconCopy" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <div class="avatar avatar-sm avatar-online">
-                    <img src="<?php echo Url::getBase().'docs/users/'.$_SESSION['idUser'].'/'.$_SESSION['avatar'] ?>" class="avatar-img rounded-circle" alt="...">
+                    <img src="<?php echo $_SESSION['avatar'] != null ? Url::getBase().'docs/users/'.$_SESSION['idUser'].'/'.$_SESSION['avatar'] : Url::getBase().'../assets/img/icons/user.png' ?>" class="avatar-img rounded-circle" alt="...">
                   </div>
                 </a>
                 <!-- Menu -->

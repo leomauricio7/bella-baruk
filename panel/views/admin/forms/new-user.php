@@ -3,6 +3,7 @@
         if ($_POST){
             $dados = Validation::limpaDados(filter_input_array(INPUT_POST, FILTER_DEFAULT));
             $dados['senha'] = password_hash('123mudar', PASSWORD_DEFAULT);
+            $dados['status'] = $dados['tipo_user'] == 1 ? 'ativo' : 'inativo';
             $typeValid = $dados['cpf'] != '' ? $dados['cpf'] : $dados['cnpj'];
             $validaCpf = new ValidaCPFCNPJ($typeValid);
             if ($validaCpf->valida()) {

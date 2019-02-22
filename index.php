@@ -80,8 +80,30 @@ require_once'./vendor/autoload.php';
             }
         }
         password.onchange = validatePassword;
-        confirm_password.onkeyup = validatePassword;
-        
+        confirm_password.onkeyup = validatePassword;    
+    </script>
+    <!-- verifica sneha -->
+    <script>
+        $(function(){
+            var senha = $('#senha');
+            var olho= $("#olho");
+
+            olho.mousedown(function() {
+                senha.attr("type", "text");
+                $('#olho').removeClass('fa-eye');
+                $('#olho').addClass('fa-eye-slash');
+            });
+
+            olho.mouseup(function() {
+                senha.attr("type", "password");
+                $('#olho').removeClass('fa-eye-slash');
+                $('#olho').addClass('fa-eye');
+            });
+
+            $( "#olho" ).mouseout(function() { 
+            $("#senha").attr("type", "password");
+            });
+        })
     </script>
   </body>
 </html>

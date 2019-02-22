@@ -1,4 +1,7 @@
-
+<?php 
+if( Url::getURL(1) != null){
+  if(Validation::getNameIndicador(Url::getURL(1)) != null){
+?>
 <div class="container-fluid">
     <div class="row justify-content-center">
       <div class="col-12 col-lg-10 col-xl-8">
@@ -9,6 +12,8 @@
       <?php
         if ($_POST){
             $dados = Validation::limpaDados(filter_input_array(INPUT_POST, FILTER_DEFAULT));
+            //status do cadastro
+            $dados['status'] = 'inativo';
             $dados['indicador'] = Validation::getIdIndicador($dados['indicador']);
             //var_dump($dados);
             $dados['senha'] = password_hash($dados['senha'], PASSWORD_DEFAULT);
@@ -132,3 +137,10 @@
       </div>
     </div>
 </div>
+<?php    
+  }else{
+    require_once '404.php';
+  }
+}else{
+  require_once '404.php';
+}

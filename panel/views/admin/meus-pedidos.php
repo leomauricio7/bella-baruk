@@ -1,4 +1,4 @@
-
+<?php if(Validation::getPermisionTypeVendedor($tipoUser)){ ?>
 <div class="header">
     <div class="container-fluid">
         <!-- Body -->
@@ -11,7 +11,7 @@
                 </h6>
                 <!-- Title -->
                 <h1 class="header-title">
-                    Produtos
+                    Pedidos
                 </h1>
                 </div>
                 <div class="col-auto">                
@@ -23,11 +23,14 @@
 <div class="container-fluid">
     <div class="alert alert-primary" role="alert">
         <h4 class="alert-heading">ATENÇÃO</h4>
-        <p>Nessa página você pode visualizar os produto da loja.</p>
+        <p>Nessa página você pode visualizar os pedidos dos franqueados.</p>
         <hr>
-        <p class="mb-0">Cada produto pode detalhado.</p>
+        <p class="mb-0">Cada pedido pode detalhado.</p>
     </div>
     <div class="row">
-            <?php require_once 'catalago.php'; ?>
+        <?php require_once 'tables/pedido.php'; ?>
     </div>
 </div>
+<?php }else{
+    require_once('404.php');
+} ?>

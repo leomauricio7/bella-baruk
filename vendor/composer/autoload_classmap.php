@@ -8,10 +8,12 @@ $baseDir = dirname($vendorDir);
 return array(
     'Conn' => $baseDir . '/controllers/conn/Conn.class.php',
     'Create' => $baseDir . '/controllers/conn/Create.class.php',
+    'Dados' => $baseDir . '/controllers/class/Dados.class.php',
     'Data' => $baseDir . '/controllers/class/Data.class.php',
     'Delete' => $baseDir . '/controllers/conn/Delete.class.php',
     'Edital' => $baseDir . '/controllers/class/Edital.class.php',
     'Nivel' => $baseDir . '/controllers/class/Nivel.class.php',
+    'Produto' => $baseDir . '/controllers/class/Produto.class.php',
     'Read' => $baseDir . '/controllers/conn/Read.class.php',
     'Update' => $baseDir . '/controllers/conn/Update.class.php',
     'Uploud' => $baseDir . '/controllers/helpers/Uploud.class.php',
