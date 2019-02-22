@@ -1,7 +1,14 @@
-
 <?php 
-require_once'../controllers/conf.inc';
-require_once'../vendor/autoload.php';
+    require_once'../controllers/conf.inc';
+    require_once'../vendor/autoload.php';
+    Validation::validaSession();
+    if (isset($_GET['logout'])):
+        if ($_GET['logout'] == 'true'):
+            Validation::deslogar();
+        endif;
+    endif;
+    $url = Url::getURL(0);
+    $tipoUser = $_SESSION['idTipo'];
 ?>
 <!doctype html>
 <html lang="pt-br">
@@ -67,6 +74,9 @@ require_once'../vendor/autoload.php';
     <script src="<?php echo Url::getBase(); ?>../assets/js/jquery.stringToSlug.js"></script>
     <script src="<?php echo Url::getBase(); ?>../assets/js/jquery.stringToSlug.min.js"></script>
 
+    <!--API cep-->
+    <script src="<?php echo Url::getBase(); ?>../assets/js/api_cep.js"></script>
+
     <script type="text/javascript">
         var settimmer = 0;
         $(function () {
@@ -90,12 +100,19 @@ require_once'../vendor/autoload.php';
       });
     </script> 
     <script>
-    $(function(){
-        $('#x').click(function(){
-        var delta = Quill.getContents();
-        console.log(delta);
+        $(function(){
+            $('#cnpj').hide();
+            $("#tipo_pessoa").on('change', function(e){
+                if($(this).val() == 'juridica'){//pessoa juridica
+                    $('#cnpj').show();
+                    $('#cpf').hide();
+                }else{//pessoa fisica
+                    $('#cnpj').hide();
+                    $('#cpf').show();
+                }
+                return false;
+            });
         });
-    });
     </script>
   </body>
 </html>

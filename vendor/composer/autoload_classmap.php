@@ -17,7 +17,7 @@ return array(
     'Uploud' => $baseDir . '/controllers/helpers/Uploud.class.php',
     'Url' => $baseDir . '/controllers/class/Url.class.php',
     'Url_amigavel' => $baseDir . '/controllers/class/Url_amigavel.class.php',
-    'Usuario' => $baseDir . '/controllers/class/Usuario.class.php',
+    'User' => $baseDir . '/controllers/class/Usuario.class.php',
     'Valida' => $baseDir . '/controllers/helpers/Valida.class.php',
     'ValidaCPFCNPJ' => $baseDir . '/controllers/class/ValidaCPF.class.php',
     'Validation' => $baseDir . '/controllers/conn/Validation.class.php',

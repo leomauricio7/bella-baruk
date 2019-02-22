@@ -33,7 +33,7 @@ require_once'./vendor/autoload.php';
     <?php
         $pagina = Url::getURL(0);
         if ($pagina == null):
-            $pagina = "sign-in";
+            $pagina = "login";
         endif;
         if (file_exists("views/site/" . $pagina . ".php")):
             require "views/site/" . $pagina . ".php";
@@ -58,6 +58,16 @@ require_once'./vendor/autoload.php';
 
     <!-- Theme JS -->
     <script src="<?php echo Url::getBase(); ?>assets/js/theme.min.js"></script>
-
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+    <!--JqueryToSlug-->
+    <script src="<?php echo Url::getBase(); ?>assets/js/jquery.stringToSlug.js"></script>
+    <script src="<?php echo Url::getBase(); ?>assets/js/jquery.stringToSlug.min.js"></script>
+    <script>
+      $("#text").stringToSlug({
+        setEvents: 'keyup keydown blur',
+        getPut: '#slug',
+        space: '-'
+      });
+    </script> 
   </body>
 </html>

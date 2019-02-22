@@ -11,7 +11,7 @@
                 </h6>
                 <!-- Title -->
                 <h1 class="header-title">
-                    Produtos
+                    Franqueados
                 </h1>
                 </div>
                 <div class="col-auto">                
@@ -23,12 +23,12 @@
 <div class="container-fluid">
     <div class="alert alert-primary" role="alert">
         <h4 class="alert-heading">ATENÇÃO</h4>
-        <p>Nessa página você pode visualizar os produto da loja.</p>
+        <p>Nessa página você pode visualizar os franqueados.</p>
         <hr>
-        <p class="mb-0">Cada produto pode detalhado.</p>
+        <p class="mb-0">Cada franquiado pode ser detalhado.</p>
     </div>
     <div class="row">
-            <?php require_once 'catalago.php'; ?>
+        <?php require_once 'tables/vendedores.php'; ?>
     </div>
 </div>
 <?php }else{

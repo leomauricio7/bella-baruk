@@ -18,7 +18,7 @@ class ComposerStaticInitc38545917117a03b4c10c7c11d3eff72
         'Uploud' => __DIR__ . '/../..' . '/controllers/helpers/Uploud.class.php',
         'Url' => __DIR__ . '/../..' . '/controllers/class/Url.class.php',
         'Url_amigavel' => __DIR__ . '/../..' . '/controllers/class/Url_amigavel.class.php',
-        'Usuario' => __DIR__ . '/../..' . '/controllers/class/Usuario.class.php',
+        'User' => __DIR__ . '/../..' . '/controllers/class/Usuario.class.php',
         'Valida' => __DIR__ . '/../..' . '/controllers/helpers/Valida.class.php',
         'ValidaCPFCNPJ' => __DIR__ . '/../..' . '/controllers/class/ValidaCPF.class.php',
         'Validation' => __DIR__ . '/../..' . '/controllers/conn/Validation.class.php',

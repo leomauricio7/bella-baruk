@@ -17,49 +17,12 @@
             </div>
         </div>
         <div class="form-group">
-            <div data-toggle="quill" data-quill-placeholder="Descrição do produto"></div> 
+            <label for="inputAddress">Descrição do Produto</label>
+            <textarea class="form-control" name="descricao"required></textarea>
         </div>
         <div class="form-group">
-            <!-- Multiple -->
-            <div class="dropzone dropzone-multiple" data-toggle="dropzone" data-dropzone-multiple data-dropzone-url="http://">
-
-                <div class="fallback">
-                    <div class="custom-file">
-                        <input type="file"name="images[]" class="custom-file-input" id="customFileUploadMultiple" multiple>
-                        <label class="custom-file-label" for="customFileUploadMultiple">Selecione a imagem</label>
-                    </div>
-                </div>
-
-                <ul class="dz-preview dz-preview-multiple list-group list-group-lg list-group-flush">
-                    <li class="list-group-item px-0">
-                        <div class="row align-items-center">
-                            <div class="col-auto">
-                                <div class="avatar">
-                                <img class="avatar-img rounded" src="..." alt="..." data-dz-thumbnail>
-                                </div>
-                            </div>
-                            <div class="col ml-n3">
-                                <h4 class="mb-1" data-dz-name>...</h4>
-                                <p class="small text-muted mb-0" data-dz-size>...</p>
-                            </div>
-                            <div class="col-auto">
-                                
-                                <div class="dropdown">
-                                    <a href="#" class="dropdown-ellipses dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class="fa fa-ellipsis-v"></i>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-right">
-                                        <a href="#" class="dropdown-item" data-dz-remove>
-                                        Remove
-                                        </a>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-            </div>
+            <label for="inputAddress">Imagens do produto</label>
+            <input type="file" class="form-control" name="images[]" multiple required>
         </div>
         <div class="form-row">
             <div class="col-12 col-md-6 mb-3">

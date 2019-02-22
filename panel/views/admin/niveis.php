@@ -1,3 +1,4 @@
+<?php if(Validation::getPermisionType($tipoUser)){ ?>
 <div class="header">
     <div class="container-fluid">
         <!-- Body -->
@@ -35,3 +36,6 @@
         </div>
     </div>
 </div>
+<?php }else{
+    require_once('404.php');
+} ?>

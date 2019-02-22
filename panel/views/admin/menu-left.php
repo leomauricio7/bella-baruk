@@ -18,15 +18,14 @@
               <!-- Toggle -->
               <a href="#" id="sidebarIcon" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <div class="avatar avatar-sm avatar-online">
-                  <img src="https://www.shareicon.net/data/128x128/2016/09/01/822711_user_512x512.png" class="avatar-img rounded-circle" alt="...">
+                  <img src="<?php echo Url::getBase().'docs/users/'.$_SESSION['idUser'].'/'.$_SESSION['avatar'] ?>" class="avatar-img rounded-circle" alt="...">
                 </div>
               </a>
               <!-- Menu -->
               <div class="dropdown-menu dropdown-menu-right" aria-labelledby="sidebarIcon">
                 <a href="<?php echo Url::getBase() ?>profile" class="dropdown-item">Perfil</a>
-                <a href="<?php echo Url::getBase() ?>configurations" class="dropdown-item">Configurações</a>
                 <hr class="dropdown-divider">
-                <a href="" class="dropdown-item">Sair</a>
+                <a href="?logout=true" class="dropdown-item">Sair</a>
               </div>
             </div>
           </div>
@@ -51,31 +50,35 @@
                   <i class="fa fa-home"></i> Página Inical
                 </a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link collapsed" href="#users" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarPages">
-                  <i class="fa fa-users"></i> Vendedores
-                </a>
-                <div class="collapse " id="users">
-                  <ul class="nav nav-sm flex-column">
+              <?php if(Validation::getPermisionType($tipoUser)){ ?>
+                <li class="nav-item">
+                  <a class="nav-link collapsed" href="#users" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarPages">
+                    <i class="fa fa-users"></i> Franqueados
+                  </a>
+                  <div class="collapse " id="users">
+                    <ul class="nav nav-sm flex-column">
 
-                    <li class="nav-item">
-                      <a href="<?php echo Url::getBase() ?>new-user" class="nav-link ">
-                        Cadastrar
-                      </a>
-                    </li>
-                    <li class="nav-item">
-                      <a href="<?php echo Url::getBase() ?>users" class="nav-link ">
-                        Listar
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-              </li>
+                      <li class="nav-item">
+                        <a href="<?php echo Url::getBase() ?>new-user" class="nav-link ">
+                          Cadastrar
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="<?php echo Url::getBase() ?>franqueados" class="nav-link ">
+                          Listar
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </li>
+              <?php } ?>
+              <?php if(Validation::getPermisionType($tipoUser)){ ?>
               <li class="nav-item">
                 <a class="nav-link" href="<?php echo Url::getBase() ?>niveis">
                   <i class="fa fa-restroom"></i> Nivéis 
                 </a>
               </li>
+              <?php } ?>
               <li class="nav-item">
                 <a class="nav-link" href="<?php echo Url::getBase() ?>profile">
                   <i class="fa fa-user"></i> Meus Dados
@@ -98,6 +101,7 @@
 
             <!-- Navigation -->
             <ul class="navbar-nav mb-md-4">
+            <?php if(Validation::getPermisionType($tipoUser)){ ?>
               <li class="nav-item dropdown">
                 <a class="nav-link" href="#sidebarComponents" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarComponents">
                   <i class="fa fa-book-open"></i> Produtos
@@ -122,11 +126,20 @@
                   <i class="fa fa-cart-plus"></i> Pedidos
                 </a>
               </li>
+              <?php } ?>
+
+              <?php if(!Validation::getPermisionType($tipoUser)){ ?>
               <li class="nav-item">
-                <a class="nav-link" href="<?php echo Url::getBase() ?>faturamentos">
-                  <i class="fa fa-money-check-alt"></i> Faturamentos
+                <a class="nav-link" href="<?php echo Url::getBase() ?>loja">
+                  <i class="fa fa-cart-plus"></i> Loja
                 </a>
               </li>
+              <li class="nav-item">
+                <a class="nav-link" href="<?php echo Url::getBase() ?>meus-pedidos">
+                  <i class="fa fa-shopping-cart"></i> Meus Pedidos
+                </a>
+              </li>
+              <?php } ?>
             </ul>
       
             <!-- Push content down -->
@@ -149,17 +162,16 @@
                 <!-- Toggle -->
                 <a href="#" id="sidebarIconCopy" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <div class="avatar avatar-sm avatar-online">
-                    <img src="https://www.shareicon.net/data/128x128/2016/09/01/822711_user_512x512.png" class="avatar-img rounded-circle" alt="...">
+                    <img src="<?php echo Url::getBase().'docs/users/'.$_SESSION['idUser'].'/'.$_SESSION['avatar'] ?>" class="avatar-img rounded-circle" alt="...">
                   </div>
                 </a>
                 <!-- Menu -->
                 <div class="dropdown-menu" aria-labelledby="sidebarIconCopy">
                   <a href="<?php echo Url::getBase() ?>profile" class="dropdown-item"><i class="fa fa-user"></i> Perfil</a>
-                  <a href="<?php echo Url::getBase() ?>configurations" class="dropdown-item"><i class="fa fa-cog"></i> Configurações</a>
                 </div>
               </div>
               <!-- Icon -->
-              <a href="#sidebarModalLogout" class="navbar-user-link" data-toggle="modal">
+              <a href="#logout" class="navbar-user-link" data-toggle="modal">
                 <span class="icon">
                   <i class="fa fa-sign-out-alt"></i>
                 </span>

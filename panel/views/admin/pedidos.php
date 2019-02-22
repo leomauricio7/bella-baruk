@@ -1,3 +1,4 @@
+<?php if(Validation::getPermisionType($tipoUser)){ ?>
 <div class="header">
     <div class="container-fluid">
         <!-- Body -->
@@ -30,3 +31,6 @@
         <?php require_once 'tables/pedido.php'; ?>
     </div>
 </div>
+<?php }else{
+    require_once('404.php');
+} ?>

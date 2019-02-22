@@ -41,39 +41,42 @@ class Validation extends Conn {
     }
 
     public function logar() {
-        $validaCPF = new ValidaCPFCNPJ($this->getLogin());
-        if ($validaCPF->valida()) {
-            $pdo = parent::getConn();
-            $logar = $pdo->prepare("SELECT * FROM users WHERE cpf = ?");
-            $logar->bindValue(1, $this->getLogin());
-            $logar->execute();
-            if ($logar->rowCount() == 1) {
-                $dados = $logar->fetch(PDO::FETCH_ASSOC);
-                if (password_verify($this->getSenha(), $dados['senha'])) {
-                    if ($dados['id_situacao'] == 1) {
-                        $_SESSION['user'] = $dados['nome'];
-                        $_SESSION['cpf'] = $dados['cpf'];
-                        $_SESSION['senha'] = $this->getSenha();
-                        $_SESSION['img'] = $dados['img'];
-                        $_SESSION['idTipo'] = $dados['id_tipo'];
-                        $_SESSION['idUser'] = $dados['id'];
-                        $_SESSION['logado'] = true;
-                        $_SESSION["sessiontime"] = time() + 60 * 20;
-                        return true;
-                    } else {
-                        $_SESSION['msg'] = '<div class="alert alert-danger"><h5 align="center"><i class="fa fa-warning"></i> Usuário Desativado</h5></div>';
-                        return false;
-                    }
-                } else {
-                    $_SESSION['msg'] = '<div class="alert alert-danger"><h5 align="center"><i class="fa fa-warning"></i> Senha incorreta</h5></div>';
-                    return false;
-                }
+        $pdo = parent::getConn();
+        $logar = $pdo->prepare("SELECT * FROM users WHERE email = ?");
+        $logar->bindValue(1, $this->getEmail());
+        $logar->execute();
+        if ($logar->rowCount() == 1) {
+            $dados = $logar->fetch(PDO::FETCH_ASSOC);
+            if (password_verify($this->getSenha(), $dados['senha'])) {
+                $_SESSION['user'] = $dados['nome'];
+                $_SESSION['email'] = $dados['email'];
+                $_SESSION['cpf'] = $dados['cpf'];
+                $_SESSION['cnpj'] = $dados['cnpj'];
+                $_SESSION['senha'] = $this->getSenha();
+                $_SESSION['avatar'] = $dados['avatar'];
+                $_SESSION['idTipo'] = $dados['tipo_user'];
+                $_SESSION['idUser'] = $dados['id'];
+                $_SESSION['logado'] = true;
+                $_SESSION["sessiontime"] = time() + 60 * 20;
+                return true;
             } else {
-                $_SESSION['msg'] = '<div class="alert alert-danger"><h5 align="center"><i class="fa fa-warning"></i> CPF não cadastrado no sistema</h5></div>';
+                $_SESSION['msg'] = 
+                '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong>ATENÇÃO</strong> Senha incorreta
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>';
                 return false;
             }
         } else {
-            $_SESSION['msg'] = '<div class="alert alert-danger"><h5 align="center"><i class="fa fa-warning"></i> CPF inválido</h5></div>';
+            $_SESSION['msg'] = 
+            '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>ATENÇÃO</strong> Email não cadastrado no sistema
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>';
             return false;
         }
     }
@@ -83,18 +86,17 @@ class Validation extends Conn {
     public function recuperaSenha() {
         $pdo = parent::getConn();
 
-        $rec = $pdo->prepare("SELECT * FROM users WHERE cpf = ? AND email = ?");
-        $rec->bindValue(1, $this->getCpf());
-        $rec->bindValue(2, $this->getEmail());
+        $rec = $pdo->prepare("SELECT * FROM users WHERE email = ?");
+        $rec->bindValue(1, $this->getEmail());
         $rec->execute();
         if ($rec->rowCount() == 1):
             $_token = hash("sha256", md5(uniqid())); //gerando uma senha aletória para o usuário
             $dados = $rec->fetch(PDO::FETCH_ASSOC);
             $this->setEmail($dados['email']); //pegando o email do usuario
             //if ($this->enviaEmail($_token, $dados['nome'])) {//enviando o email com a nova senha
-            $update = $pdo->prepare("UPDATE users SET _token = :_token WHERE cpf = :cpf");
+            $update = $pdo->prepare("UPDATE users SET _token = :_token WHERE email = :email");
             $update->execute(array(
-                ':cpf' => $this->getCpf(),
+                ':email' => $this->getEmail(),
                 ':_token' => $_token
             ));
             $this->Msg = '<div class="alert alert-success">'
@@ -189,42 +191,58 @@ class Validation extends Conn {
         if (isset($_SESSION['logado'])):
             unset($_SESSION['logado']);
             session_destroy();
-            echo '<script>window.location.href="../cpanel-login";</script>';
+            echo '<script>window.location.href="../login";</script>';
         endif;
     }
 
     public static function validaSession() {
         if (!isset($_SESSION['logado'])):
-            $_SESSION['erro'] = '<div class="alert alert-danger"><h5 align="center"><i class="fa fa-warning"></i> Area restrita para usuários cadastrados.</div>';
-            echo '<script>window.location.href="../cpanel-login";</script>';
+            $_SESSION['msg'] = 
+            '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>ATENÇÃO</strong> Área Restrita para usuários cadastrados
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>';
+            echo '<script>window.location.href="../login";</script>';
         else:
             $pdo = parent::getConn();
-            $sql = $pdo->prepare("SELECT * FROM users WHERE cpf = ?");
-            $sql->bindValue(1, $_SESSION['cpf']);
+            $sql = $pdo->prepare("SELECT * FROM users WHERE email = ?");
+            $sql->bindValue(1, $_SESSION['email']);
             $sql->execute();
             if ($sql->rowCount() == 1):
                 $dados = $sql->fetch(PDO::FETCH_ASSOC);
                 if (!password_verify($_SESSION['senha'], $dados['senha'])) :
                     unset($_SESSION['cpf']);
+                    unset($_SESSION['email']);
+                    unset($_SESSION['cnpj']);
                     unset($_SESSION['senha']);
                     unset($_SESSION['logado']);
                     unset($_SESSION['user']);
-                    unset($_SESSION['img']);
+                    unset($_SESSION['avatar']);
                     unset($_SESSION['idTipo']);
                     unset($_SESSION['idUser']);
                     $_SESSION['msg'] = '<div class="alert alert-danger"><i class="fa fa-warning"><h5 align="center"></i> Area restrita para usuários cadastrados</h5></div>';
-                    echo '<script>window.location.href="../cpanel-login";</script>';
+                    echo '<script>window.location.href="../login";</script>';
                 endif;
             else:
                 unset($_SESSION['cpf']);
+                unset($_SESSION['email']);
+                unset($_SESSION['cnpj']);
                 unset($_SESSION['senha']);
                 unset($_SESSION['logado']);
                 unset($_SESSION['user']);
-                unset($_SESSION['img']);
+                unset($_SESSION['avatar']);
                 unset($_SESSION['idTipo']);
                 unset($_SESSION['idUser']);
-                $_SESSION['msg'] = '<div class="alert alert-danger"><i class="fa fa-warning"></i> Area restrita para usuários cadastrados</h5></div>';
-                echo '<script>window.location.href="../cpanel-login";</script>';
+                $_SESSION['msg'] = 
+                '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong>ATENÇÃO</strong> Área Restrita para usuários cadastrados
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>';
+                echo '<script>window.location.href="../login";</script>';
             endif;
         endif;
     }
@@ -234,28 +252,44 @@ class Validation extends Conn {
             if ($_SESSION["sessiontime"] < time()) {
                 session_unset();
                 unset($_SESSION['cpf']);
+                unset($_SESSION['email']);
+                unset($_SESSION['cnpj']);
                 unset($_SESSION['senha']);
                 unset($_SESSION['logado']);
                 unset($_SESSION['user']);
-                unset($_SESSION['img']);
+                unset($_SESSION['avatar']);
                 unset($_SESSION['idTipo']);
                 unset($_SESSION['idUser']);
-                $_SESSION['msg'] = '<div class="alert alert-danger"><h5 align="center"><i class="fa fa-warning"></i> Sessão encerrada</h5></div>';
-                echo '<script>window.location.href="../cpanel-login";</script>';
+                $_SESSION['msg'] = 
+                '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong>ATENÇÃO</strong> Sesão expirou!
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>';
+                echo '<script>window.location.href="../login";</script>';
             } else {
                 $_SESSION["sessiontime"] = time() + 60 * 10;
             }
         } else {
             session_unset();
             unset($_SESSION['cpf']);
+            unset($_SESSION['email']);
+            unset($_SESSION['cnpj']);
             unset($_SESSION['senha']);
             unset($_SESSION['logado']);
             unset($_SESSION['user']);
-            unset($_SESSION['img']);
+            unset($_SESSION['avatar']);
             unset($_SESSION['idTipo']);
             unset($_SESSION['idUser']);
-            $_SESSION['msg'] = '<div class="alert alert-danger"><h5 align="center"><i class="fa fa-warning"></i> Sessão encerrada</h5></div>';
-            echo '<script>window.location.href="../cpanel-login";</script>';
+            $_SESSION['msg'] = 
+            '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>ATENÇÃO</strong> Sesão encerrada!
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>';
+            echo '<script>window.location.href="../login";</script>';
         }
     }
 
@@ -286,12 +320,35 @@ class Validation extends Conn {
     public static function getTipoUsario($idTipo) {
         $tipoUser = null;
         $read = new Read();
-        $read->ExeRead("user_tipo", "WHERE id = $idTipo");
+        $read->ExeRead("tipo_users", "WHERE id = $idTipo");
         foreach ($read->getResult() as $dados) {
             extract($dados);
             $tipoUser = $tipo;
         }
         return $tipoUser;
+    }
+
+    public static function getURI($id) {
+        $URL= null;
+        $read = new Read();
+        $read->ExeRead("users", "WHERE id = $id");
+        foreach ($read->getResult() as $dados) {
+            extract($dados);
+            $URL = $slug;
+        }
+        return $URL;
+    }
+
+    public static function getNameIndicador($slug) {
+        $name = null;
+        $read = new Read();
+        $read->ExeRead("users", "WHERE slug = '$slug'");
+
+        foreach ($read->getResult() as $dados) {
+            extract($dados);
+            $name = $nome;
+        }
+        return $name;
     }
 
     public static function getSituacaoUsario($id_situacao) {
@@ -333,46 +390,19 @@ class Validation extends Conn {
         }
     }
 
+    public static function getPermisionType($id_tipo) {
+        if ($id_tipo == 1) {//administrador
+            return true;
+        } else {//vendedor
+            return false;
+        }   
+    }
+
     public static function limpaDados(array $dados) {
         foreach ($dados as $indice => $value) {
             $dados[$indice] = addslashes($dados[$indice]);
         }
         return $dados;
-    }
-
-    public static function verificaUrl($tipo) {
-        if (($tipo == "adesao-carona") || ($tipo == "inexigibilidade") || ($tipo == "pregao-presencial") || ($tipo == "carta-convite") || ($tipo == "chamada-publica") || ($tipo == "tomada-de-preco")) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public static function verificaForm($tipo) {
-        if (($tipo == "adesao-carona") || ($tipo == "inexigibilidade")) {
-            return false;
-        } elseif (($tipo == "pregao-presencial") || ($tipo == "carta-convite") || ($tipo == "chamada-publica") || ($tipo == "tomada-de-preco")) {
-            return true;
-        }
-    }
-
-    public static function getTipoEdital($urlEdital) {
-        $read = new Read();
-        $read->ExeRead("edital_tipo", "WHERE pasta = '$urlEdital'");
-        foreach ($read->getResult() as $dados) {
-            extract($dados);
-            return $id;
-        }
-    }
-
-    public static function getTotalEditais($idTipo, $Termos = null) {
-        $Table = 'editais';
-        $read = new Read();
-        if ($Termos == true) {
-            $Termos = "AND id_situacao = 1";
-        }
-        $read->ExeRead($Table, "WHERE id_tipo = $idTipo $Termos");
-        return $read->getRowCount();
     }
 
     public static function verificaToken($token){

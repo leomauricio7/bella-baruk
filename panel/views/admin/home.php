@@ -10,7 +10,7 @@
                 </h6>
                 <!-- Title -->
                 <h1 class="header-title">
-                    BackOffice
+                   <i class="fa fa-user"></i> <?php echo $_SESSION['user'] ?>
                 </h1>
                 </div>
                 <div class="col-auto">                
@@ -19,4 +19,10 @@
         </div> <!-- / .header-body -->
     </div>
 </div>
-<?php require_once 'graficos.php' ?>
+<?php 
+    if(Validation::getPermisionType($tipoUser)){
+        require_once 'graficos.php';
+    }else{
+        require_once 'home-vendedor.php';
+    }
+ ?>

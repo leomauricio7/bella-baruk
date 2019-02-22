@@ -1,6 +1,6 @@
 <?php
 
-class Usuario {
+class User {
 
     public $Titulo;
     public $Conteudo;
@@ -10,22 +10,28 @@ class Usuario {
 
     function createUser(array $Dados) {
         $this->Dados = $Dados;
-        $this->Dados['img'] = $this->Dados['img']['name'];
+        $this->Dados['avatar'] = $this->Dados['avatar']['name'];
 
         $create = new Create();
         $create->ExeCreate(self::Entity, $this->Dados);
         if ($create->getResult()):
             $this->Result = $create->getResult();
-            $this->Msg = '<div class="alert alert-success alert-dismissible" role="alert">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        Usuário cadastrado com sucesso!
-                    </div>';
+            $this->Msg =
+            '<div class="alert alert-success alert-dismissible fade show" role="alert">
+                <strong>ATENÇÃO!</strong> Cadastro realizado com sucesso.
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">×</span>
+                </button>
+            </div>';
         else:
             $this->Result = $create->getResult();
-            $this->Msg = '<div class="alert alert-danger alert-dismissible" role="alert">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        Erro no processamento do cadastro.
-                    </div>';
+            $this->Msg =
+                '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>ATENÇÃO!</strong> Error no cadastro.
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>';
         endif;
     }
 

@@ -12,7 +12,7 @@ class Uploud {
     
     //Verifica se o diretorio existe
     function __construct($Diretorio = null) {
-        self::$Diretorio = ( (string) $Diretorio ? $Diretorio : 'arquivos/');
+        self::$Diretorio = ( (string) $Diretorio ? $Diretorio : 'docs/');
         if (!file_exists(self::$Diretorio) && !is_dir(self::$Diretorio)):
             mkdir(self::$Diretorio, 0777);
         endif;
