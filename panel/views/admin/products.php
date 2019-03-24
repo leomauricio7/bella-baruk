@@ -14,20 +14,56 @@
                     Produtos
                 </h1>
                 </div>
-                <div class="col-auto">                
+                <div class="col-auto">  
+                    <!--destroy session-->
+                    <?php 
+                    if(isset($_SESSION['carrinho']) &&  sizeof($_SESSION['carrinho']) > 0){
+                    ?>
+                        <button class="btn btn-danger" id="closeSession">
+                            <i class="fa fa-times-circle"></i>Remover pedidos do carrinho
+                        </button>
+                    <?php } ?>
+                    <?php
+                        if(!Validation::getPermisionType($tipoUser)){
+                    ?> 
+                    <!-- Button -->
+                    <a href="<?php echo Url::getBase() ?>carrinho" class="btn btn-outline-dark">
+                        <i class="fa fa-shopping-cart" id="icon-carrinho"></i>
+                        <span class="badge badge-pill badge-soft-secondary">
+                      <?php echo isset($_SESSION['carrinho']) ? sizeof($_SESSION['carrinho']) : 0 ?>  
+                        </span>
+                    </a>
+                    <?php } ?>
                 </div>
             </div> <!-- / .row -->
         </div> <!-- / .header-body -->
+        
     </div>
 </div>
 <div class="container-fluid">
-    <div class="alert alert-primary" role="alert">
-        <h4 class="alert-heading">ATENÇÃO</h4>
-        <p>Nessa página você pode visualizar os produto da loja.</p>
+    <div class="alert alert-dark" role="alert">
+        <p><i class="fa fa-exclamation-circle"></i> Nessa página você pode visualizar os produto da loja.</p>
         <hr>
-        <p class="mb-0">Cada produto pode detalhado.</p>
+        <p class="mb-0">Cada produto pode detalhado e comprado caso você deseje.</p>
     </div>
     <div class="row">
-            <?php require_once 'catalago.php'; ?>
+            <?php require_once 'catalogo.php'; ?>
     </div>
+</div>
+<div class="loading" id="loading">Loading&#8230;</div>
+<!-- Modal-->
+<div class="modal fade" id="modal-product" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Atenção</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p id="msg-modal"></p>
+      </div>
+    </div>
+  </div>
 </div>

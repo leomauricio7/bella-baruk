@@ -38,7 +38,11 @@
                 <label for="validationServer03">Preço</label>
                 <input type="text" class="form-control" data-mask="#.##0.00" data-mask-reverse="true" name="preco" placelholder="R$ 0.00" required="">
             </div>
-            <div class="col-12 col-md-6 mb-3">
+            <div class="col-12 col-md-2 mb-3">
+                <label for="validationServer03">Quantidade</label>
+                <input type="number" class="form-control" name="quantidade" required="">
+            </div>
+            <div class="col-12 col-md-4 mb-3">
                 <label for="validationServer04">Responsavel</label>
                 <input type="hidden" class="form-control" name="id_responsavel" readonly value="<?php echo $_SESSION['idUser'] ?>">
                 <input type="text" class="form-control" readonly value="<?php echo Validation::getIndicador($_SESSION['idUser']) ?>">

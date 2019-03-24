@@ -25,22 +25,6 @@ class Read extends Conn {
         $this->ExecuteSQL();
     }
 
-    public function consulta_pasta($Termos = null) {
-        if (empty($Termos)):
-            $Termos = '';
-        endif;
-        $this->Select = 'SELECT c.pasta, m.nome, m.estado, m.brazao, m.data_cadastro,  m.endereco, m.situacao, m.servidor_bd, m.usuario_bd, m.senha_bd, m.nome_bd FROM municipios m INNER JOIN cidades c ON m.cidade = c.cod_cidades ' . $Termos;
-        $this->ExecuteSQL();
-    }
-
-    public function listarEditais($Termos = null) {
-        if (empty($Termos)):
-            $Termos = '';
-        endif;
-        $this->Select = 'SELECT el.tipo, el.pasta, els.situacao, e.id, e.ano, e.lei, e.dataRetirada, e.horaCertame, e.dataCertame, e.descricao, e.link_aviso, e.link_edital, e.termo_adesao, e.contrato, e.created, e.tags, e.dia, e.mes FROM editais e INNER JOIN edital_tipo el ON e.id_tipo = el.id INNER JOIN edital_situacao els ON e.id_situacao = els.id ' . $Termos;
-        $this->ExecuteSQL();
-    }
-
     public function getResult() {
         return $this->Result;
     }

@@ -31,7 +31,8 @@
 
     <link rel="stylesheet" href="<?php echo Url::getBase(); ?>../assets/css/theme-dark.min.css" id="stylesheetDark">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-
+    <!-- Loading -->
+    <link rel="stylesheet" href="<?php echo Url::getBase(); ?>../assets/css/loading.css">
     <style>body { display: none; }</style>
     
 
@@ -76,43 +77,13 @@
 
     <!--API cep-->
     <script src="<?php echo Url::getBase(); ?>../assets/js/api_cep.js"></script>
-
+    <!--route script franqueado -->
+    <script src="<?php echo Url::getBase(); ?>../assets/js/conf.js"></script>
+    <script src="<?php echo Url::getBase(); ?>../assets/js/carrinho.js"></script>
     <script type="text/javascript">
-        var settimmer = 0;
-        $(function () {
-            window.setInterval(function () {
-                var timeCounter = $("b[id=show-time]").html();
-                var updateTime = eval(timeCounter) - eval(1);
-                $("[id=show-time]").html(updateTime);
-
-                if (updateTime === 0) {
-                    window.location = ("<?php echo URL::getBase() . '' . URL::getURL(0); ?>");
-                }
-            }, 1000);
-
-        });
-    </script>
-    <script>
-      $("#text").stringToSlug({
-        setEvents: 'keyup keydown blur',
-        getPut: '#slug',
-        space: '-'
-      });
-    </script> 
-    <script>
-        $(function(){
-            $('#cnpj').hide();
-            $("#tipo_pessoa").on('change', function(e){
-                if($(this).val() == 'juridica'){//pessoa juridica
-                    $('#cnpj').show();
-                    $('#cpf').hide();
-                }else{//pessoa fisica
-                    $('#cnpj').hide();
-                    $('#cpf').show();
-                }
-                return false;
-            });
-        });
-    </script>
+        $(document).ready(function(){
+            $("#loading").delay(1000).fadeOut("slow");
+        })
+	</script>
   </body>
 </html>

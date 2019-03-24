@@ -40,3 +40,26 @@
 	outline: 1px dotted #000;
 	outline: -webkit-focus-ring-color auto 5px;
 }
+/*print table*/
+@media print {
+    body * {
+      visibility: hidden;
+    }
+
+    #printable, #printable * {
+      visibility: visible;
+    }
+
+    #printable {
+      position: fixed;
+      left: 0;
+      top: 0;
+      height: 100%!important;
+    }
+
+    .fundo-verde{
+        background-color: #d8d8d8!important;
+        padding: 5px;
+    }
+
+  }

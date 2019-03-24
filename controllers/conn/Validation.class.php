@@ -11,6 +11,9 @@ class Validation extends Conn {
     public function setEmail($email) {
         $this->email = $email;
     }
+    public function setMsg($msg){
+        $this->Msg = $msg;
+    }
 
     public function setCpf($cpf) {
         $this->cpf = $cpf;
@@ -24,6 +27,10 @@ class Validation extends Conn {
         $this->senha = addslashes($senha);
     }
 
+    function getMsg() {
+        return $this->Msg;
+    }
+    
     public function getLogin() {
         return $this->login;
     }
@@ -34,6 +41,10 @@ class Validation extends Conn {
 
     public function getEmail() {
         return $this->email;
+    }
+
+    public function getCpf() {
+        return $this->cpf;
     }
 
     public function validaEmail(){
@@ -53,14 +64,10 @@ class Validation extends Conn {
         }
     }
 
-    public function getCpf() {
-        return $this->cpf;
-    }
-
     public function logar() {
         $pdo = parent::getConn();
-        $logar = $pdo->prepare("SELECT * FROM users WHERE email = ?");
-        $logar->bindValue(1, $this->getEmail());
+        $logar = $pdo->prepare("SELECT * FROM users WHERE slug = ?");
+        $logar->bindValue(1, $this->getLogin());
         $logar->execute();
         if ($logar->rowCount() == 1) {
             $dados = $logar->fetch(PDO::FETCH_ASSOC);
@@ -271,29 +278,29 @@ class Validation extends Conn {
         }
     }
 
-    public function verificaRecaptcha($key) {
-        $url = "https://www.google.com/recaptcha/api/siteverify";
-        $respon = $key;
+    // public function verificaRecaptcha($key) {
+    //     $url = "https://www.google.com/recaptcha/api/siteverify";
+    //     $respon = $key;
 
-        $data = array('secret' => "6Lelv2oUAAAAAPko-GnVwLV9YdWke5QK9e01Kbkt", 'response' => $respon);
+    //     $data = array('secret' => "6Lelv2oUAAAAAPko-GnVwLV9YdWke5QK9e01Kbkt", 'response' => $respon);
 
-        $options = array(
-            'http' => array(
-                'header' => "Content-type: application/x-www-form-urlencoded\r\n",
-                'method' => 'POST',
-                'content' => http_build_query($data)
-            )
-        );
-        $context = stream_context_create($options);
-        $result = file_get_contents($url, false, $context);
-        $jsom = json_decode($result);
+    //     $options = array(
+    //         'http' => array(
+    //             'header' => "Content-type: application/x-www-form-urlencoded\r\n",
+    //             'method' => 'POST',
+    //             'content' => http_build_query($data)
+    //         )
+    //     );
+    //     $context = stream_context_create($options);
+    //     $result = file_get_contents($url, false, $context);
+    //     $jsom = json_decode($result);
 
-        if ($jsom->success) {
-            return true;
-        } else {
-            return false;
-        }
-    }
+    //     if ($jsom->success) {
+    //         return true;
+    //     } else {
+    //         return false;
+    //     }
+    // }
 
     public static function getTipoUsario($idTipo) {
         $tipoUser = null;
@@ -424,7 +431,23 @@ class Validation extends Conn {
             return false;
         }
     }
-    
+
+    public function duplicateEmail($mail){
+        $read = new Read();
+        $read->ExeRead('users',"WHERE email = '$mail'");
+        if($read->getResult()){
+            $this->setMsg('<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>ATENÇÃO</strong> Email já cadastrado no sistema.
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>');
+            return true;
+        }else{
+            return false;
+        }
+    } 
+
     public static function updateSenha($token, $novaSenha){
         $pdo = parent::getConn();
         $update = $pdo->prepare("UPDATE users SET _token = :token, senha = :novaSenha WHERE _token = :_token");
@@ -435,9 +458,85 @@ class Validation extends Conn {
         ));
         return true;
     }
-    
-    function getMsg() {
-        return $this->Msg;
+
+    //funções de controle da loja
+    public static function getImagesProdutos($id_produto){
+        $nameFile = '';
+        $read = new Read();
+        $read->ExeRead('image_products','where id_product = '.$id_produto.' limit 1');
+        foreach($read->getresult() as $images):
+            extract($images);
+            $nameFile = $url_image;
+        endforeach;
+        return $nameFile;
+    }
+
+    public static function getIdProduto($slug){
+        $idProduto = '';
+        $read = new read();
+        $read->ExeRead('products',"where slug = '$slug'");
+        foreach($read->getresult() as $prod):
+            extract($prod);
+            $idProduto = $id;
+        endforeach;
+        return $id;
+    }
+    public static function getNameProduto($id){
+        $name = '';
+        $read = new Read();
+        $read->ExeRead('products',"where id = $id");
+        foreach($read->getresult() as $prod):
+            extract($prod);
+            $name = $titulo;
+        endforeach;
+        return $name;
+    }
+
+    public static function getTotalProdutosCarrinho($idCarrinho){
+        $read = new Read();
+        $read->ExeRead('produtos_pedido', 'where id_pedido = '.$idCarrinho);
+        return $read->getRowCount();
+    }
+
+    public static function getClassStatus($status){
+        $class = null;
+        switch($status){
+            case 1: $class="warning"; break;
+            case 2:
+            case 4: 
+                $class="info"; 
+                break;
+            case 3: $class="success"; break;
+            case 5: 
+            case 6: 
+            case 7:
+            case 8:
+                $class="danger"; 
+                break;
+        }
+        return $class;
+    }
+
+    public static function getStatus($id) {
+        $name = null;
+        $read = new Read();
+        $read->ExeRead("status_pedido", "WHERE id = $id");
+        foreach ($read->getResult() as $dados) {
+            extract($dados);
+            $name = $status;
+        }
+        return $name;
+    }
+
+    public static function getNameUser($id) {
+        $name = null;
+        $read = new Read();
+        $read->ExeRead("users", "WHERE id = $id");
+        foreach ($read->getResult() as $dados) {
+            extract($dados);
+            $name = $nome;
+        }
+        return $name;
     }
 
 }

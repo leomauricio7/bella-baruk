@@ -24,7 +24,11 @@ require_once'./vendor/autoload.php';
 
     <link rel="stylesheet" href="<?php echo Url::getBase(); ?>assets/css/theme-dark.min.css" id="stylesheetDark">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-
+    <!-- Loading -->
+    <link rel="stylesheet" href="<?php echo Url::getBase(); ?>assets/css/loading.css">
+    <!-- reacptcha -->
+    <script src="https://www.google.com/recaptcha/api.js?render=6LdsxpcUAAAAAJFAakC7MSZqmMaHVI4t7omDkO2b"></script>
+    
     <style>body { display: none; }</style>
     
 
@@ -41,6 +45,7 @@ require_once'./vendor/autoload.php';
             require "views/site/404.php";
         endif;
       ?>
+    <div class="loading" id="loading">Loading&#8230;</div>
     <!-- JAVASCRIPT
     ================================================== -->
     <!-- Libs JS -->
@@ -58,52 +63,14 @@ require_once'./vendor/autoload.php';
 
     <!-- Theme JS -->
     <script src="<?php echo Url::getBase(); ?>assets/js/theme.min.js"></script>
-    <script src='https://www.google.com/recaptcha/api.js'></script>
     <!--JqueryToSlug-->
     <script src="<?php echo Url::getBase(); ?>assets/js/jquery.stringToSlug.js"></script>
     <script src="<?php echo Url::getBase(); ?>assets/js/jquery.stringToSlug.min.js"></script>
-    <script>
-      $("#text").stringToSlug({
-        setEvents: 'keyup keydown blur',
-        getPut: '#slug',
-        space: '-'
-      });
-    </script> 
-    <!-- verifica password -->
-    <script>
-        var password = document.getElementById("senha"), confirm_password = document.getElementById("confirm_senha");
-        function validatePassword() {
-            if (password.value != confirm_password.value) {
-                confirm_password.setCustomValidity("Senhas não coincidem!");
-            } else {
-                confirm_password.setCustomValidity('');
-            }
-        }
-        password.onchange = validatePassword;
-        confirm_password.onkeyup = validatePassword;    
-    </script>
-    <!-- verifica sneha -->
-    <script>
-        $(function(){
-            var senha = $('#senha');
-            var olho= $("#olho");
-
-            olho.mousedown(function() {
-                senha.attr("type", "text");
-                $('#olho').removeClass('fa-eye');
-                $('#olho').addClass('fa-eye-slash');
-            });
-
-            olho.mouseup(function() {
-                senha.attr("type", "password");
-                $('#olho').removeClass('fa-eye-slash');
-                $('#olho').addClass('fa-eye');
-            });
-
-            $( "#olho" ).mouseout(function() { 
-            $("#senha").attr("type", "password");
-            });
+    <script src="<?php echo Url::getBase(); ?>assets/js/route-login.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $("#loading").delay(1000).fadeOut("slow");
         })
-    </script>
+	</script>
   </body>
 </html>

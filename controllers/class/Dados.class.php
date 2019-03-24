@@ -56,5 +56,16 @@ class Dados {
         }
     }
 
+    //pegando o valor de um produto
+    public static function getValueProduct($id){
+        $value = 0;
+        $read = new Read();
+        $read->ExeRead('products', 'where id=:id', 'id='.$id);
+        foreach($read->getResult() as $dados){
+            extract($dados);
+            $value = $preco;
+        }
+        return number_format($value,2, ",", "");
+    }
 
 }

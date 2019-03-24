@@ -1,4 +1,4 @@
-<!-- verifica se existe tokenm de recuperação e senha-->
+<!-- verifica se existe token de recuperação e senha-->
 <?php 
 $_token = addslashes(filter_input(INPUT_GET, "_token", FILTER_DEFAULT));
 if(isset($_token) && !empty($_token)){
@@ -104,7 +104,7 @@ if(isset($_token) && !empty($_token)){
           </p>
           <?php                    
               /*###########################################################################*/
-              if ($_POST):
+              if (isset($_POST['rec_senha'])):
                   $valida = new Validation();
                   //pegando os valores do formulario
                   $email = filter_input(INPUT_POST, "email", FILTER_SANITIZE_MAGIC_QUOTES);
@@ -123,6 +123,7 @@ if(isset($_token) && !empty($_token)){
           <form method="post">
             <div class="form-group">
               <label>Email</label>
+              <input type="hidden" name="rec_senha" value="<?php echo uniqid() ?>">
               <input type="email" class="form-control" name="email" placeholder="name@address.com" required>
             </div>
             <button class="btn btn-lg btn-block btn-primary mb-3">

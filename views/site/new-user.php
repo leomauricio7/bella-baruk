@@ -11,6 +11,7 @@ if( Url::getURL(1) != null){
         </h1>
       <?php
         if ($_POST){
+            $valida = new Validation();
             $dados = Validation::limpaDados(filter_input_array(INPUT_POST, FILTER_DEFAULT));
             //status do cadastro
             $dados['status'] = 'inativo';
@@ -18,16 +19,22 @@ if( Url::getURL(1) != null){
             //var_dump($dados);
             $dados['senha'] = password_hash($dados['senha'], PASSWORD_DEFAULT);
             unset( $dados['confirm_senha']);
-            $user = new User();
-            $user->CreateUser($dados);
 
-            if (!$user->getResult()):
-                echo $user->getMsg();
-            else:
-                echo $user->getMsg();
-                unset($dados);
-            endif;
-            unset($dados);
+            $user = new User();
+
+            if(!$valida->duplicateEmail($dados['email'])){
+              $user->CreateUser($dados);
+              if (!$user->getResult()):
+                  echo $user->getMsg();
+              else:
+                  echo $user->getMsg();
+                  unset($dados);
+              endif;
+  
+              unset($dados);
+            }else{
+              echo $valida->getMsg();
+            }
 
         }
         if (!empty($_SESSION['msg'])):
@@ -57,8 +64,8 @@ if( Url::getURL(1) != null){
             </div>
             <div class="col-12 col-md-6">
               <div class="form-group">
-                <label>URI</label>
-                <input type="text" name="slug" id="slug" class="form-control" required readonly>
+                <label>Usuário</label>
+                <input type="text" name="slug" class="form-control" required>
               </div>
             </div>
             <div class="col-12">

@@ -21,11 +21,10 @@
     </div>
 </div>
 <div class="container-fluid">
-    <div class="alert alert-primary" role="alert">
-        <h4 class="alert-heading">ATENÇÃO</h4>
-        <p>Nessa página você pode visualizar os pedidos dos franqueados.</p>
+    <div class="alert alert-dark" role="alert">
+        <p><i class="fa fa-exclamation-circle"></i> Nessa página você pode visualizar os pedidos dos franqueados.</p>
         <hr>
-        <p class="mb-0">Cada pedido pode detalhado.</p>
+        <p class="mb-0">Cada pedido pode ser detalhado.</p>
     </div>
     <div class="row">
         <?php require_once 'tables/pedido.php'; ?>

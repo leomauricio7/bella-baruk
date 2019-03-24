@@ -6,7 +6,7 @@
 
         <div class="col-auto">
           <div class="avatar avatar-xxl header-avatar-top">
-            <img src="<?php echo Url::getBase().'docs/users/'.$_SESSION['idUser'].'/'.$_SESSION['avatar'] ?>" alt="..." class="avatar-img rounded-circle border border-4 border-card">
+            <img src="<?php echo $_SESSION['avatar'] != null ? Url::getBase().'docs/users/'.$_SESSION['idUser'].'/'.$_SESSION['avatar'] : Url::getBase().'../assets/img/icons/user.png' ?>" alt="..." class="avatar-img rounded-circle border border-4 border-card">
           </div>
         </div>
 
