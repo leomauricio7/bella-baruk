@@ -1,12 +1,48 @@
+<?php 
+    if($_POST){
+        $dados = Validation::limpaDados(filter_input_array(INPUT_POST, FILTER_DEFAULT));
+        $dados['comprovante'] = ($_FILES['comprovante']['tmp_name'] ? $_FILES['comprovante'] : null);
+        $file = $_FILES['comprovante'];
+        $update = new Update();
+        $dadosUpdate = ['id_status'=>2,'comprovante'=>$dados['comprovante']['name']];
+        $update->ExeUpdate('pedidos', $dadosUpdate, 'where id=:id', 'id='.$dados['idPedido']);
+        if($update->getResult()){
+            $uploud = new Uploud();
+            if(Validation::existComprovante($dados['idPedido'])){
+                $uploud->ImagemEdit($file, 'comprovantes/'.$dados['idPedido'].'/');
+            }else{
+                $uploud->Imagem($file, 'comprovantes/'.$dados['idPedido'].'/');
+            }
+            echo '
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <strong>Atenção</strong> Comprovante enviado com sucesso! Aguarde a liberação do seu pedido.
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                      <span aria-hidden="true">×</span>
+                    </button>
+                  </div>
+            ';
+        }else{
+            echo '
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Atenção</strong> Erro no processamento dos dados.
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                </div>
+            ';
+        }
+        unset($dados);
+    }
+?>
 <div class="table-responsive" data-toggle="lists" data-lists-values='["tables-row", "tables-first", "tables-last", "tables-handle"]'>
     <table class="table">
         <thead>
             <tr>
                 <th scope="col">
-                    <a href="#" class="text-muted sort" data-sort="tables-row">Franqueado</a>
+                    <a href="#" class="text-muted sort" data-sort="tables-row">ID Pedido</a>
                 </th>
                 <th scope="col">
-                    <a href="#" class="text-muted sort" data-sort="tables-row">ID Pedido</a>
+                    <a href="#" class="text-muted sort" data-sort="tables-row">Franqueado</a>
                 </th>
                 <th scope="col">
                     <a href="#" class="text-muted sort" data-sort="tables-first">Valor</a>
@@ -17,6 +53,11 @@
                 <th scope="col">
                     <a href="#" class="text-muted sort" data-sort="tables-last">Status</a>
                 </th>
+                <?php if(Validation::getPermisionType($tipoUser)){ ?>
+                <th scope="col">
+                    <a href="#" class="text-muted sort" data-sort="tables-handle"><i class="fa fa-cogs"></i></a>
+                </th>
+                <?php } ?>
                 <th scope="col">
                     <a href="#" class="text-muted sort" data-sort="tables-handle"><i class="fa fa-cogs"></i></a>
                 </th>
@@ -34,15 +75,22 @@
                 extract($ped);
             ?>
             <tr>
-                <th scope="row" class="tables-row"><?php echo Validation::getNameUser($id_user) ?></th>
                 <th scope="row" class="tables-row"><?php echo $idPedido ?></th>
+                <th scope="row" class="tables-row"><?php echo Validation::getNameUser($id_user) ?></th>
                 <td class="tables-first">R$<?php echo number_format($valor,2,",","") ?></td>
                 <td class="tables-first"><?php echo Validation::getTotalProdutosCarrinho($idPedido); ?> produto</td>
                 <td class="tables-last"><span class="badge badge-soft-<?php echo Validation::getClassStatus($id_status) ?>"><?php echo Validation::getStatus($id_status) ?></span></td>
+                <?php if(Validation::getPermisionType($tipoUser)){ ?>
                 <td class="tables-handle">
-                    <a href="./extrato/<?php echo $idPedido?>" class="btn btn-primary btn-sm"><i class="fa fa-file-alt"></i> Extrato</a>
-                    <button type="button" data-toggle="modal" data-target="#modal-comprovante<?php echo $id ?>" class="btn btn-success btn-sm"><i class="fa fa-file-upload"></i> Enviar Comprovante</button>
-                    <button type="button" data-toggle="modal" data-target="#modal<?php echo $id ?>" class="btn btn-info btn-sm"><i class="fa fa-eye"></i> Detalhar</button>
+                    <button <?php echo $comprovante == null ? 'disabled' : '' ?> type="button" data-toggle="modal" data-target="#modal-comprovante<?php echo $id ?>" class="btn btn-success btn-sm"><i class="fa fa-file-upload"></i>Comprovante</button>
+                    <button <?php echo $comprovante == null ? 'disabled' : '' ?> alt="<?php echo $id ?>" class="btn btn-danger btn-sm da-baixa"><i class="fa fa-save"></i> Dar baixar</button>
+                </td><?php } ?>
+                <td class="tables-handle">
+                    <a href="./extrato/<?php echo $idPedido?>" class="btn btn-primary btn-sm"><i class="fa fa-file-alt"></i></a>
+                    <?php if(!Validation::getPermisionType($tipoUser)){ ?>
+                    <button title="baixar extrato" type="button" data-toggle="modal" data-target="#modal-comprovante<?php echo $id ?>" class="btn btn-success btn-sm"><i class="fa fa-file-upload"></i> Enviar Comprovante</button>
+                    <?php } ?>
+                    <button title="visualizar detalhes" type="button" data-toggle="modal" data-target="#modal<?php echo $id ?>" class="btn btn-info btn-sm"><i class="fa fa-eye"></i></button>
                 </td>
             </tr>
             <!------------------------------------------------------------------------------------->
@@ -57,7 +105,18 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            
+                            <?php if(!Validation::getPermisionType($tipoUser)){ ?>
+                            <form enctype="multipart/form-data" method="post" action="">
+                                <input type="hidden" name="idPedido" id="idPedido" value="<?php echo $id ?>" />
+                                <input type="file" name="comprovante" id="comprovante" class="form-control" required>
+                                <br><button type="submit" class="btn btn-white">
+                                    Enviar comprovante
+                                </button>
+                            </form>
+                            <?php }else{ ?>
+                                <img class="avatar-img rounded" src="<?php echo Url::getBase().'docs/comprovantes/'.$id.'/'.$comprovante ?>" alt="">
+                            <?php } ?>
+
                         </div>
                     </div>
                 </div>
@@ -83,4 +142,20 @@
         <?php } ?>
         </tbody>
     </table>
+</div>
+<!--toast do pedido -->
+<div aria-live="polite" aria-atomic="true" class="d-flex justify-content-center align-items-center" style="min-height: 200px;">
+  <!-- Then put toasts within -->
+  <div id="alert-toast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-autohide="false">
+    <div class="toast-header">
+      <img src="<?php echo Url::getBase(); ?>../assets/img/icons/alert.gif" width="30" class="rounded mr-2" alt="...">
+      <strong class="mr-auto">Atenção</strong>
+      <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="toast-body">
+        <p id="msg-toast"></p>
+    </div>
+  </div>
 </div>

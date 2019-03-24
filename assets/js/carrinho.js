@@ -106,6 +106,29 @@ $(function(){
         });
     }
 
+    function daBaixa(idPedido){
+        $.ajax({
+            type: 'POST',
+            url: '../controllers/class/carrinho.php',
+            data: 'type=7&idPedido='+idPedido,
+            dataType: "json",
+        }).done(function(res) {
+            if(res.status == 200){
+                $('#msg-toast').text(res.msg);
+                $('#alert-toast').toast('show')
+                window.location.reload();
+            }else if(res.status == 500){
+                $('#msg-toast').text(res.msg);
+                $('#alert-toast').toast('show')
+            }
+            console.log(res);
+        }).fail(function(jqXHR, textStatus ) {
+            console.log('An error occurred. '+textStatus);
+        }).always(function() {
+            console.log('closed');
+        });
+    }
+
     $('.add-produto').click(function(){
         var idProduct = $(this).attr('alt');
         addProduct(idProduct);
@@ -138,8 +161,12 @@ $(function(){
         closePedido(idPedido, totalPedido);
     });
 
+    $('.da-baixa').click(function(){
+        var idPedido = $(this).attr('alt');
+        daBaixa(idPedido);
+    });
+
     $('#modal-product').on('hide.bs.modal', function (event) {
         window.location.reload();
     });
-
 });

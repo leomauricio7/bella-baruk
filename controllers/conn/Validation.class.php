@@ -525,7 +525,7 @@ class Validation extends Conn {
             extract($dados);
             $name = $status;
         }
-        return $name;
+        return utf8_encode($name);
     }
 
     public static function getNameUser($id) {
@@ -537,6 +537,21 @@ class Validation extends Conn {
             $name = $nome;
         }
         return $name;
+    }
+
+    public static function existComprovante($id){
+        $name=  null;
+        $read = new Read();
+        $read->ExeRead("pedidos", "WHERE id = $id");
+        foreach ($read->getResult() as $dados) {
+            extract($dados);
+            $name = $comprovante;
+        }
+        if($name == null || empty($name) || $name == ''){
+            return false;
+        }else{
+            return true;
+        }
     }
 
 }

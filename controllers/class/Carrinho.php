@@ -23,6 +23,8 @@ if($_POST){
         case 5: removeOneProduct($idProduct); break;
         //close pedido
         case 6: closePedido($idPedido, $valorPedido); break;
+        //da baixa
+        case 7: dabaixa($idPedido); break;
         //regra padrão
         default: return false;
     }
@@ -37,6 +39,17 @@ function initSession(){
     }
 }
 
+function daBaixa($idPedido){
+    $update = new Update();
+    $dados = ['dado_baixa'=>'sim','id_status'=>3];
+    $update->ExeUpdate('pedidos', $dados, 'where id=:id', 'id='.$idPedido);
+    if($update->getResult()){
+        echo json_encode(array('status'=>200, 'msg'=>'Pedido dado baixa com sucesso..'));
+    }else{
+        echo json_encode(array('status'=>500, 'msg'=>'Internal serve error.'));
+    }
+
+}
 function closePedido($idPedido, $valorPedido){
     $savePedido = new Create();
     $saveItemPedido = new Create();

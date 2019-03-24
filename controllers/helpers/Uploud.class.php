@@ -24,12 +24,12 @@ class Uploud {
         $this->UploudImagem();
     }
 
-    //Uploud de NOva Imagems com caminho relativo
+    //Uploud de Nova Imagems com caminho relativo
     public function Imagem(array $Imagem, $Folder) {
         $this->Arquivo = $Imagem;
         $this->Folder = ( (string) $Folder ? $Folder : $Folder . '/');
         if (!file_exists($this->Folder) && !is_dir($this->Folder)):
-            mkdir(self::$Diretorio . $this->Folder,  0777);
+            mkdir(self::$Diretorio . $this->Folder,  0777, true);
             self::$Diretorio = self::$Diretorio . $this->Folder;
         endif;
         $this->Nome = $Imagem['name'];

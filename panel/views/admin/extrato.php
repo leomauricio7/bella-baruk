@@ -20,9 +20,16 @@
 			<button class="btn btn-white" onclick="window.print();">
 			  <i class="fa fa-print"></i> Imprimir
 			</button>
+			<?php if(!Validation::getPermisionType($tipoUser)){ ?>
 			<a href="<?php echo Url::getBase() ?>meus-pedidos" class="btn btn-primary ml-2">
 			  <i class="fa fa-cart-plus"></i> Meus pedidos
 			</a>
+			<?php }else{ ?>
+				<a href="<?php echo Url::getBase() ?>pedidos" class="btn btn-primary ml-2">
+			  <i class="fa fa-cart-plus"></i> Pedidos
+			</a>
+			<?php } ?>
+
 		  </div>
 		</div> <!-- / .row -->
 	  </div>

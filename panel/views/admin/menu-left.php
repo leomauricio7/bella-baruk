@@ -134,6 +134,17 @@
 
               <?php if(!Validation::getPermisionType($tipoUser)){ ?>
               <li class="nav-item">
+                <a class="nav-link" href="<?php echo Url::getBase() ?>unilevel">
+                  <i class="fa fa-list-alt"></i> Unilevel
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="<?php echo Url::getBase() ?>planos">
+                  <i class="fa fa-tags"></i> Planos
+                </a>
+              </li>
+              
+              <li class="nav-item">
                 <a class="nav-link" href="<?php echo Url::getBase() ?>products">
                   <i class="fa fa-cart-plus"></i> Loja
                 </a>
