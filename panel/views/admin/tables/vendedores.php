@@ -30,8 +30,9 @@
         </thead>
         <tbody class="list">
             <?php 
+            $status = Url::getURL(1);
             $read = new Read();
-            $read->ExeRead('users');
+            $read->ExeRead('users', "where status = '$status'");
             foreach($read->getResult() as $user){
                 extract($user);
             ?>
@@ -52,7 +53,7 @@
                 <td class="tables-first"><?php echo ucfirst($tipo_pessoa) ?></td>
                 <td class="tables-first"><?php echo Validation::getTipoUsario($tipo_user) ?></td>
                 <td class="tables-handle">
-                    <a href="<?php echo Url::getBase().'new-user/'.$id ?>" class="btn btn-outline-warning btn-sm"><i class="fa fa-edit"></i></a>
+                    <!-- <a href="<?php echo Url::getBase().'new-user/'.$id ?>" class="btn btn-outline-warning btn-sm"><i class="fa fa-edit"></i></a> -->
                     <button type="button" data-toggle="modal" data-target="#modal-del<?php echo $id ?>" class="btn btn-outline-danger btn-sm"><i class="fa fa-trash"></i></button>
                 </td>
             </tr>

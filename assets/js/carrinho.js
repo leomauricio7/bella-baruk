@@ -12,8 +12,10 @@ $(function(){
                 $('#icon-carrinho').addClass('fa-cart-plus');
             }
             console.log('sessão iniciada');
-        }).fail(function(jqXHR, textStatus ) {
-            console.log('An error occurred. '+textStatus);
+        }).fail(function(xhr, desc, err) {
+            alert('Uups! Ocorreu algum erro!');
+            console.log(xhr);
+            console.log("Detalhes: " + desc + "nErro:" + err);
         }).always(function() {
             console.log('closed');
         });
@@ -34,8 +36,10 @@ $(function(){
                 keyboard: false
             }); 
             console.log('produto adicionado','total',res.carrinho);
-        }).fail(function(jqXHR, textStatus ) {
-            console.log('An error occurred. '+textStatus);
+        }).fail(function(xhr, desc, err) {
+            alert('Uups! Ocorreu algum erro!');
+            console.log(xhr);
+            console.log("Detalhes: " + desc + "nErro:" + err);
         }).always(function() {
             console.log('closed');
         });
@@ -55,8 +59,10 @@ $(function(){
             });
             window.location.reload();
             console.log('carrinho removido');
-        }).fail(function(jqXHR, textStatus ) {
-            console.log('An error occurred. '+textStatus);
+        }).fail(function(xhr, desc, err) {
+            alert('Uups! Ocorreu algum erro!');
+            console.log(xhr);
+            console.log("Detalhes: " + desc + "nErro:" + err);
         }).always(function() {
             console.log('closed');
         });
@@ -75,8 +81,10 @@ $(function(){
                 keyboard: false
             }); 
             console.log('produto removido','total',res.carrinho);
-        }).fail(function(jqXHR, textStatus ) {
-            console.log('An error occurred. '+textStatus);
+        }).fail(function(xhr, desc, err) {
+            alert('Uups! Ocorreu algum erro!');
+            console.log(xhr);
+            console.log("Detalhes: " + desc + "nErro:" + err);
         }).always(function() {
             console.log('closed');
         });
@@ -99,8 +107,10 @@ $(function(){
                 $('#alert-toast').toast('show')
             }
             console.log(res);
-        }).fail(function(jqXHR, textStatus ) {
-            console.log('An error occurred. '+textStatus);
+        }).fail(function(xhr, desc, err) {
+            alert('Uups! Ocorreu algum erro!');
+            console.log(xhr);
+            console.log("Detalhes: " + desc + "nErro:" + err);
         }).always(function() {
             console.log('closed');
         });
@@ -116,14 +126,16 @@ $(function(){
             if(res.status == 200){
                 $('#msg-toast').text(res.msg);
                 $('#alert-toast').toast('show')
-                window.location.reload();
+                //window.location.reload();
             }else if(res.status == 500){
                 $('#msg-toast').text(res.msg);
                 $('#alert-toast').toast('show')
             }
             console.log(res);
-        }).fail(function(jqXHR, textStatus ) {
-            console.log('An error occurred. '+textStatus);
+        }).fail(function(xhr, desc, err) {
+            alert('Uups! Ocorreu algum erro!');
+            console.log(xhr);
+            console.log("Detalhes: " + desc + "nErro:" + err);
         }).always(function() {
             console.log('closed');
         });

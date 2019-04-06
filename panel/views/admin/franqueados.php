@@ -11,7 +11,7 @@
                 </h6>
                 <!-- Title -->
                 <h1 class="header-title">
-                    Franqueados
+                    Usuários
                 </h1>
                 </div>
                 <div class="col-auto">                

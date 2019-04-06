@@ -25,8 +25,8 @@ $(function() {
             if(validacep.test(cep)) {
 
                 //Preenche os campos com "..." enquanto consulta webservice.
-                $("#rua").val("...");
-                $("#bairro").val("...");
+                // $("#rua").val("...");
+                // $("#bairro").val("...");
                 $("#cidade").val("...");
                 $("#uf").val("...");
                 $("#ibge").val("...");
@@ -36,8 +36,8 @@ $(function() {
 
                     if (!("erro" in dados)) {
                         //Atualiza os campos com os valores da consulta.
-                        $("#rua").val(dados.logradouro);
-                        $("#bairro").val(dados.bairro);
+                        // $("#rua").val(dados.logradouro);
+                        // $("#bairro").val(dados.bairro);
                         $("#cidade").val(dados.localidade);
                         $("#uf").val(dados.uf);
                         $("#ibge").val(dados.ibge);

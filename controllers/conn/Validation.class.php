@@ -553,5 +553,14 @@ class Validation extends Conn {
             return true;
         }
     }
+    public static function existeContaUser($id){
+        $read = new Read();
+        $read->ExeRead('conta_users', 'where id_user = '.$_SESSION['idUser']);
+        if($read->getRowCount() == 0 ){
+            return false;
+        }else{
+            return true;
+        }
+    }
 
 }

@@ -1,6 +1,6 @@
 <?php
 $read = new Read();
-$read->ExeRead('products','ORDER BY id DESC');
+$read->ExeRead('products','where id_tipo is NULL ORDER BY id DESC');
 foreach($read->getResult() as $product){
   extract($product);
 ?>
@@ -20,11 +20,11 @@ foreach($read->getResult() as $product){
             <small>Titulo</small> <small><?php echo $titulo ?></small>
           </li>
 
-          <?php if(Validation::getPermisionType($tipoUser)){ ?>
+          <!-- <?php if(Validation::getPermisionType($tipoUser)){ ?>
           <li class="list-group-item d-flex align-items-center justify-content-between px-0">
             <small>Preço</small> <small><strong style="font-size:15px;">R$ <?php echo number_format($preco, 2, ",", ""); ?></strong></small>
           </li>
-          <?php } ?>
+          <?php } ?> -->
 
           <?php if(!Validation::getPermisionType($tipoUser) && (!Dados::verificaStatus($_SESSION['idUser']))){ ?>
           <li class="list-group-item d-flex align-items-center justify-content-between px-0">

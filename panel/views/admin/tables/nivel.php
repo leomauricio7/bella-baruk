@@ -28,7 +28,7 @@
                 <td class="tables-first"><?php echo $nivel ?></td>
                 <td class="tables-last"><?php echo $comisao ?>%</td>
                 <td class="tables-handle">
-                    <a href="<?php echo Url::getBase().'niveis/'.$id ?>" class="btn btn-outline-warning btn-sm"><i class="fa fa-edit"></i></a>
+                    <a href="<?php echo Url::getBase().'comissoes/'.$id ?>" class="btn btn-outline-warning btn-sm"><i class="fa fa-edit"></i></a>
                     <button type="button" data-toggle="modal" data-target="#modal-del<?php echo $id ?>" class="btn btn-outline-danger btn-sm"><i class="fa fa-trash"></i></button>
                 </td>
             </tr>

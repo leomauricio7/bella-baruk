@@ -3,7 +3,7 @@
 <?php if(Dados::verificaStatus($_SESSION['idUser'])){ ?>
   <div class="row">
         <div class="col-12">
-            <div class="alert alert-info" role="alert">
+            <div class="alert alert-danger" role="alert">
                 <h4 class="alert-heading"><i class="fa fa-exclamation-triangle"></i> ATENÇÃO</h4>
                 <p>Para ativar seu cadastro efetue uma comprar no valor de RS 150,00  ou acima.</p>
                 <hr>
@@ -17,7 +17,7 @@
             <div class="alert alert-dark" role="alert">
                 <p><i class="fa fa-exclamation-circle"></i> Seja bem vindo a área administratva do sistema, para indicar copie o link abaixo.</p>
                 <hr>
-                <h2 class="mb-0"><i class="fa fa-anchor"></i><a href="https://bellabaruk.com.br/new-user/<?php echo Validation::getURI($_SESSION['idUser']) ?>"><span class="badge badge-pill badge-primary">https://bellabaruk.com.br/new-user/<?php echo Validation::getURI($_SESSION['idUser']) ?></span></a></h2>
+                <h2 class="mb-0"><i class="fa fa-anchor"></i><a href="https://bellabaruk.com.br/backoffice/new-user/<?php echo Validation::getURI($_SESSION['idUser']) ?>"><span class="badge badge-pill badge-primary">https://bellabaruk.com.br/backoffice/new-user/<?php echo Validation::getURI($_SESSION['idUser']) ?></span></a></h2>
             </div>
         </div>
     </div>
@@ -57,7 +57,7 @@
                   <div class="col">
                     <!-- Title -->
                     <h6 class="card-title text-uppercase text-muted mb-2">
-                      Vendas
+                      Compras
                     </h6>
                     <!-- Heading -->
                     <span class="h2 mb-0">

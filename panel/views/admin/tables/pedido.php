@@ -65,9 +65,25 @@
         </thead>
         <tbody class="list">
             <?php 
+            $type = null;
             $read = new Read();
             if(Validation::getPermisionType($tipoUser)){
-                $read->ExeRead('pedidos');
+                if(Url::getURL(1) != null){
+                    switch(Url::getURL(1)){
+                        case 'aguardando-pagamento': $type = 1; break;
+                        case 'em-analise': $type = 2; break;
+                        case 'dado-baixa': $type = 3; break;
+                        case 'disponivel': $type = 4; break;
+                        case 'em-disputa': $type = 5; break;
+                        case 'devolvido': $type = 6; break;
+                        case 'cancelado': $type = 7; break;
+                        case 'pendente': $type = 8; break;
+                    }
+                    $read->ExeRead('pedidos', 'where id_status = '.$type);
+                }else{
+                    $read->ExeRead('pedidos');
+                }
+                
             }else{
                 $read->ExeRead('pedidos', 'where id_user = '.$_SESSION['idUser']);
             }
@@ -86,7 +102,7 @@
                     <button <?php echo $comprovante == null ? 'disabled' : '' ?> alt="<?php echo $id ?>" class="btn btn-danger btn-sm da-baixa"><i class="fa fa-save"></i> Dar baixar</button>
                 </td><?php } ?>
                 <td class="tables-handle">
-                    <a href="./extrato/<?php echo $idPedido?>" class="btn btn-primary btn-sm"><i class="fa fa-file-alt"></i></a>
+                    <a href="<?php echo Url::getBase().'extrato/'.$idPedido?>" class="btn btn-primary btn-sm"><i class="fa fa-file-alt"></i></a>
                     <?php if(!Validation::getPermisionType($tipoUser)){ ?>
                     <button title="baixar extrato" type="button" data-toggle="modal" data-target="#modal-comprovante<?php echo $id ?>" class="btn btn-success btn-sm"><i class="fa fa-file-upload"></i> Enviar Comprovante</button>
                     <?php } ?>

@@ -14,7 +14,7 @@ $(function(){
         $("[id=show-time]").html(updateTime);
 
         if (updateTime === 0) {
-            window.location = ("<?php echo URL::getBase() . '' . URL::getURL(0); ?>");
+            location.href = document.referrer;
         }
     }, 1000);
 
@@ -28,6 +28,21 @@ $(function(){
             $('#cpf').show();
         }
         return false;
+    });
+
+    //habilita/desabilita a edição de dados pessoais
+    $.fn.toggleDisabled = function() {
+        return this.each(function() {
+            var $this = $(this);
+            if ($this.attr('disabled')) $this.removeAttr('disabled');
+            else $this.attr('disabled', 'disabled');
+        });
+    };
+
+    $('#on-edit').click(()=>{
+        $('input').toggleDisabled();
+        $('select').toggleDisabled();
+        $('#switchOne').prop('disabled', false);
     });
 
 });

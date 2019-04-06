@@ -11,7 +11,7 @@
                 </h6>
                 <!-- Title -->
                 <h1 class="header-title">
-                    Franqueados
+                    Niveis de Comissão
                 </h1>
                 </div>
                 <div class="col-auto">                
@@ -23,12 +23,26 @@
 <div class="container-fluid">
     <div class="alert alert-primary" role="alert">
         <h4 class="alert-heading">ATENÇÃO</h4>
-        <p>Nessa página você pode cadastrar um usuário.</p>
+        <p>Nessa página você pode gerenciar os niveis e comissões dos franquiados.</p>
         <hr>
-        <p class="mb-0">Cada usuário pode ser editado e removido.</p>
+        <p class="mb-0">Cada nível pode ser editado e removido, mas muito cuidado na remoção de um nivel.</p>
     </div>
     <div class="row">
-            <?php require_once 'forms/new-user.php'; ?>
+        <?php if(Url::getURL(1) === 'create'){ ?>
+        <div class="col">
+            <?php require_once 'forms/nivel.php'; ?>
+        </div>
+        <?php } ?>
+        <?php if(Url::getURL(1) != null && Url::getURL(1) != 'create' ){ ?>
+        <div class="col">
+            <?php require_once 'forms/nivel.php'; ?>
+        </div>
+        <?php } ?>
+        <?php if(Url::getURL(1) == null){ ?>
+        <div class="col">
+            <?php require_once 'tables/nivel.php' ?>
+        </div>
+        <?php } ?>
     </div>
 </div>
 <?php }else{

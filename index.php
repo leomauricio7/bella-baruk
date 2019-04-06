@@ -69,7 +69,7 @@ require_once'./vendor/autoload.php';
     <script src="<?php echo Url::getBase(); ?>assets/js/route-login.js"></script>
     <script type="text/javascript">
         $(document).ready(function(){
-            $("#loading").delay(1000).fadeOut("slow");
+            $("#loading").delay(1000).fadeOut("slow");  
         })
 	</script>
   </body>

@@ -33,10 +33,10 @@
         endif;
     ?>
     <!-- cadastro -->
-    <?php if(!Url::getURL(1)){ ?>
+    <?php if(Url::getURL(1) == 'create'){ ?>
         <!-- Title -->
         <h2 class="header-title">
-            Novo Nível
+            Novo Nível de Comissão
         </h2><hr>
         
         <form method="POST" action="">
@@ -51,7 +51,9 @@
             </div>
             <button type="submit" class="btn btn-primary">Adicionar Nível</button>
         </form>
-    <?php }else{ 
+    <?php }
+    
+    if(Url::getURL(1) != 'create'){ 
         $read = new Read();
         $read->ExeRead('niveis','where id = :id', 'id='.Url::getURL(1));
         foreach($read->getResult() as $nivel){

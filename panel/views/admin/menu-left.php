@@ -27,7 +27,7 @@
               </a>
               <!-- Menu -->
               <div class="dropdown-menu dropdown-menu-right" aria-labelledby="sidebarIcon">
-                <a href="<?php echo Url::getBase() ?>profile" class="dropdown-item">Perfil</a>
+                <a href="<?php echo Url::getBase() ?>profile/dados-pessoais" class="dropdown-item">Perfil</a>
                 <hr class="dropdown-divider">
                 <a href="?logout=true" class="dropdown-item">Sair</a>
               </div>
@@ -57,36 +57,53 @@
               <?php if(Validation::getPermisionType($tipoUser)){ ?>
                 <li class="nav-item">
                   <a class="nav-link collapsed" href="#users" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarPages">
-                    <i class="fa fa-users"></i> Franqueados
+                    <i class="fa fa-users"></i> Usuários
                   </a>
                   <div class="collapse " id="users">
                     <ul class="nav nav-sm flex-column">
 
                       <li class="nav-item">
                         <a href="<?php echo Url::getBase() ?>new-user" class="nav-link ">
-                          Cadastrar
+                          Novo usuário
                         </a>
                       </li>
                       <li class="nav-item">
-                        <a href="<?php echo Url::getBase() ?>franqueados" class="nav-link ">
-                          Listar
+                        <a href="<?php echo Url::getBase() ?>franqueados/ativo" class="nav-link ">
+                          Ativos
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="<?php echo Url::getBase() ?>franqueados/inativo" class="nav-link ">
+                          Inativos
                         </a>
                       </li>
                     </ul>
                   </div>
                 </li>
               <?php } ?>
-              <?php if(Validation::getPermisionType($tipoUser)){ ?>
               <li class="nav-item">
-                <a class="nav-link" href="<?php echo Url::getBase() ?>niveis">
-                  <i class="fa fa-restroom"></i> Nivéis 
-                </a>
-              </li>
-              <?php } ?>
-              <li class="nav-item">
-                <a class="nav-link" href="<?php echo Url::getBase() ?>profile">
-                  <i class="fa fa-user"></i> Meus Dados
-                </a>
+                  <a class="nav-link collapsed" href="#user" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarPages">
+                    <i class="fa fa-user"></i> Perfil
+                  </a>
+                  <div class="collapse " id="user">
+                    <ul class="nav nav-sm flex-column">
+                      <li class="nav-item">
+                        <a href="<?php echo Url::getBase() ?>profile/dados-pessoais" class="nav-link ">
+                          Dados Pessoais
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="<?php echo Url::getBase() ?>profile/dados-bancarios" class="nav-link ">
+                          Dados Bancarios
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="<?php echo Url::getBase() ?>profile/endereco" class="nav-link ">
+                          Endereço
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
               </li>
               <li class="nav-item d-md-none">
                 <a class="nav-link" href="#sidebarModalActivity" data-toggle="modal">
@@ -108,7 +125,7 @@
             <?php if(Validation::getPermisionType($tipoUser)){ ?>
               <li class="nav-item dropdown">
                 <a class="nav-link" href="#sidebarComponents" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarComponents">
-                  <i class="fa fa-book-open"></i> Produtos
+                  <i class="fa fa-book-open"></i> Loja
                 </a>
                 <div class="collapse " id="sidebarComponents">
                   <ul class="nav nav-sm flex-column">
@@ -119,17 +136,73 @@
                     </li>
                     <li class="nav-item">
                       <a href="<?php echo Url::getBase() ?>products" class="nav-link">
-                        Cátalogo
+                        Produtos
                       </a>
                     </li>
                   </ul>
                 </div>
               </li>
-              <li class="nav-item">
-                <a class="nav-link" href="<?php echo Url::getBase() ?>pedidos">
+              <!-- pedidos -->
+              <li class="nav-item dropdown">
+                <a class="nav-link" href="#menu-pedido" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarComponents">
                   <i class="fa fa-cart-plus"></i> Pedidos
                 </a>
+                <div class="collapse " id="menu-pedido">
+                  <ul class="nav nav-sm flex-column">
+                    <li class="nav-item">
+                      <a href="<?php echo Url::getBase() ?>pedidos/aguardando-pagamento" class="nav-link">
+                        Aguardando pagamento
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="<?php echo Url::getBase() ?>pedidos/dado-baixa" class="nav-link">
+                        Pagos
+                      </a>
+                    </li>
+                  </ul>
+                </div>
               </li>
+              <!--comissões-->
+              <li class="nav-item dropdown">
+                <a class="nav-link" href="#comissoes" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarComponents">
+                  <i class="fa fa-restroom"></i> Comissões
+                </a>
+                <div class="collapse " id="comissoes">
+                  <ul class="nav nav-sm flex-column">
+                    <li class="nav-item">
+                      <a href="<?php echo Url::getBase() ?>comissoes/create" class="nav-link">
+                        Nova Comissão
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="<?php echo Url::getBase() ?>comissoes" class="nav-link">
+                        Comissões
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+              <!-- adesão -->
+              <li class="nav-item dropdown">
+                <a class="nav-link" href="#planos" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarComponents">
+                  <i class="fa fa-cogs"></i> Planos de Adesão
+                </a>
+                <div class="collapse" id="planos">
+                  <ul class="nav nav-sm flex-column">
+                    <li class="nav-item">
+                      <a href="<?php echo Url::getBase() ?>planos/create" class="nav-link">
+                        Novo Plano
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="<?php echo Url::getBase() ?>planos" class="nav-link">
+                        Planos
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+
               <?php } ?>
 
               <?php if(!Validation::getPermisionType($tipoUser)){ ?>
@@ -140,7 +213,7 @@
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="<?php echo Url::getBase() ?>planos">
-                  <i class="fa fa-tags"></i> Planos
+                  <i class="fa fa-tags"></i> Adesão
                 </a>
               </li>
               
@@ -182,7 +255,7 @@
                 </a>
                 <!-- Menu -->
                 <div class="dropdown-menu" aria-labelledby="sidebarIconCopy">
-                  <a href="<?php echo Url::getBase() ?>profile" class="dropdown-item"><i class="fa fa-user"></i> Perfil</a>
+                  <a href="<?php echo Url::getBase() ?>profile/dados-pessoais" class="dropdown-item"><i class="fa fa-user"></i> Perfil</a>
                 </div>
               </div>
               <!-- Icon -->

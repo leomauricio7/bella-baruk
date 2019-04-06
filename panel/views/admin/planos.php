@@ -1,4 +1,3 @@
-<?php if(Validation::getPermisionType($tipoUser)){ ?>
 <div class="header">
     <div class="container-fluid">
         <!-- Body -->
@@ -11,7 +10,7 @@
                 </h6>
                 <!-- Title -->
                 <h1 class="header-title">
-                    Niveis
+                    Planos de Adesão
                 </h1>
                 </div>
                 <div class="col-auto">                
@@ -21,21 +20,26 @@
     </div>
 </div>
 <div class="container-fluid">
-    <div class="alert alert-primary" role="alert">
+    <?php if(Url::getURL(1) == 'create'){ ?>
+    <div class="alert alert-dark" role="alert">
         <h4 class="alert-heading">ATENÇÃO</h4>
-        <p>Nessa página você pode gerenciar os niveis e comissões dos franquiados.</p>
+        <p>Nessa página você pode gerenciar os planos de adesão do usuário.</p>
         <hr>
-        <p class="mb-0">Cada nível pode ser editado e removido, mas muito cuidado na remoção de um nivel.</p>
+        <p class="mb-0">Cada plano pode ser editado e removido, mas muito cuidado na remoção de um plano.</p>
     </div>
+    <?php } ?>
+
     <div class="row">
         <div class="col">
-            <?php require_once 'forms/nivel.php'; ?>
-        </div>
-        <div class="col">
-            <?php require_once 'tables/nivel.php' ?>
+            <?php
+                if(Url::getURL(1) == 'create'){
+                    require_once 'forms/plano.php';
+                }
+                if(Url::getURL(1) == null){
+                    require_once 'tables/planos.php';
+                }
+                
+             ?>
         </div>
     </div>
 </div>
-<?php }else{
-    require_once('404.php');
-} ?>
