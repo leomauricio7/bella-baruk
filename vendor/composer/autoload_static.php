@@ -14,6 +14,7 @@ class ComposerStaticInitc38545917117a03b4c10c7c11d3eff72
         'Delete' => __DIR__ . '/../..' . '/controllers/conn/Delete.class.php',
         'Edital' => __DIR__ . '/../..' . '/controllers/class/Edital.class.php',
         'Nivel' => __DIR__ . '/../..' . '/controllers/class/Nivel.class.php',
+        'Pontuacao' => __DIR__ . '/../..' . '/controllers/class/Pontuacao.php',
         'Produto' => __DIR__ . '/../..' . '/controllers/class/Produto.class.php',
         'Read' => __DIR__ . '/../..' . '/controllers/conn/Read.class.php',
         'Update' => __DIR__ . '/../..' . '/controllers/conn/Update.class.php',

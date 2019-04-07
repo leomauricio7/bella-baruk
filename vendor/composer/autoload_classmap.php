@@ -13,6 +13,7 @@ return array(
     'Delete' => $baseDir . '/controllers/conn/Delete.class.php',
     'Edital' => $baseDir . '/controllers/class/Edital.class.php',
     'Nivel' => $baseDir . '/controllers/class/Nivel.class.php',
+    'Pontuacao' => $baseDir . '/controllers/class/Pontuacao.php',
     'Produto' => $baseDir . '/controllers/class/Produto.class.php',
     'Read' => $baseDir . '/controllers/conn/Read.class.php',
     'Update' => $baseDir . '/controllers/conn/Update.class.php',

@@ -53,7 +53,7 @@
                         <small>Pontuação por compras</small> <i class="fa fa-check-circle text-success"></i>
                     </li>
                     <li class="list-group-item d-flex align-items-center justify-content-between px-0">
-                        <small>Valdidade</small> <small><?php echo $validade ?> dias</small>
+                        <small>Validade</small> <small><?php echo $validade ?> dias</small>
                     </li>
                     </ul>
                 </div>

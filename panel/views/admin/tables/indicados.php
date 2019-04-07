@@ -61,13 +61,48 @@
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLongTitle"><i class="fa fa-exclamation-triangle"></i> ATENÇÃO</h5>
+                            <h5 class="modal-title" id="exampleModalLongTitle"><i class="fa fa-exclamation-triangle"></i> Detalhes</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
                         <div class="modal-body text-center">
-                            
+                            <div class="card-body">
+                                <div class="row align-items-center">
+                                    <div class="col-auto">  
+                                        <!-- Avatar -->
+                                        <a href="profile-posts.html" class="avatar avatar-lg">
+                                        <img src="<?php echo $avatar != null ? Url::getBase().'docs/users/'.$id.'/'.$avatar : Url::getBase().'../assets/img/icons/user.png' ?>" alt="..." class="avatar-img rounded-circle">
+                                        </a>
+                                    </div>
+                                    <div class="col ml-n2"> 
+                                        <!-- Title -->
+                                        <h4 class="card-title mb-1">
+                                        <?php echo $nome ?>
+                                        </h4>
+                                        <!-- Text -->
+                                        <p class="card-text small text-muted mb-1">
+                                       <?php echo $email ?>
+                                        </p>
+                                        <!-- Status -->
+                                        <p class="card-text small">
+                                            <?php 
+                                                $st = ucfirst($status);
+                                                echo 
+                                                $status  == 'inativo' ? 
+                                                "<span class='badge badge-soft-danger'>$st</span>" :
+                                                "<span class='badge badge-soft-success'>$st</span>"
+                                            ?>
+                                        </p>
+                                    </div>
+                                    <div class="col-auto">   
+                                        <!-- Button -->
+                                        <a href="#!" class="btn btn-sm btn-primary d-none d-md-inline-block">
+                                        Detalhar
+                                        </a>
+                                    </div>
+                                </div> <!-- / .row -->
+                            </div>
                         </div>
                     </div>
                 </div>

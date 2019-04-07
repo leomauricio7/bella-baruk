@@ -202,6 +202,26 @@
                   </ul>
                 </div>
               </li>
+              <!-- pontuação -->
+              <li class="nav-item dropdown">
+                <a class="nav-link" href="#pnt" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarComponents">
+                  <i class="fa fa-level-up-alt"></i> Níveis de Pontuação
+                </a>
+                <div class="collapse" id="pnt">
+                  <ul class="nav nav-sm flex-column">
+                    <li class="nav-item">
+                      <a href="<?php echo Url::getBase() ?>nivel-pontuacao/create" class="nav-link">
+                        Novo Nível
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="<?php echo Url::getBase() ?>nivel-pontuacao" class="nav-link">
+                        Níveis
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </li>
 
               <?php } ?>
 
@@ -232,10 +252,7 @@
       
             <!-- Push content down -->
             <div class="mt-auto"></div>
-      
-
-      
-            
+    
             <!-- User (md) -->
             <div class="navbar-user d-none d-md-flex" id="sidebarUser">
         
