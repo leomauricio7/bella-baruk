@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 24-Mar-2019 às 03:32
+-- Generation Time: 07-Abr-2019 às 05:26
 -- Versão do servidor: 5.7.14
 -- PHP Version: 7.0.10
 
@@ -53,6 +53,13 @@ CREATE TABLE `conta_users` (
   `updated` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+--
+-- Extraindo dados da tabela `conta_users`
+--
+
+INSERT INTO `conta_users` (`id`, `titular`, `cpf_titular`, `banco`, `agencia`, `conta`, `tipo_conta`, `id_user`, `created`, `updated`) VALUES
+(1, 'Leonardo Mauricio da Silva', '017.598.904-48', 'Banco do Brasil', '1069', '0068868-0', 'PoupanÃ§a', 3, '2019-04-06 02:47:51', '2019-04-06 02:48:43');
+
 -- --------------------------------------------------------
 
 --
@@ -79,7 +86,9 @@ INSERT INTO `image_products` (`id`, `url_image`, `id_product`, `created`, `updat
 (11, 'testimonial-4.jpg', 17, '2019-03-23 13:44:32', NULL),
 (12, 'testimonial-1.jpg', 18, '2019-03-23 13:45:01', NULL),
 (13, 'testimonial-3.jpg', 19, '2019-03-23 13:46:11', NULL),
-(14, 'testimonial-2.jpg', 20, '2019-03-23 13:46:27', NULL);
+(14, 'testimonial-2.jpg', 20, '2019-03-23 13:46:27', NULL),
+(15, 'pl1.png', 21, '2019-04-06 07:40:16', NULL),
+(16, 'pl1.png', 22, '2019-04-06 19:57:34', NULL);
 
 -- --------------------------------------------------------
 
@@ -111,6 +120,32 @@ INSERT INTO `niveis` (`id`, `nivel`, `comisao`, `created`, `updated`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Estrutura da tabela `nivel_pontuacao`
+--
+
+CREATE TABLE `nivel_pontuacao` (
+  `id` int(11) NOT NULL,
+  `titulo` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+  `descricao` text COLLATE utf8_unicode_ci NOT NULL,
+  `pontuacao` int(11) NOT NULL,
+  `avatar` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+  `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Extraindo dados da tabela `nivel_pontuacao`
+--
+
+INSERT INTO `nivel_pontuacao` (`id`, `titulo`, `descricao`, `pontuacao`, `avatar`, `created`, `updated`) VALUES
+(1, 'Diamante - Cruzeiro BellaBaruk', 'Ao chegar no nÃ­vel de Diamante BellaBaruk, vocÃª terÃ¡ direito a participar do Cruzeiro anual, sem dÃºvidas, vocÃª viverÃ¡ momentos incrÃ­veis!', 60000, 'Diamante.png', '2019-04-07 01:34:52', NULL),
+(2, 'Two Stars - Bora bora', 'Como Imperial Two Stars, vocÃª estarÃ¡ no topo do Plano de Marketing da empresa. VocÃª ganharÃ¡ uma viagem de 12 dias em Bora Bora no Tahiti. AlÃ©m dessa mega viagem, receberÃ¡ uma incrÃ­vel JÃ³ia Tiffany e um Rolex', 30000, 'Imperial-Two-Star.png', '2019-04-07 01:35:53', NULL),
+(3, 'Titan - Lamborghini ou Ferrari', 'VocÃª como Titan acaba de atingir o topo do Plano de Marketing da Hinode. E ao bater essa qualificaÃ§Ã£o vocÃª terÃ¡ a possibilidade de escolher entre um fantÃ¡stico Lamborghini ou uma incrÃ­vel Ferrari.', 20000, 'Titan.png', '2019-04-07 01:36:37', NULL),
+(4, 'Three Stars - Programa Super Carros', 'Como Imperial Three Stars vocÃª farÃ¡ parte de um programa da Hinode e poderÃ¡ escolher um Super Carro', 60000, 'Imperial-Three-Star.png', '2019-04-07 01:37:39', NULL);
+
+-- --------------------------------------------------------
+
+--
 -- Estrutura da tabela `pedidos`
 --
 
@@ -131,10 +166,10 @@ CREATE TABLE `pedidos` (
 --
 
 INSERT INTO `pedidos` (`id`, `idPedido`, `id_user`, `id_status`, `valor`, `comprovante`, `dado_baixa`, `created`, `updated`) VALUES
-(7, 522396940, 6, 1, 143, NULL, 'nao', '2019-03-23 16:56:01', NULL),
+(7, 522396940, 6, 2, 143, 'pl1.png', 'nao', '2019-03-23 16:56:01', '2019-04-06 20:34:22'),
 (8, 752250755, 6, 1, 96, NULL, 'nao', '2019-03-23 17:02:45', NULL),
 (9, 843083225, 6, 1, 23, NULL, 'nao', '2019-03-23 17:19:14', NULL),
-(10, 82363968, 6, 1, 127, NULL, 'nao', '2019-03-23 17:24:44', NULL),
+(10, 82363968, 6, 2, 127, 'pl1.png', 'nao', '2019-03-23 17:24:44', '2019-04-06 20:49:48'),
 (11, 385747603, 7, 3, 216, 'Captura de Tela (140).png', 'sim', '2019-03-23 18:41:35', '2019-03-24 00:28:17'),
 (12, 689788982, 7, 3, 120, 'Captura de Tela (136).png', 'sim', '2019-03-23 19:39:48', '2019-03-24 00:28:46');
 
@@ -146,12 +181,14 @@ INSERT INTO `pedidos` (`id`, `idPedido`, `id_user`, `id_status`, `valor`, `compr
 
 CREATE TABLE `products` (
   `id` int(11) NOT NULL,
-  `titulo` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
-  `descricao` text COLLATE utf8_unicode_ci NOT NULL,
-  `slug` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
-  `preco` varchar(20) COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
+  `titulo` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `descricao` text COLLATE utf8_unicode_ci,
+  `slug` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `preco` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
   `quantidade` int(10) NOT NULL DEFAULT '0',
-  `id_responsavel` int(11) NOT NULL,
+  `validade` int(11) DEFAULT NULL,
+  `id_tipo` int(11) DEFAULT NULL,
+  `id_responsavel` int(11) DEFAULT NULL,
   `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -160,15 +197,17 @@ CREATE TABLE `products` (
 -- Extraindo dados da tabela `products`
 --
 
-INSERT INTO `products` (`id`, `titulo`, `descricao`, `slug`, `preco`, `quantidade`, `id_responsavel`, `created`, `updated`) VALUES
-(13, 'Produto teste x', 'hj,vasvhds', 'produto-teste-x', '321.00', 20, 3, '2019-03-23 11:06:25', NULL),
-(14, 'tetse 2', 'weqwe', 'tetse-2', '120.30', 12, 3, '2019-03-23 13:42:29', NULL),
-(15, 'Produto teste2', '121', 'produto-teste2', '105.99', 20, 3, '2019-03-23 13:42:46', NULL),
-(16, 'tetse 22', '121', 'tetse-22', '96.30', 20, 3, '2019-03-23 13:43:06', NULL),
-(17, 'tetse 45', 'sdfdwf', 'tetse-45', '23.30', 20, 3, '2019-03-23 13:44:32', NULL),
-(18, 'teste 4', 'sdsd', 'teste-4', '63.22', 30, 3, '2019-03-23 13:45:01', NULL),
-(19, 'camisa 3', 'sdas', 'camisa-3', '85.63', 30, 3, '2019-03-23 13:46:11', NULL),
-(20, 'tetse 8976987', 'ishaifphi', 'tetse-8976987', '21.32', 20, 3, '2019-03-23 13:46:27', NULL);
+INSERT INTO `products` (`id`, `titulo`, `descricao`, `slug`, `preco`, `quantidade`, `validade`, `id_tipo`, `id_responsavel`, `created`, `updated`) VALUES
+(13, 'Produto teste x', 'hj,vasvhds', 'produto-teste-x', '321.00', 20, NULL, NULL, 3, '2019-03-23 11:06:25', NULL),
+(14, 'tetse 2', 'weqwe', 'tetse-2', '120.30', 12, NULL, NULL, 3, '2019-03-23 13:42:29', NULL),
+(15, 'Produto teste2', '121', 'produto-teste2', '105.99', 20, NULL, NULL, 3, '2019-03-23 13:42:46', NULL),
+(16, 'tetse 22', '121', 'tetse-22', '96.30', 20, NULL, NULL, 3, '2019-03-23 13:43:06', NULL),
+(17, 'tetse 45', 'sdfdwf', 'tetse-45', '23.30', 20, NULL, NULL, 3, '2019-03-23 13:44:32', NULL),
+(18, 'teste 4', 'sdsd', 'teste-4', '63.22', 30, NULL, NULL, 3, '2019-03-23 13:45:01', NULL),
+(19, 'camisa 3', 'sdas', 'camisa-3', '85.63', 30, NULL, NULL, 3, '2019-03-23 13:46:11', NULL),
+(20, 'tetse 8976987', 'ishaifphi', 'tetse-8976987', '21.32', 20, NULL, NULL, 3, '2019-03-23 13:46:27', NULL),
+(21, 'Plano de ativaÃ§Ã£o mensal', 'Neste plano vocÃª ficarÃ¡ ativo durante 30 dias.', 'plano-de-ativacao-mensal', '50.00', 0, 30, 1, 3, '2019-04-06 07:40:16', NULL),
+(22, 'Plano Premium', 'Plano premiun', 'plano-premium', '100.00', 0, 60, 1, 3, '2019-04-06 19:57:34', NULL);
 
 -- --------------------------------------------------------
 
@@ -284,10 +323,13 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `nome`, `cpf`, `cnpj`, `slug`, `email`, `senha`, `tipo_pessoa`, `tipo_user`, `status`, `indicador`, `pontuacao`, `rua`, `bairro`, `complemento`, `referencia`, `cep`, `numero`, `cidade`, `uf`, `sexo`, `telefone`, `avatar`, `created`, `_token`, `updated`) VALUES
-(3, 'Leonardo Mauricio da Silva', '017.598.904-48', '', 'lmauricio', 'lf341533@gmail.com', '$2y$10$RCk2.0Hv4R9EDO26n5MJFuN7szVyJzxdPtj1m.N5inW24T6HqJ4Su', 'fisica', 1, 'ativo', NULL, 0, 'Rua Prisco Rocha', 'Passe e fica', 'Zona Urbana', 'Em frente ao orelhÃ£o', '59570-000', 50, 'CearÃ¡-Mirim', 'RN', 'M', '(99)48297-80', 'PhotoGrid_1440423455562.jpg', '2019-02-21 20:22:23', NULL, '2019-03-22 22:22:11'),
+(3, 'Leonardo Mauricio da Silva', '017.598.904-48', '', 'lmauricio', 'lf341533@gmail.com', '$2y$10$RCk2.0Hv4R9EDO26n5MJFuN7szVyJzxdPtj1m.N5inW24T6HqJ4Su', 'fisica', 1, 'ativo', NULL, 0, 'Rua Prisco Rocha', 'Passe e fica', 'Casa 50', 'Em frente ao orelhÃ£o', '59570-000', 1163, 'CearÃ¡-Mirim', 'RN', 'M', '(84)99482-9780', 'IMG_2022.JPG', '2019-02-21 20:22:23', NULL, '2019-04-06 03:04:15'),
 (6, 'Pedro Neto', '054.852.774-11', '', 'pedro-neto', 'neto@gmail.com', '$2y$10$Mjpcsj2V4YQbSVRRTu84lusMagUXncYWEcoRc4sroihC7fK1.DunS', 'fisica', 2, 'inativo', 3, 0, 'Rua Prisco Rocha', 'Passe e fica', 'Zona Urbana', 'Em frente ao orelhÃ£o', '59570-000', 12, 'CearÃ¡-Mirim', 'RN', 'M', '(84)45454-6546', '_LNO4840.jpg', '2019-02-21 20:37:28', NULL, '2019-02-22 19:17:58'),
 (7, 'Teste Franqueado', NULL, NULL, 'teste', 'leomauricio7@gmail.com', '$2y$10$LcIp4mEV5yPZI6hTs.Qn7uAleVT0f952tY7oLRkUimyvI8xtf29Oe', 'fisica', 2, 'inativo', 6, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'RN', NULL, '(84) 99430-2191', NULL, '2019-02-22 16:13:22', NULL, '2019-03-23 18:41:01'),
-(8, 'teste cliente', '628.636.680-64', '', 'teste-cliente', 'teste@gmail.com', '$2y$10$yfbbJabS.UCj.WAzrPYfBeK3i7/2OMyPnsg6cpKrcP0l3ZHk.FCvm', 'fisica', 1, 'ativo', NULL, 0, 'Rua Prisco Richa', 'Passe e fica', 'Zona Urbana', 'Em frente ao orelhÃ£o', '59490-000', 1163, 'Ielmo Marinho', 'RN', 'M', '(84)32670-013', 'user.png', '2019-02-22 19:24:47', NULL, NULL);
+(8, 'teste cliente', '628.636.680-64', '', 'teste-cliente', 'teste@gmail.com', '$2y$10$yfbbJabS.UCj.WAzrPYfBeK3i7/2OMyPnsg6cpKrcP0l3ZHk.FCvm', 'fisica', 1, 'ativo', NULL, 0, 'Rua Prisco Richa', 'Passe e fica', 'Zona Urbana', 'Em frente ao orelhÃ£o', '59490-000', 1163, 'Ielmo Marinho', 'RN', 'M', '(84)32670-013', 'user.png', '2019-02-22 19:24:47', NULL, NULL),
+(9, 'Indicado do I', NULL, NULL, 'teste1', 'teste1@gmail.com', '$2y$10$SZrDXAJaveiio0P6rMs/3uzOgtncuWFSw.6SnEzRjHF6wFcJSSScu', 'fisica', 2, 'inativo', 6, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'RN', NULL, '(84) 32670-013', NULL, '2019-04-07 00:58:13', NULL, NULL),
+(10, 'teste 2', NULL, NULL, 'teste2', 'teste2@gmail.com', '$2y$10$2YzBy.1M7RjPFbgrgs0g9eNCQN1UwNtfJPMA2ah1pYlzDfdvFeIhS', 'fisica', 2, 'inativo', 9, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'RN', NULL, '(84) 32670-013', NULL, '2019-04-07 01:00:19', NULL, NULL),
+(11, 'teste3', NULL, NULL, 'teste3', 'teste3@gmail.com', '$2y$10$t/AW548KavhTPsCw6kMXueZwk5E0Gr4/biYmc1HogNnu9XrFwf/4e', 'fisica', 2, 'inativo', 10, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'RN', NULL, '(84) 32670-013', NULL, '2019-04-07 01:00:54', NULL, NULL);
 
 --
 -- Indexes for dumped tables
@@ -318,6 +360,12 @@ ALTER TABLE `image_products`
 -- Indexes for table `niveis`
 --
 ALTER TABLE `niveis`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `nivel_pontuacao`
+--
+ALTER TABLE `nivel_pontuacao`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -379,17 +427,22 @@ ALTER TABLE `comissoes`
 -- AUTO_INCREMENT for table `conta_users`
 --
 ALTER TABLE `conta_users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `image_products`
 --
 ALTER TABLE `image_products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 --
 -- AUTO_INCREMENT for table `niveis`
 --
 ALTER TABLE `niveis`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+--
+-- AUTO_INCREMENT for table `nivel_pontuacao`
+--
+ALTER TABLE `nivel_pontuacao`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `pedidos`
 --
@@ -399,7 +452,7 @@ ALTER TABLE `pedidos`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 --
 -- AUTO_INCREMENT for table `produtos_pedido`
 --
@@ -419,7 +472,7 @@ ALTER TABLE `tipo_users`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 --
 -- Constraints for dumped tables
 --
