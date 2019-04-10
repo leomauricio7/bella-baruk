@@ -185,7 +185,7 @@
               <!-- adesão -->
               <li class="nav-item dropdown">
                 <a class="nav-link" href="#planos" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarComponents">
-                  <i class="fa fa-cogs"></i> Planos de Adesão
+                  <i class="fa fa-cogs"></i> Planos de Ativação
                 </a>
                 <div class="collapse" id="planos">
                   <ul class="nav nav-sm flex-column">
@@ -233,7 +233,7 @@
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="<?php echo Url::getBase() ?>planos">
-                  <i class="fa fa-tags"></i> Adesão
+                  <i class="fa fa-tags"></i> Ativação
                 </a>
               </li>
               

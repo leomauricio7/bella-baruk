@@ -24,7 +24,7 @@
 
         <div class="col">
             <?php 
-            if(Url::getURL(1) == 'create'){
+            if(Url::getURL(1) == 'create' || Url::getURL(1) == 'edit'){
                 require_once 'forms/pontuacao.php';
             }
             if(Url::getURL(1) == null){

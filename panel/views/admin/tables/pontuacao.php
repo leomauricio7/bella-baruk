@@ -39,12 +39,10 @@
                             extract($dados);
                     ?>
 					<!-- col 6 -->
-					<div class="col-12 col-md-6 col-xl-4">
+					<div class="col-12 col-md-4 col-xl-4">
 						<!-- Card -->
 						<div class="card">
-							<a>
-								<img src="<?php echo Url::getBase().'docs/nivel-pontuacao/'.$id.'/'.$avatar ?>" alt="..." class="card-img-top">
-							</a>
+							<img src="<?php echo Url::getBase().'docs/nivel-pontuacao/'.$id.'/'.$avatar ?>" alt="..." class="card-img-top img-nivel">
 							<div class="card-body">
 								<div class="row align-items-center">
 									<div class="col">
@@ -55,6 +53,7 @@
 									        <?php echo $descricao ?>
 										</p>
 									</div>
+                                    <?php if(Validation::getPermisionType($tipoUser)){ ?>
                                     <div class="col-auto">
                                         <!-- Dropdown -->
                                         <div class="dropdown">
@@ -62,15 +61,16 @@
                                                 <i class="fa fa-ellipsis-v"></i>
                                             </a>
                                             <div class="dropdown-menu dropdown-menu-right">
-                                                <a href="#!" class="dropdown-item">
+                                                <a href="<?php echo Url::getBase().'nivel-pontuacao/edit/'.$id ?>" class="dropdown-item">
                                                 Editar
                                                 </a>
-                                                <a href="#!" class="dropdown-item">
+                                                <a href="<?php echo Url::getBase().'../controllers/delete.php?pag=nivel-pontuacao&tb=nivel_pontuacao&ch=id&value='.$id ?>" class="dropdown-item">
                                                 Excluir
                                                 </a>
                                             </div>
                                         </div>
                                     </div>
+                                    <?php } ?>
 						    </div> <!-- / .row -->
                             <!-- Divider -->
                             <hr>
@@ -78,13 +78,13 @@
                                 <div class="col">
                                     <div class="row align-items-center no-gutters">
                                         <div class="col-auto">
-                                            <div class="small mr-2">29%</div>   
+                                            <div class="small mr-2"><?php echo $pontuacao ?> pontos</div>   
                                         </div>
                                         <div class="col">   
-                                            <!-- Progress -->
+                                            <!-- Progress
                                             <div class="progress progress-sm">
                                                 <div class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="29" aria-valuemin="0" aria-valuemax="100"></div>
-                                            </div>
+                                            </div> -->
                                         </div>
                                     </div> <!-- / .row -->
                                 </div>
@@ -111,7 +111,7 @@
 							<div class="row align-items-center">
 								<div class="col-auto">
 									<!-- Avatar -->
-									<a href="" class="avatar avatar-lg avatar-4by3">
+									<a href="" class="avatar avatar-lg avatar-4by3 img-nivel-xs">
 										<img src="<?php echo Url::getBase().'docs/nivel-pontuacao/'.$id.'/'.$avatar ?>" alt="..." class="avatar-img rounded">
 									</a>
 								</div>

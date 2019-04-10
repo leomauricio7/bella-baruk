@@ -23,7 +23,8 @@
     <link rel="stylesheet" href="<?php echo Url::getBase(); ?>../assets/libs/quill/dist/quill.core.css">
     <link rel="stylesheet" href="<?php echo Url::getBase(); ?>../assets/libs/select2/dist/css/select2.min.css">
     <link rel="stylesheet" href="<?php echo Url::getBase(); ?>../assets/libs/flatpickr/dist/flatpickr.min.css">
-
+    <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
     <!-- Theme CSS -->
       
     <link rel="stylesheet" href="<?php echo Url::getBase(); ?>../assets/css/theme.min.css" id="stylesheetLight">

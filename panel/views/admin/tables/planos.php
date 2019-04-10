@@ -4,7 +4,7 @@
         <div class="row justify-content-center">
             <div class="col-md-10 col-lg-8 col-xl-6">
                 <h1 class="display-3 text-center text-white">
-                    Planos de adesão
+                    Planos de ativação
                 </h1>
                 <p class="lead text-center text-muted">
                     Faça a adesão de um plano de ativação de acordo com seus com seus critérios.
