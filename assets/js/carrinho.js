@@ -1,5 +1,13 @@
 $(function(){
 
+    function getURL(){
+        var origin = window.location.origin;
+        var pathname = window.location.pathname.split("/");
+        var url = origin+"/"+pathname[1];
+        console.log(url);
+        return url;
+    }
+
     function startSession(){
         $.ajax({
             type: 'POST',
@@ -119,14 +127,14 @@ $(function(){
     function daBaixa(idPedido){
         $.ajax({
             type: 'POST',
-            url: '../controllers/class/carrinho.php',
+            url: getURL()+'/controllers/class/carrinho.php',
             data: 'type=7&idPedido='+idPedido,
             dataType: "json",
         }).done(function(res) {
             if(res.status == 200){
                 $('#msg-toast').text(res.msg);
                 $('#alert-toast').toast('show')
-                //window.location.reload();
+                window.location.reload();
             }else if(res.status == 500){
                 $('#msg-toast').text(res.msg);
                 $('#alert-toast').toast('show')

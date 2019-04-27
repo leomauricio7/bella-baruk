@@ -146,17 +146,34 @@
               <li class="nav-item dropdown">
                 <a class="nav-link" href="#menu-pedido" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarComponents">
                   <i class="fa fa-cart-plus"></i> Pedidos
+                  <span class="badge badge-success ml-auto">
+                    <?php echo Validation::getTotalPedidos() ?>
+                  </span>
                 </a>
                 <div class="collapse " id="menu-pedido">
                   <ul class="nav nav-sm flex-column">
                     <li class="nav-item">
                       <a href="<?php echo Url::getBase() ?>pedidos/aguardando-pagamento" class="nav-link">
                         Aguardando pagamento
+                        <span class="badge badge-warning ml-auto">
+                          <?php echo Validation::getTotalPedidos(1) ?>
+                        </span>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="<?php echo Url::getBase() ?>pedidos/em-analise" class="nav-link">
+                        Em Análise
+                        <span class="badge badge-info ml-auto">
+                          <?php echo Validation::getTotalPedidos(2) ?>
+                        </span>
                       </a>
                     </li>
                     <li class="nav-item">
                       <a href="<?php echo Url::getBase() ?>pedidos/dado-baixa" class="nav-link">
                         Pagos
+                        <span class="badge badge-success ml-auto">
+                          <?php echo Validation::getTotalPedidos(3) ?>
+                        </span>
                       </a>
                     </li>
                   </ul>
@@ -239,7 +256,10 @@
               
               <li class="nav-item">
                 <a class="nav-link" href="<?php echo Url::getBase() ?>products">
-                  <i class="fa fa-cart-plus"></i> Loja
+                  <i class="fa fa-cart-plus"></i> Loja 
+                  <span class="badge badge-success ml-auto">
+                    <?php echo isset($_SESSION['carrinho']) ? sizeof($_SESSION['carrinho']) : '0' ?>
+                  </span>
                 </a>
               </li>
               <li class="nav-item">

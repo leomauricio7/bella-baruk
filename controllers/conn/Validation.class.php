@@ -561,4 +561,14 @@ class Validation extends Conn {
         }
     }
 
+    public static function getTotalPedidos($type=null){
+        $read = new Read();
+        if($type != null){
+            $read->ExeRead('pedidos','where id_status=:type', 'type='.$type);
+        }else{
+            $read->ExeRead('pedidos');
+        }
+        return $read->getRowCount();
+    }
+
 }

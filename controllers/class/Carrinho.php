@@ -24,7 +24,7 @@ if($_POST){
         //close pedido
         case 6: closePedido($idPedido, $valorPedido); break;
         //da baixa
-        case 7: dabaixa($idPedido); break;
+        case 7: daBaixa($idPedido); break;
         //regra padrão
         default: return false;
     }
@@ -41,10 +41,10 @@ function initSession(){
 
 function daBaixa($idPedido){
     $update = new Update();
-    $dados = ['dado_baixa'=>'sim','id_status'=>3];
-    $update->ExeUpdate('pedidos', $dados, 'where id=:id', 'id='.$idPedido);
+    $dados = ["dado_baixa"=>"sim", "id_status"=>3];
+    $update->ExeUpdate('pedidos', $dados, 'where idPedido=:id', 'id='.$idPedido);
     if($update->getResult()){
-        echo json_encode(array('status'=>200, 'msg'=>'Pedido dado baixa com sucesso..'));
+        echo json_encode(array('status'=>200, 'msg'=>'Pedido dado baixa com sucesso.'));
     }else{
         echo json_encode(array('status'=>500, 'msg'=>'Internal serve error.'));
     }
@@ -103,6 +103,7 @@ function existProductCarrinho($idProduct){
 
 function removeProductCarrinho($idProduct){
     for($i = 0; $i < sizeof($_SESSION['carrinho']); $i++){
+        if(!isset($_SESSION['carrinho'][$i])){$i+=1;}
         if($_SESSION['carrinho'][$i]['id'] == $idProduct){
             unset($_SESSION['carrinho'][$i]);
             break;
@@ -112,6 +113,7 @@ function removeProductCarrinho($idProduct){
 
 function removeOneProductCarrinho($idProduct){
     for($i = 0; $i < sizeof($_SESSION['carrinho']); $i++){
+        if(!isset($_SESSION['carrinho'][$i])){$i+=1;}
         if($_SESSION['carrinho'][$i]['id'] == $idProduct){
             $_SESSION['carrinho'][$i] = ['id'=> $idProduct, 'quantidade'=> $_SESSION['carrinho'][$i]['quantidade']-1];
             break;
@@ -142,7 +144,7 @@ function removeProduct($idProduct){
 function removeOneProduct($idProduct){
     if(existProduct($idProduct)){
         removeOneProductCarrinho($idProduct);
-        echo json_encode(array('status'=>200,'msg'=>'Produto removido do carrinho.','carrinho'=>$_SESSION['carrinho']));
+        echo json_encode(array('status'=>200,'msg'=>'1 Produto removido do carrinho.','carrinho'=>$_SESSION['carrinho']));
     }else{
         echo json_encode(array('status'=>500,'msg'=>'Produto não encontrado.'));
     }

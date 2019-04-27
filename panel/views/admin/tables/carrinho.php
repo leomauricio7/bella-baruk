@@ -28,7 +28,9 @@
             <ul class="list-group list-group-flush list my-n3">
             <?php
             if(isset($_SESSION['carrinho'])){
-                    for($i = 0; $i < sizeof($_SESSION['carrinho']); $i++){
+                for($i = 0; $i < sizeof($_SESSION['carrinho']); $i++){
+                    //verifica se o indice é valido
+                    if(!isset($_SESSION['carrinho'][$i])){$i+=1;}
             ?>
                 <li class="list-group-item px-0">
                     <div class="row align-items-center">

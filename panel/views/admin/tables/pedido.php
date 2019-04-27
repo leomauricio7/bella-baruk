@@ -99,7 +99,7 @@
                 <?php if(Validation::getPermisionType($tipoUser)){ ?>
                 <td class="tables-handle">
                     <button <?php echo $comprovante == null ? 'disabled' : '' ?> type="button" data-toggle="modal" data-target="#modal-comprovante<?php echo $id ?>" class="btn btn-success btn-sm"><i class="fa fa-file-upload"></i>Comprovante</button>
-                    <button <?php echo $comprovante == null ? 'disabled' : '' ?> alt="<?php echo $id ?>" class="btn btn-danger btn-sm da-baixa"><i class="fa fa-save"></i> Dar baixar</button>
+                    <button <?php echo $comprovante == null ? 'disabled' : '' ?> alt="<?php echo $idPedido ?>" class="btn btn-danger btn-sm da-baixa"><i class="fa fa-save"></i> Dar baixar</button>
                 </td><?php } ?>
                 <td class="tables-handle">
                     <a href="<?php echo Url::getBase().'extrato/'.$idPedido?>" class="btn btn-primary btn-sm"><i class="fa fa-file-alt"></i></a>
