@@ -16,6 +16,7 @@ return array(
     'Pontuacao' => $baseDir . '/controllers/class/Pontuacao.php',
     'Produto' => $baseDir . '/controllers/class/Produto.class.php',
     'Read' => $baseDir . '/controllers/conn/Read.class.php',
+    'Unilevel' => $baseDir . '/controllers/class/Unilevel.class.php',
     'Update' => $baseDir . '/controllers/conn/Update.class.php',
     'Uploud' => $baseDir . '/controllers/helpers/Uploud.class.php',
     'Url' => $baseDir . '/controllers/class/Url.class.php',

@@ -17,6 +17,7 @@ class ComposerStaticInitc38545917117a03b4c10c7c11d3eff72
         'Pontuacao' => __DIR__ . '/../..' . '/controllers/class/Pontuacao.php',
         'Produto' => __DIR__ . '/../..' . '/controllers/class/Produto.class.php',
         'Read' => __DIR__ . '/../..' . '/controllers/conn/Read.class.php',
+        'Unilevel' => __DIR__ . '/../..' . '/controllers/class/Unilevel.class.php',
         'Update' => __DIR__ . '/../..' . '/controllers/conn/Update.class.php',
         'Uploud' => __DIR__ . '/../..' . '/controllers/helpers/Uploud.class.php',
         'Url' => __DIR__ . '/../..' . '/controllers/class/Url.class.php',

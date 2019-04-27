@@ -11,7 +11,7 @@
                     </h6> 
                     <!-- Heading -->
                     <span class="h2 mb-0">
-                        100
+                        <?php echo Unilevel::getTotalUsersAtivos($_SESSION['idUser']) ?>
                     </span>
                     </div>
                     <div class="col-auto"> 
@@ -34,7 +34,7 @@
                     </h6> 
                     <!-- Heading -->
                     <span class="h2 mb-0">
-                        100
+                        <?php echo Unilevel::getTotalUsersInativos($_SESSION['idUser']) ?>
                     </span>
                     </div>
                     <div class="col-auto"> 
@@ -57,7 +57,7 @@
                     </h6> 
                     <!-- Heading -->
                     <span class="h2 mb-0">
-                        100
+                    <?php echo Unilevel::getTotalUsersIndicados($_SESSION['idUser']) ?>
                     </span>
                     </div>
                     <div class="col-auto"> 

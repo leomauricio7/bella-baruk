@@ -48,8 +48,8 @@ function daBaixa($idPedido){
     }else{
         echo json_encode(array('status'=>500, 'msg'=>'Internal serve error.'));
     }
-
 }
+
 function closePedido($idPedido, $valorPedido){
     $savePedido = new Create();
     $saveItemPedido = new Create();
