@@ -18,6 +18,12 @@
     <meta name="description" content="A fully featured admin theme which can be used to build CRM, CMS, etc.">
     <link rel="shortcut icon" href="<?php echo Url::getBase(); ?>../assets/img/logotipos/favicon-bella-baruk.png" type="image/x-icon">
     <!-- Libs CSS -->
+    <?php 
+        if(Url::getURL(0) == 'unilevel'){
+            $link = '<link rel="stylesheet" href="'.Url::getBase().'../assets/css/arvore.css">';
+            echo $link;
+        }
+    ?>
     <link rel="stylesheet" href="<?php echo Url::getBase(); ?>../assets/fonts/feather/feather.min.css">
     <link rel="stylesheet" href="<?php echo Url::getBase(); ?>../assets/libs/highlight.js/styles/vs2015.css">
     <link rel="stylesheet" href="<?php echo Url::getBase(); ?>../assets/libs/quill/dist/quill.core.css">
