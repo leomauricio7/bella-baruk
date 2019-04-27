@@ -13,11 +13,11 @@
                     </h6> 
                     <!-- Heading -->
                     <span class="h2 mb-0">
-                      1000
+                      <?php echo Unilevel::getTotalUsersMaster() ?>
                     </span>
                     <!-- Badge -->
                     <span class="badge badge-soft-success mt-n1">
-                      85
+                      <?php echo Unilevel::getTotalUsersAtivosMaster() ?>
                     </span>
                   </div>
                   <div class="col-auto">
@@ -41,7 +41,11 @@
                     </h6>
                     <!-- Heading -->
                     <span class="h2 mb-0">
-                      60
+                      <?php echo Validation::getTotalPedidos() ?>
+                    </span>
+                    <!-- Badge -->
+                    <span class="badge badge-soft-success mt-n1">
+                      <?php echo Validation::getTotalPedidos(3) ?>
                     </span>
                   </div>
                   <div class="col-auto"> 
@@ -61,14 +65,14 @@
                   <div class="col">
                     <!-- Title -->
                     <h6 class="card-title text-uppercase text-muted mb-2">
-                      Pontuação
+                      Produtos
                     </h6>
 
                     <div class="row align-items-center no-gutters">
                       <div class="col-auto">
                         <!-- Heading -->
                         <span class="h2 mr-2 mb-0">
-                          20
+                          <?php echo Unilevel::getTotalProdutos() ?>
                         </span>
                         
                       </div>
@@ -101,7 +105,7 @@
                     </h6>
                     <!-- Heading -->
                     <span class="h2 mb-0">
-                      R$85.50
+                      R$<?php echo Unilevel::getSaldoTotalComprasPagas() ?>
                     </span>
                   </div>
                   <div class="col-auto"> 
@@ -187,101 +191,6 @@
                 </div>
                 <!-- Legend -->
                 <div id="devicesChartLegend" class="chart-legend"><span class="chart-legend-item"><i class="chart-legend-indicator" style="background-color: #2C7BE5"></i>Desktop</span><span class="chart-legend-item"><i class="chart-legend-indicator" style="background-color: #A6C5F7"></i>Tablet</span><span class="chart-legend-item"><i class="chart-legend-indicator" style="background-color: #D2DDEC"></i>Mobile</span></div>
-              </div>
-            </div>
-          </div>
-        </div> <!-- / .row -->
-
-        <div class="row">
-          <div class="col-12 col-xl-12"> 
-            <!-- Goals -->
-            <div class="card">
-              <div class="card-header">
-                <div class="row align-items-center">
-                  <div class="col">
-                    <!-- Title -->
-                    <h4 class="card-header-title">
-                      Usuários
-                    </h4>
-
-                  </div>
-                  <div class="col-auto">
-                    <!-- Button -->
-                    <a href="#!" class="btn btn-sm btn-white">
-                      Export
-                    </a>
-                  </div>
-                </div> <!-- / .row -->
-              </div>
-              <div class="table-responsive mb-0" data-toggle="lists" data-lists-values="[&quot;goal-project&quot;, &quot;goal-status&quot;, &quot;goal-progress&quot;, &quot;goal-date&quot;]">
-                <table class="table table-sm table-nowrap card-table">
-                  <thead>
-                    <tr>
-                      <th>
-                        <a href="#" class="text-muted sort" data-sort="goal-project">
-                          Nome
-                        </a>
-                      </th>
-                      <th>
-                        <a href="#" class="text-muted sort" data-sort="goal-status">
-                          Status
-                        </a>
-                      </th>
-                      <th>
-                        <a href="#" class="text-muted sort" data-sort="goal-progress">
-                          Progresso
-                        </a>
-                      </th>
-                      <th>
-                        <a href="#" class="text-muted sort" data-sort="goal-date">
-                          Adesão
-                        </a>
-                      </th>
-                      <th class="text-right">
-                        Coordenador
-                      </th>
-                      <th></th>
-                    </tr>
-                  </thead>
-                  <tbody class="list">
-                    <tr>
-                        <td class="goal-project">
-                            Marcelo Lima
-                        </td>
-                        <td class="goal-status">
-                            <span class="text-warning">●</span> Não Ativo
-                        </td>
-                        <td class="goal-progress">
-                            0%
-                        </td>
-                        <td class="goal-date">
-                            <time datetime="2018-10-24">14/02/19</time>
-                        </td>
-                        <td class="text-right">
-                            <div class="avatar-group">
-                            <a href="#" class="avatar avatar-xs" data-toggle="tooltip" title="" data-original-title="Dianna Smiley">
-                                <img src="http://www.marcelolimawebdesign.com.br/assets/membro/MarceloPerfil.png" class="avatar-img rounded-circle" alt="...">
-                            </a>
-                            </div>
-                        </td>
-                        <td class="text-right">
-                            <div class="dropdown">
-                            <a href="#" class="dropdown-ellipses dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fa fa-ellipsis-h"></i>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right">
-                                <a href="#!" class="dropdown-item">
-                                <i class="fa fa-eye"></i> Visualizar
-                                </a>
-                                <a href="#!" class="dropdown-item">
-                                    <i class="fa fa-trash"></i> Excluir
-                                </a>
-                            </div>
-                            </div>
-                        </td>
-                        </tr>
-                    </tbody>
-                </table>
               </div>
             </div>
           </div>

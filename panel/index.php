@@ -1,6 +1,6 @@
 <?php 
-    require_once'../controllers/conf.inc';
-    require_once'../vendor/autoload.php';
+    require_once '../controllers/conf.inc';
+    require_once '../vendor/autoload.php';
     Validation::validaSession();
     if (isset($_GET['logout'])):
         if ($_GET['logout'] == 'true'):
