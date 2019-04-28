@@ -55,6 +55,21 @@ class Dados {
             return false;
         }
     }
+    //verifica se o usuario ja fez a primeira compra
+    public static function verificaAdesão($user) {
+        $st = null;
+        $read = new Read();
+        $read->ExeRead('users', 'where id = '.$user);
+        foreach($read->getResult() as $user){
+            extract($user);
+            $st = $fisrt_adesao;
+        }
+        if($st == 0){
+            return true;
+        }else{
+            return false;
+        }
+    }
 
     //pegando o valor de um produto
     public static function getValueProduct($id){
@@ -66,6 +81,34 @@ class Dados {
             $value = $preco;
         }
         return number_format($value,2, ",", "");
+    }
+
+    ///verifica se existe algum plano de ativação vaido
+    public static function existePlanoAtivo($user){
+        $date = date('Y/m/d');
+        $read = new Read();
+        $read->ExeRead('user_adesao', 'where id_user=:id AND data_validade >= :date', 'id='.$user.'&date='.$date);
+        if($read->getRowCount() > 0){
+            return true;
+        }else{
+            return false;
+        }
+            
+    }
+    //pega os dias restantes do plano ativo
+    public static function diasRestantesAtivacao($user){
+        $inicio = null;
+        $fim = null;
+        $date = date('Y/m/d');
+        $read = new Read();
+        $read->ExeRead('user_adesao', 'where id_user=:id AND data_validade >= :date', 'id='.$user.'&date='.$date);
+        foreach($read->getResult() as $dados){
+            extract($dados);
+            $inicio = new DateTime($data_ativacao);
+            $fim = new DateTime($data_validade);
+        }
+        $intval = $inicio->diff($fim);
+        return $intval->days;
     }
 
 }

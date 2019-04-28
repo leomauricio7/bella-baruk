@@ -53,6 +53,9 @@
                 <th scope="col">
                     <a href="#" class="text-muted sort" data-sort="tables-last">Status</a>
                 </th>
+                <th scope="col">
+                    <a href="#" class="text-muted sort" data-sort="tables-last">Dado Baixa</a>
+                </th>
                 <?php if(Validation::getPermisionType($tipoUser)){ ?>
                 <th scope="col">
                     <a href="#" class="text-muted sort" data-sort="tables-handle"><i class="fa fa-cogs"></i></a>
@@ -96,10 +99,13 @@
                 <td class="tables-first">R$<?php echo number_format($valor,2,",","") ?></td>
                 <td class="tables-first"><?php echo Validation::getTotalProdutosCarrinho($idPedido); ?> produto</td>
                 <td class="tables-last"><span class="badge badge-soft-<?php echo Validation::getClassStatus($id_status) ?>"><?php echo Validation::getStatus($id_status) ?></span></td>
+                <td class="tables-last"><span class="badge badge-soft-<?php echo Validation::getClassStatus($id_status) ?>"><?php echo ucfirst($dado_baixa) ?></span></td>
                 <?php if(Validation::getPermisionType($tipoUser)){ ?>
                 <td class="tables-handle">
                     <button <?php echo $comprovante == null ? 'disabled' : '' ?> type="button" data-toggle="modal" data-target="#modal-comprovante<?php echo $id ?>" class="btn btn-success btn-sm"><i class="fa fa-file-upload"></i>Comprovante</button>
-                    <button <?php echo $comprovante == null ? 'disabled' : '' ?> alt="<?php echo $idPedido ?>" class="btn btn-danger btn-sm da-baixa"><i class="fa fa-save"></i> Dar baixar</button>
+                    <?php if(Url::getURL(1) != 'dado-baixa'){?> 
+                        <button <?php echo $comprovante == null ? 'disabled' : '' ?> alt="<?php echo $idPedido ?>" class="btn btn-danger btn-sm da-baixa"><i class="fa fa-save"></i> Dar baixar</button>
+                    <?php } ?>
                 </td><?php } ?>
                 <td class="tables-handle">
                     <a href="<?php echo Url::getBase().'extrato/'.$idPedido?>" class="btn btn-primary btn-sm"><i class="fa fa-file-alt"></i></a>
@@ -109,7 +115,7 @@
                     <button title="visualizar detalhes" type="button" data-toggle="modal" data-target="#modal<?php echo $id ?>" class="btn btn-info btn-sm"><i class="fa fa-eye"></i></button>
                 </td>
             </tr>
-            <!------------------------------------------------------------------------------------->
+            <!-- -->
             <!-- modal comprovante-->
             <div class="modal fade" id="modal-comprovante<?php echo $id ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
                 <div class="modal-dialog" role="document">
@@ -137,7 +143,7 @@
                     </div>
                 </div>
             </div>
-            <!------------------------------------------------------------------------------------->
+            <!-- -->
             <!-- modal detalhes-->
             <div class="modal fade" id="modal<?php echo $id ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
                 <div class="modal-dialog" role="document">
@@ -154,7 +160,7 @@
                     </div>
                 </div>
             </div>
-              <!------------------------------------------------------------------------------------->
+              <!-- -->
         <?php } ?>
         </tbody>
     </table>

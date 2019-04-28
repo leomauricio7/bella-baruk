@@ -132,11 +132,11 @@ $(function(){
             dataType: "json",
         }).done(function(res) {
             if(res.status == 200){
-                $('#msg-toast').text(res.msg);
+                $('#msg-toast').html(res.msg);
                 $('#alert-toast').toast('show')
-                window.location.reload();
+                //window.location.reload();
             }else if(res.status == 500){
-                $('#msg-toast').text(res.msg);
+                $('#msg-toast').html(res.msg);
                 $('#alert-toast').toast('show')
             }
             console.log(res);
@@ -189,4 +189,8 @@ $(function(){
     $('#modal-product').on('hide.bs.modal', function (event) {
         window.location.reload();
     });
+
+    $('#alert-toast').on('hidden.bs.toast', function () {
+        window.location.reload();
+      })
 });

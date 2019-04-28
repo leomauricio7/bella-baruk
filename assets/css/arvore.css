@@ -1,5 +1,8 @@
 /*Now the CSS*/
 * {margin: 0; padding: 0;}
+.tree{
+	margin-left: 40%;
+}
 
 .tree ul {
 	padding-top: 20px; position: relative;

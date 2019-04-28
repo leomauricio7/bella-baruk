@@ -30,6 +30,7 @@ if($_POST){
     }
 }
 
+//inicia a sessão
 function initSession(){
     if(!isset($_SESSION['carrinho'])){
         $_SESSION['carrinho'] = array();
@@ -39,12 +40,79 @@ function initSession(){
     }
 }
 
+//cria um registro de ativação para o usuario
+function saveAdesao($user){
+    $save = new Create();
+    $start =date('Y/m/d');
+    $end = date('Y/m/d', strtotime('+30 days'));
+    $dados = ['id_user'=>$user,'data_ativacao'=>$start,'data_validade'=>$end];
+    $save->ExeCreate('user_adesao',$dados);
+    if($save->getResult()){
+        return true;
+    }else{
+        return false;
+    }
+}
+
+//ativa usuario na primeira compra efetuada
+function ativaUserAdesao($user){
+    $update = new Update();
+    $dados = ["status"=>"ativo", "fisrt_adesao"=>true];
+    $update->ExeUpdate('users', $dados, 'where id=:id', 'id='.$user);
+    if($update->getResult()){
+        return true;
+    }else{
+        return false;
+    }
+}
+
+//verifica se o usurairo ja fez uma compra no valor de R$150.00
+function verificaFirstCompra($user){
+    $read = new Read();
+    $read->ExeRead('users', 'where id=:id', 'id='.$user);
+    foreach($read->getResult() as $dados){
+        extract($dados);
+        if($fisrt_adesao == 1){
+            return true;
+        }else{
+            return false;
+        }
+    }
+}
+
+//pega o id do user do pedido
+function getUserPedido($idPedido){
+    $read = new Read();
+    $read->ExeRead('pedidos', 'where idPedido=:id', 'id='.$idPedido);
+    foreach($read->getResult() as $dados){
+        extract($dados);
+        return array('user'=>$id_user,'valor'=>$valor);
+    }
+}
+
+//da baixa no pedido
 function daBaixa($idPedido){
     $update = new Update();
     $dados = ["dado_baixa"=>"sim", "id_status"=>3];
     $update->ExeUpdate('pedidos', $dados, 'where idPedido=:id', 'id='.$idPedido);
     if($update->getResult()){
-        echo json_encode(array('status'=>200, 'msg'=>'Pedido dado baixa com sucesso.'));
+        $user = getUserPedido($idPedido)['user'];
+        $valor = getUserPedido($idPedido)['valor'];
+        if($valor >= 150){
+            if(!verificaFirstCompra($user)){
+                $ativo = ativaUserAdesao($user);
+                if($ativo){
+                    $adesao = saveAdesao($user);
+                    if($adesao){
+                        echo json_encode(array('status'=>200, 'msg'=>'Pedido dado baixa com sucesso.<br><strong>OBS:</strong> O usuário foi ativado com sucesso.'));
+                    }
+                }
+            }else{
+                echo json_encode(array('status'=>200, 'msg'=>'Pedido dado baixa com sucesso.<br><strong>OBS:</strong> Usuário ja efetuou a adesão.'));
+            }
+        }else{
+            echo json_encode(array('status'=>200, 'msg'=>'Pedido dado baixa com sucesso.<br><strong>OBS:</strong> Não houve checagem se a primeira compra foi realizada, devido ao valor do pedido ser menor que R$150,00.'));
+        }
     }else{
         echo json_encode(array('status'=>500, 'msg'=>'Internal serve error.'));
     }

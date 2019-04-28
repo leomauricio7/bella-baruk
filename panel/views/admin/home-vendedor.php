@@ -1,6 +1,7 @@
 <?php if(Validation::getPermisionTypeVendedor($tipoUser)){ ?>
 <div class="container-fluid">
-<?php if(Dados::verificaStatus($_SESSION['idUser'])){ ?>
+<!-- não fez a primeira compra -->
+<?php if(Dados::verificaAdesão($_SESSION['idUser'])){ ?>
   <div class="row">
         <div class="col-12">
             <div class="alert alert-danger" role="alert">
@@ -12,6 +13,29 @@
         </div>
     </div>
 <?php } ?>
+<!-- ja fez a primeira compra mas ja se passou 30 dias e não compro ativação -->
+<?php if(!Dados::verificaAdesão($_SESSION['idUser']) && !Dados::existePlanoAtivo($_SESSION['idUser'])){?>
+  <div class="row">
+        <div class="col-12">
+            <div class="alert alert-danger" role="alert">
+                <h4 class="alert-heading"><i class="fa fa-exclamation-triangle"></i> ATENÇÃO!</h4><hr>
+                <p class="badge badge-pill" style="font-size: 15px">Seu plano de ativação expirou, compre outro plano para continuar ganhando as comissões da sua equipe.</p>
+            </div>
+        </div>
+    </div>
+<?php } ?>
+<!-- ja fez a primeira compra e possui plano ativo -->
+<?php if(!Dados::verificaAdesão($_SESSION['idUser']) && Dados::existePlanoAtivo($_SESSION['idUser'])){ ?>
+  <div class="row">
+        <div class="col-12">
+            <div class="alert alert-ativacao" role="alert">
+                <h4 class="alert-heading"><i class="fa fa-exclamation-triangle"></i> ATENÇÃO!</h4><hr>
+                <p class="badge badge-pill badge-danger" style="font-size: 15px">Seu plano de ativação vence em <?php echo Dados::diasRestantesAtivacao($_SESSION['idUser']) ?> dias.</p>
+            </div>
+        </div>
+    </div>
+<?php } ?>
+
     <div class="row">
         <div class="col-12">
             <div class="alert alert-dark" role="alert">
