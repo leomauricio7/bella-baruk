@@ -41,7 +41,7 @@
             <div class="alert alert-dark" role="alert">
                 <p><i class="fa fa-exclamation-circle"></i> Seja bem vindo a área administratva do sistema, para indicar copie o link abaixo.</p>
                 <hr>
-                <h2 class="mb-0"><i class="fa fa-anchor"></i><a href="https://bellabaruk.com.br/backoffice/new-user/<?php echo Validation::getURI($_SESSION['idUser']) ?>"><span class="badge badge-pill badge-primary">https://bellabaruk.com.br/backoffice/new-user/<?php echo Validation::getURI($_SESSION['idUser']) ?></span></a></h2>
+                <h2 class="mb-0"><i class="fa fa-anchor"></i><a href="https://bellabaruk.com.br/new-user/<?php echo Validation::getURI($_SESSION['idUser']) ?>"><span class="badge badge-pill badge-primary">https://bellabaruk.com.br/new-user/<?php echo Validation::getURI($_SESSION['idUser']) ?></span></a></h2>
             </div>
         </div>
     </div>
