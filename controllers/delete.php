@@ -5,7 +5,7 @@
  * chp - chave primaria da tabela
  * id = valor da chave primaria
  */
-require_once 'conf.inc';
+require_once 'conf.php';
 require_once '../vendor/autoload.php';
 
 if (isset($_GET) && !empty($_GET)) {

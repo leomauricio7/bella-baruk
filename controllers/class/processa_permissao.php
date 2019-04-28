@@ -1,6 +1,6 @@
 <?php
 
-require_once '../Conf.inc';
+require_once '../conf.php';
 require_once '../../vendor/autoload.php';
 //valores das ordens antigasS
 $id = (int) $_GET['id'];

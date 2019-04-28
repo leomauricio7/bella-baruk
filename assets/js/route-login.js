@@ -1,4 +1,21 @@
 $(function(){
+
+    function getBaseUrl(){
+        // Nome do host
+        var hostName = location.hostname;
+        if(hostName === "localhost"){
+            // Endereço após o domínio do site
+            pathname = window.location.pathname;
+            // Separa o pathname com uma barra transformando o resultado em um array
+            splitPath = pathname.split('/');
+            // Obtém o segundo valor do array, que é o nome da pasta do servidor local
+            path = splitPath[1];
+            baseUrl = "http://" + hostName + "/" + path;
+        }else{
+            baseUrl = "https://" + hostName;
+        }
+        return baseUrl;
+    }
     //login
     var frm = $('#form-login');
     frm.submit(function (e) {
@@ -10,9 +27,10 @@ $(function(){
         var senha = $('#senha').val();
         grecaptcha.ready(function() {
             grecaptcha.execute('6LdsxpcUAAAAAJFAakC7MSZqmMaHVI4t7omDkO2b', { action: 'homepage'}).then(function(token) {
+                console.log(getBaseUrl());
                 $.ajax({
                     type: 'POST',
-                    url: 'views/site/validate.php',
+                    url: getBaseUrl()+'/views/site/validate.php',
                     data: 'user='+user+'&senha='+senha+'&token='+token,
                     dataType: "JSON",
                 }).done(function(resposta) {

@@ -1,7 +1,7 @@
 
 <?php 
-require_once'./controllers/conf.inc';
-require_once'./vendor/autoload.php';
+require_once './controllers/conf.php';
+require_once './vendor/autoload.php';
 ?>
 <!doctype html>
 <html lang="pt-br">

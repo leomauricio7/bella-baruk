@@ -1,6 +1,6 @@
 <?php
 
-require_once '../conf.inc';
+require_once '../conf.php';
 require_once '../../vendor/autoload.php';
 
 if($_POST){

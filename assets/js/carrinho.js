@@ -1,17 +1,26 @@
 $(function(){
 
-    function getURL(){
-        var origin = window.location.origin;
-        var pathname = window.location.pathname.split("/");
-        var url = origin+"/"+pathname[1];
-        console.log(url);
-        return url;
+    function getBaseUrl(){
+        // Nome do host
+        var hostName = location.hostname;
+        if(hostName === "localhost"){
+            // Endereço após o domínio do site
+            pathname = window.location.pathname;
+            // Separa o pathname com uma barra transformando o resultado em um array
+            splitPath = pathname.split('/');
+            // Obtém o segundo valor do array, que é o nome da pasta do servidor local
+            path = splitPath[1];
+            baseUrl = "http://" + hostName + "/" + path;
+        }else{
+            baseUrl = "https://" + hostName;
+        }
+        return baseUrl;
     }
 
     function startSession(){
         $.ajax({
             type: 'POST',
-            url: '../controllers/class/carrinho.php',
+            url: getBaseUrl()+'/controllers/class/carrinho.php',
             data: 'type=1',
             dataType: "json",
         }).done(function(res) {
@@ -33,7 +42,7 @@ $(function(){
         startSession();
         $.ajax({
             type: 'POST',
-            url: '../controllers/class/carrinho.php',
+            url: getBaseUrl()+'/controllers/class/carrinho.php',
             data: 'type=2&idProduct='+idProduct,
             dataType: "json",
         }).done(function(res) {
@@ -56,7 +65,7 @@ $(function(){
     function destroySession(){
         $.ajax({
             type: 'POST',
-            url: '../controllers/class/carrinho.php',
+            url: getBaseUrl()+'/controllers/class/carrinho.php',
             data: 'type=4',
             dataType: "json",
         }).done(function(res) {
@@ -79,7 +88,7 @@ $(function(){
     function removeProduct(idProduct, type){
         $.ajax({
             type: 'POST',
-            url: '../controllers/class/carrinho.php',
+            url: getBaseUrl()+'/controllers/class/carrinho.php',
             data: 'type='+type+'&idProduct='+idProduct,
             dataType: "json",
         }).done(function(res) {
@@ -101,7 +110,7 @@ $(function(){
     function closePedido(idPedido, totalPedido){
         $.ajax({
             type: 'POST',
-            url: '../controllers/class/carrinho.php',
+            url: getBaseUrl()+'/controllers/class/carrinho.php',
             data: 'type=6&idPedido='+idPedido+'&totalPedido='+totalPedido,
             dataType: "json",
         }).done(function(res) {
@@ -127,7 +136,7 @@ $(function(){
     function daBaixa(idPedido){
         $.ajax({
             type: 'POST',
-            url: getURL()+'/controllers/class/carrinho.php',
+            url: getBaseUrl()+'/controllers/class/carrinho.php',
             data: 'type=7&idPedido='+idPedido,
             dataType: "json",
         }).done(function(res) {
