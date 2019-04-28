@@ -40,15 +40,9 @@
                 <td class="tables-first"><?php echo $nome ?></td>
                 <td class="tables-last"><?php echo $cpf.''.$cnpj ?></td>
                 <td class="tables-last">
-                    <?php 
-                    $st = ucfirst($status);
-                    echo 
-                    $status  == 'inativo' ? 
-                    "<span class='badge badge-soft-danger'>$st</span>" :
-                    "<span class='badge badge-soft-success'>$st</span>"
-                    ?>
+                    <?php echo Dados::getStatus($id) ?>
                 </td>
-                <td class="tables-first"><span class="badge badge-success"><?php echo Validation::getIndicador($indicador) ?></span></td>
+                <td class="tables-first"><span class="badge badge-success"><?php echo Validation::getIndicador($indicador) ? Validation::getIndicador($indicador) : '-' ?></span></td>
                 <td class="tables-first"><?php echo $pontuacao ?></td>
                 <td class="tables-first"><?php echo ucfirst($tipo_pessoa) ?></td>
                 <td class="tables-first"><?php echo Validation::getTipoUsario($tipo_user) ?></td>

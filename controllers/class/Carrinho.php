@@ -89,6 +89,18 @@ function getUserPedido($idPedido){
         return array('user'=>$id_user,'valor'=>$valor);
     }
 }
+//seta a pontuacao da compra efetivada
+function setPontuacao($user, $pontos){
+    $update = new Update();
+    $newPontos = $pontos + Dados::getPontuacao($user);
+    $dados = ["pontuacao"=>$newPontos];
+    $update->ExeUpdate('users', $dados, 'where id=:id', 'id='.$user);
+    if($update->getResult()){
+        return true;
+    }else{
+        return false;
+    }
+}
 
 //da baixa no pedido
 function daBaixa($idPedido){
@@ -98,20 +110,28 @@ function daBaixa($idPedido){
     if($update->getResult()){
         $user = getUserPedido($idPedido)['user'];
         $valor = getUserPedido($idPedido)['valor'];
-        if($valor >= 150){
-            if(!verificaFirstCompra($user)){
-                $ativo = ativaUserAdesao($user);
-                if($ativo){
-                    $adesao = saveAdesao($user);
-                    if($adesao){
-                        echo json_encode(array('status'=>200, 'msg'=>'Pedido dado baixa com sucesso.<br><strong>OBS:</strong> O usuário foi ativado com sucesso.'));
+        if(setPontuacao($user,$valor)){
+            if($valor >= 150){
+                if(!verificaFirstCompra($user)){
+                    $ativo = ativaUserAdesao($user);
+                    if($ativo){
+                        $adesao = saveAdesao($user);
+                        if($adesao){
+                            if(Dados::setComissao($user, 27, $valor)){
+                                echo json_encode(array('status'=>200, 'msg'=>'Pedido dado baixa com sucesso.<br><strong>OBS:</strong> O usuário foi ativado com sucesso.'));
+                            }else{
+                                echo json_encode(array('status'=>200, 'msg'=>'Pedido dado baixa com sucesso.<br><strong>OBS:</strong> O usuário foi ativado com sucesso, mas a comissão não foi setada entre em contato com o suporte.'));
+                            }
+                        }
                     }
+                }else{
+                    echo json_encode(array('status'=>200, 'msg'=>'Pedido dado baixa com sucesso.<br><strong>OBS:</strong> Usuário ja efetuou a adesão.'));
                 }
             }else{
-                echo json_encode(array('status'=>200, 'msg'=>'Pedido dado baixa com sucesso.<br><strong>OBS:</strong> Usuário ja efetuou a adesão.'));
+                echo json_encode(array('status'=>200, 'msg'=>'Pedido dado baixa com sucesso.<br><strong>OBS:</strong> Não houve checagem se a primeira compra foi realizada, devido ao valor do pedido ser menor que R$150,00.'));
             }
         }else{
-            echo json_encode(array('status'=>200, 'msg'=>'Pedido dado baixa com sucesso.<br><strong>OBS:</strong> Não houve checagem se a primeira compra foi realizada, devido ao valor do pedido ser menor que R$150,00.'));
+            echo json_encode(array('status'=>200, 'msg'=>'Pedido dado baixa com sucesso.<br><strong>OBS:</strong> ocorreram erros ao setar a pontuaçao, entre em contato com o suporte.'));
         }
     }else{
         echo json_encode(array('status'=>500, 'msg'=>'Internal serve error.'));

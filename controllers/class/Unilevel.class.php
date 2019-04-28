@@ -3,15 +3,33 @@
 class Unilevel {
 
     public static function getTotalUsersAtivos($id){
+        $total = 0;
         $read = new Read();
         $read->ExeRead('users', 'where indicador=:id AND status = "ativo"','id='.$id);
-        return $read->getRowCount();
+        if($read->getRowCount() > 0){
+            foreach($read->getResult() as $dados){
+                extract($dados);
+                if(Dados::existePlanoAtivo($id)){
+                    $total+=1;
+                }
+            }
+        }
+        return $total;
     }
 
     public static function getTotalUsersInativos($id){
+        $total = 0;
         $read = new Read();
-        $read->ExeRead('users', 'where indicador=:id AND status = "inativo"','id='.$id);
-        return $read->getRowCount();
+        $read->ExeRead('users', 'where indicador=:id','id='.$id);
+        if($read->getRowCount() > 0){
+            foreach($read->getResult() as $dados){
+                extract($dados);
+                if(!Dados::existePlanoAtivo($id)){
+                    $total+=1;
+                }
+            }
+        }
+        return $total;
     }
 
     public static function getTotalUsersIndicados($id){
@@ -28,8 +46,17 @@ class Unilevel {
 
     public static function getTotalUsersAtivosMaster(){
         $read = new Read();
+        $total = 0;
         $read->ExeRead('users', 'where status = "ativo"');
-        return $read->getRowCount();
+        if($read->getRowCount() > 0){
+            foreach($read->getResult() as $dados){
+                extract($dados);
+                if(Dados::existePlanoAtivo($id)){
+                    $total+=1;
+                }
+            }
+        }
+        return $total;
     }
 
     public static function getSaldoTotalComprasPagas(){

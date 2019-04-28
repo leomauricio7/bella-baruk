@@ -119,7 +119,7 @@
                       <div class="col">
                         <!-- Progress -->
                         <div class="progress progress-sm">
-                          <div class="progress-bar" role="progressbar" style="width: <?php echo Dados::getPontuacao($_SESSION['idUser']) ?>%" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"></div>
+                          <div class="progress-bar" role="progressbar" style="width: <?php echo (Dados::getPontuacao($_SESSION['idUser'])*0.1) ?>%" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100%"></div>
                         </div>
                       </div>
                     </div> <!-- / .row -->
@@ -145,7 +145,7 @@
                     </h6>
                     <!-- Heading -->
                     <span class="h2 mb-0">
-                    R$ <?php echo Dados::getPontuacao($_SESSION['idUser']) ?>
+                      R$ <?php echo Dados::getComissao($_SESSION['idUser']) ?>
                     </span>
                   </div>
                   <div class="col-auto"> 

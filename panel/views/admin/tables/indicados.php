@@ -43,13 +43,7 @@
                 <th scope="row" class="tables-row"><?php echo $id ?></th>
                 <td class="tables-first"><?php echo $nome ?></td>
                 <td class="tables-last">
-                    <?php 
-                    $st = ucfirst($status);
-                    echo 
-                    $status  == 'inativo' ? 
-                    "<span class='badge badge-soft-danger'>$st</span>" :
-                    "<span class='badge badge-soft-success'>$st</span>"
-                    ?>
+                    <?php echo Dados::getStatus($id) ?>
                 </td>
                 <td class="tables-last"><?php echo date('d/m/Y', strtotime($created)) ?></td>
                 <td class="tables-handle">
