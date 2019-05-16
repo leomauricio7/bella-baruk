@@ -249,10 +249,16 @@
                 </a>
               </li>
               <li class="nav-item">
+                <a class="nav-link" href="<?php echo Url::getBase() ?>matriz">
+                  <i class="fa fa-sitemap"></i> Matriz
+                </a>
+              </li>
+              <li class="nav-item">
                 <a class="nav-link" href="<?php echo Url::getBase() ?>planos">
                   <i class="fa fa-tags"></i> Ativação
                 </a>
               </li>
+
               
               <li class="nav-item">
                 <a class="nav-link" href="<?php echo Url::getBase() ?>products">

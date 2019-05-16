@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 28-Abr-2019 às 21:33
+-- Generation Time: 16-Maio-2019 às 01:41
 -- Versão do servidor: 5.7.14
 -- PHP Version: 7.0.10
 
@@ -41,7 +41,37 @@ CREATE TABLE `comissoes` (
 
 INSERT INTO `comissoes` (`id`, `id_user_recebedor`, `id_user_comprador`, `valor`, `created`, `updated`) VALUES
 (2, 6, 7, '190', '2019-04-28 15:36:24', NULL),
-(3, 3, 6, '63', '2019-04-28 15:43:17', NULL);
+(3, 3, 6, '63', '2019-04-28 15:43:17', NULL),
+(4, 6, 14, '11', '2019-05-15 20:20:03', NULL),
+(5, 6, 7, '22', '2019-05-15 20:34:02', NULL),
+(6, 6, 7, '11', '2019-05-15 20:34:02', NULL),
+(7, 6, 7, '6', '2019-05-15 20:34:02', NULL),
+(8, 6, 7, '4', '2019-05-15 20:34:02', NULL),
+(9, 6, 7, '4', '2019-05-15 20:34:02', NULL),
+(10, 6, 7, '2', '2019-05-15 20:34:02', NULL),
+(11, 6, 7, '12', '2019-05-15 20:34:33', NULL),
+(12, 6, 7, '6', '2019-05-15 20:34:33', NULL),
+(13, 6, 7, '4', '2019-05-15 20:34:33', NULL),
+(14, 6, 7, '2', '2019-05-15 20:34:34', NULL),
+(15, 6, 7, '2', '2019-05-15 20:34:34', NULL),
+(16, 6, 7, '1', '2019-05-15 20:34:34', NULL),
+(17, 6, 9, '98', '2019-05-15 20:40:13', NULL),
+(18, 9, 10, '115', '2019-05-15 20:41:45', NULL),
+(19, 10, 11, '98', '2019-05-15 20:45:36', NULL),
+(20, 11, 12, '94', '2019-05-15 20:47:32', NULL),
+(21, 12, 13, '94', '2019-05-15 20:48:53', NULL),
+(22, 6, 14, '7', '2019-05-15 20:49:52', NULL),
+(23, 9, 14, '4', '2019-05-15 20:49:52', NULL),
+(24, 10, 14, '3', '2019-05-15 20:49:52', NULL),
+(25, 11, 14, '3', '2019-05-15 20:49:52', NULL),
+(26, 12, 14, '3', '2019-05-15 20:49:52', NULL),
+(27, 13, 14, '1', '2019-05-15 20:49:52', NULL),
+(28, 6, 14, '32', '2019-05-15 21:02:57', NULL),
+(29, 9, 14, '19', '2019-05-15 21:02:57', NULL),
+(30, 10, 14, '13', '2019-05-15 21:02:57', NULL),
+(31, 11, 14, '13', '2019-05-15 21:02:57', NULL),
+(32, 12, 14, '13', '2019-05-15 21:02:57', NULL),
+(33, 13, 14, '6', '2019-05-15 21:02:57', NULL);
 
 -- --------------------------------------------------------
 
@@ -121,10 +151,10 @@ INSERT INTO `niveis` (`id`, `nivel`, `comisao`, `created`, `updated`) VALUES
 (18, 1, 10, '2019-02-20 21:53:40', NULL),
 (19, 2, 5, '2019-02-20 21:53:44', NULL),
 (20, 3, 3, '2019-02-20 21:53:57', NULL),
-(21, 4, 3, '2019-02-20 21:54:03', NULL),
+(21, 4, 2, '2019-02-20 21:54:03', '2019-05-15 17:29:38'),
 (22, 5, 2, '2019-02-20 21:54:13', NULL),
 (23, 6, 2, '2019-02-20 21:54:20', NULL),
-(24, 7, 2, '2019-02-20 21:54:25', NULL);
+(24, 7, 1, '2019-02-20 21:54:25', '2019-05-15 17:29:42');
 
 -- --------------------------------------------------------
 
@@ -175,14 +205,22 @@ CREATE TABLE `pedidos` (
 --
 
 INSERT INTO `pedidos` (`id`, `idPedido`, `id_user`, `id_status`, `valor`, `comprovante`, `dado_baixa`, `created`, `updated`) VALUES
-(7, 522396940, 6, 2, 143, 'pl1.png', 'nao', '2019-03-23 16:56:01', '2019-04-28 15:16:52'),
+(7, 522396940, 6, 3, 143, 'pl1.png', 'sim', '2019-03-23 16:56:01', '2019-05-15 20:33:27'),
 (8, 752250755, 6, 2, 96, NULL, 'nao', '2019-03-23 17:02:45', '2019-04-28 10:40:52'),
 (9, 843083225, 6, 2, 23, NULL, 'nao', '2019-03-23 17:19:14', '2019-04-28 10:40:52'),
-(10, 82363968, 6, 2, 127, 'pl1.png', 'nao', '2019-03-23 17:24:44', '2019-04-28 15:16:52'),
-(11, 385747603, 7, 2, 216, 'Captura de Tela (140).png', 'nao', '2019-03-23 18:41:35', '2019-04-28 14:12:09'),
-(12, 689788982, 7, 2, 120, 'Captura de Tela (136).png', 'nao', '2019-03-23 19:39:48', '2019-04-28 14:12:09'),
+(10, 82363968, 6, 3, 127, 'pl1.png', 'sim', '2019-03-23 17:24:44', '2019-05-15 20:33:47'),
+(11, 385747603, 7, 3, 216, 'Captura de Tela (140).png', 'sim', '2019-03-23 18:41:35', '2019-05-15 20:34:01'),
+(12, 689788982, 7, 3, 120, 'Captura de Tela (136).png', 'sim', '2019-03-23 19:39:48', '2019-05-15 20:34:33'),
 (13, 890742676, 7, 3, 705, 'comprovante.PNG', 'sim', '2019-04-28 10:57:35', '2019-04-28 15:36:24'),
-(14, 783871190, 6, 3, 234, 'Ã§.PNG', 'sim', '2019-04-28 15:09:35', '2019-04-28 15:43:17');
+(14, 783871190, 6, 3, 234, 'Ã§.PNG', 'sim', '2019-04-28 15:09:35', '2019-04-28 15:43:17'),
+(15, 984989177, 14, 3, 211, 'Captura de Tela (108).png', 'sim', '2019-05-15 18:39:07', '2019-05-15 20:22:11'),
+(16, 51112517, 14, 3, 148, 'Captura de Tela (1).png', 'sim', '2019-05-15 19:40:26', '2019-05-15 20:49:51'),
+(17, 716394782, 13, 3, 426, 'Captura de Tela (215).png', 'sim', '2019-05-15 20:25:23', '2019-05-15 20:48:53'),
+(18, 207787728, 12, 3, 426, 'Captura de Tela (134).png', 'sim', '2019-05-15 20:27:05', '2019-05-15 20:47:32'),
+(19, 79097886, 11, 3, 441, 'Captura de Tela (56).png', 'sim', '2019-05-15 20:29:09', '2019-05-15 20:45:36'),
+(20, 391660155, 10, 3, 511, 'Captura de Tela (235).png', 'sim', '2019-05-15 20:30:54', '2019-05-15 20:41:44'),
+(21, 127860002, 9, 3, 441, 'Captura de Tela (136).png', 'sim', '2019-05-15 20:32:06', '2019-05-15 20:40:13'),
+(22, 378655221, 14, 3, 642, 'Captura de Tela (132).png', 'sim', '2019-05-15 21:01:17', '2019-05-15 21:02:57');
 
 -- --------------------------------------------------------
 
@@ -253,7 +291,24 @@ INSERT INTO `produtos_pedido` (`id`, `id_produto`, `id_pedido`, `quantidade`, `c
 (15, 13, 890742676, 2, '2019-04-28 10:57:35', NULL),
 (16, 19, 783871190, 1, '2019-04-28 15:09:35', NULL),
 (17, 18, 783871190, 2, '2019-04-28 15:09:35', NULL),
-(18, 17, 783871190, 1, '2019-04-28 15:09:36', NULL);
+(18, 17, 783871190, 1, '2019-04-28 15:09:36', NULL),
+(19, 20, 984989177, 1, '2019-05-15 18:39:07', NULL),
+(20, 19, 984989177, 1, '2019-05-15 18:39:07', NULL),
+(21, 15, 984989177, 1, '2019-05-15 18:39:07', NULL),
+(22, 18, 51112517, 1, '2019-05-15 19:40:26', NULL),
+(23, 19, 51112517, 1, '2019-05-15 19:40:26', NULL),
+(24, 15, 716394782, 1, '2019-05-15 20:25:23', NULL),
+(25, 13, 716394782, 1, '2019-05-15 20:25:23', NULL),
+(26, 15, 207787728, 1, '2019-05-15 20:27:05', NULL),
+(27, 13, 207787728, 1, '2019-05-15 20:27:05', NULL),
+(28, 13, 79097886, 1, '2019-05-15 20:29:09', NULL),
+(29, 14, 79097886, 1, '2019-05-15 20:29:09', NULL),
+(30, 19, 391660155, 1, '2019-05-15 20:30:54', NULL),
+(31, 15, 391660155, 1, '2019-05-15 20:30:54', NULL),
+(32, 13, 391660155, 1, '2019-05-15 20:30:54', NULL),
+(33, 13, 127860002, 1, '2019-05-15 20:32:06', NULL),
+(34, 14, 127860002, 1, '2019-05-15 20:32:06', NULL),
+(35, 13, 378655221, 2, '2019-05-15 21:01:17', NULL);
 
 -- --------------------------------------------------------
 
@@ -341,12 +396,15 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `nome`, `cpf`, `cnpj`, `slug`, `email`, `senha`, `tipo_pessoa`, `tipo_user`, `status`, `fisrt_adesao`, `indicador`, `pontuacao`, `rua`, `bairro`, `complemento`, `referencia`, `cep`, `numero`, `cidade`, `uf`, `sexo`, `telefone`, `avatar`, `created`, `_token`, `updated`) VALUES
 (3, 'Leonardo Mauricio da Silva', '017.598.904-48', '', 'lmauricio', 'lf341533@gmail.com', '$2y$10$RCk2.0Hv4R9EDO26n5MJFuN7szVyJzxdPtj1m.N5inW24T6HqJ4Su', 'fisica', 1, 'inativo', 0, NULL, 0, 'Rua Prisco Rocha', 'Passe e fica', 'Casa 50', 'Em frente ao orelhÃ£o', '59570-000', 1163, 'CearÃ¡-Mirim', 'RN', 'M', '(84)99482-9780', 'IMG_2022.JPG', '2019-02-21 20:22:23', NULL, '2019-04-28 15:17:31'),
-(6, 'Pedro Neto', '054.852.774-11', '', 'pedro-neto', 'neto@gmail.com', '$2y$10$Mjpcsj2V4YQbSVRRTu84lusMagUXncYWEcoRc4sroihC7fK1.DunS', 'fisica', 2, 'ativo', 1, 3, 234, 'Rua Prisco Rocha', 'Passe e fica', 'Zona Urbana', 'Em frente ao orelhÃ£o', '59570-000', 12, 'CearÃ¡-Mirim', 'RN', 'M', '(84)45454-6546', '_LNO4840.jpg', '2019-02-21 20:37:28', NULL, '2019-04-28 15:44:28'),
-(7, 'Teste Franqueado', NULL, NULL, 'teste', 'leomauricio7@gmail.com', '$2y$10$LcIp4mEV5yPZI6hTs.Qn7uAleVT0f952tY7oLRkUimyvI8xtf29Oe', 'fisica', 2, 'ativo', 1, 6, 705, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'RN', NULL, '(84) 99430-2191', NULL, '2019-02-22 16:13:22', NULL, '2019-04-28 15:36:24'),
+(6, 'Pedro Neto', '054.852.774-11', '', 'pedro-neto', 'neto@gmail.com', '$2y$10$Mjpcsj2V4YQbSVRRTu84lusMagUXncYWEcoRc4sroihC7fK1.DunS', 'fisica', 2, 'ativo', 1, 3, 504, 'Rua Prisco Rocha', 'Passe e fica', 'Zona Urbana', 'Em frente ao orelhÃ£o', '59570-000', 12, 'CearÃ¡-Mirim', 'RN', 'M', '(84)45454-6546', '_LNO4840.jpg', '2019-02-21 20:37:28', NULL, '2019-05-15 20:33:47'),
+(7, 'Teste Franqueado', NULL, NULL, 'teste', 'leomauricio7@gmail.com', '$2y$10$LcIp4mEV5yPZI6hTs.Qn7uAleVT0f952tY7oLRkUimyvI8xtf29Oe', 'fisica', 2, 'ativo', 1, 6, 1041, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'RN', NULL, '(84) 99430-2191', NULL, '2019-02-22 16:13:22', NULL, '2019-05-15 20:34:33'),
 (8, 'teste cliente', '628.636.680-64', '', 'teste-cliente', 'teste@gmail.com', '$2y$10$yfbbJabS.UCj.WAzrPYfBeK3i7/2OMyPnsg6cpKrcP0l3ZHk.FCvm', 'fisica', 1, 'inativo', 0, NULL, 0, 'Rua Prisco Richa', 'Passe e fica', 'Zona Urbana', 'Em frente ao orelhÃ£o', '59490-000', 1163, 'Ielmo Marinho', 'RN', 'M', '(84)32670-013', 'user.png', '2019-02-22 19:24:47', NULL, '2019-04-28 15:17:31'),
-(9, 'Indicado do I', NULL, NULL, 'teste1', 'teste1@gmail.com', '$2y$10$SZrDXAJaveiio0P6rMs/3uzOgtncuWFSw.6SnEzRjHF6wFcJSSScu', 'fisica', 2, 'inativo', 0, 6, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'RN', NULL, '(84) 32670-013', NULL, '2019-04-07 00:58:13', NULL, NULL),
-(10, 'teste 2', NULL, NULL, 'teste2', 'teste2@gmail.com', '$2y$10$2YzBy.1M7RjPFbgrgs0g9eNCQN1UwNtfJPMA2ah1pYlzDfdvFeIhS', 'fisica', 2, 'inativo', 0, 9, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'RN', NULL, '(84) 32670-013', NULL, '2019-04-07 01:00:19', NULL, NULL),
-(11, 'teste3', NULL, NULL, 'teste3', 'teste3@gmail.com', '$2y$10$t/AW548KavhTPsCw6kMXueZwk5E0Gr4/biYmc1HogNnu9XrFwf/4e', 'fisica', 2, 'inativo', 0, 10, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'RN', NULL, '(84) 32670-013', NULL, '2019-04-07 01:00:54', NULL, NULL);
+(9, 'Indicado do I', '', '', 'teste1', 'teste1@gmail.com', '$2y$10$SZrDXAJaveiio0P6rMs/3uzOgtncuWFSw.6SnEzRjHF6wFcJSSScu', 'fisica', 2, 'ativo', 1, 6, 441, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'RN', '', '(84)32670-013', 'IMG_20150606_101536.jpg', '2019-04-07 00:58:13', NULL, '2019-05-15 21:25:48'),
+(10, 'teste 2', NULL, NULL, 'teste2', 'teste2@gmail.com', '$2y$10$y2csTcI32o5RmQ/R/bsQdOvKZeYXIi3wp1U.BHH9a4GzmHuRA.FPm', 'fisica', 2, 'ativo', 1, 9, 511, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'RN', NULL, '(84) 32670-013', NULL, '2019-04-07 01:00:19', NULL, '2019-05-15 20:41:44'),
+(11, 'teste3', NULL, NULL, 'teste3', 'teste3@gmail.com', '$2y$10$y2csTcI32o5RmQ/R/bsQdOvKZeYXIi3wp1U.BHH9a4GzmHuRA.FPm', 'fisica', 2, 'ativo', 1, 10, 441, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'RN', NULL, '(84) 32670-013', NULL, '2019-04-07 01:00:54', NULL, '2019-05-15 20:45:36'),
+(12, 'teste  4', NULL, NULL, 'teste4', 'teste4@gmail.com', '$2y$10$y2csTcI32o5RmQ/R/bsQdOvKZeYXIi3wp1U.BHH9a4GzmHuRA.FPm', 'fisica', 2, 'ativo', 1, 11, 426, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'RN', NULL, '(98) 79897-5466', NULL, '2019-05-15 16:34:10', NULL, '2019-05-15 20:47:32'),
+(13, 'teste 5 ', NULL, NULL, 'teste5', 'teste5@gmail.com', '$2y$10$qzVwW6azQg7RRHH4L0By9OOfEgC0O50dhJ6NziXYgAlLZIcAWPajK', 'fisica', 2, 'ativo', 1, 12, 426, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'RN', NULL, '(84) 32670-013', NULL, '2019-05-15 16:34:41', NULL, '2019-05-15 20:48:53'),
+(14, 'teste 6', NULL, NULL, 'teste6', 'teste6@gmail.com', '$2y$10$8kI.KH.XB6JORY.V5JmzsuttS/SliMdHDY6Zt8PlhilmpFHOEeWCS', 'fisica', 2, 'ativo', 1, 13, 1423, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'RN', NULL, '(84) 32670-013', NULL, '2019-05-15 16:35:11', NULL, '2019-05-15 21:02:57');
 
 -- --------------------------------------------------------
 
@@ -367,7 +425,14 @@ CREATE TABLE `user_adesao` (
 
 INSERT INTO `user_adesao` (`id`, `id_user`, `data_ativacao`, `data_validade`) VALUES
 (5, 7, '2019-04-28', '2019-05-28'),
-(6, 6, '2019-04-28', '2019-05-28');
+(6, 6, '2019-04-28', '2019-05-28'),
+(7, 14, '2019-05-15', '2019-06-14'),
+(8, 14, '2019-05-15', '2019-06-14'),
+(9, 9, '2019-05-15', '2019-06-14'),
+(10, 10, '2019-05-15', '2019-06-14'),
+(11, 11, '2019-05-15', '2019-06-14'),
+(12, 12, '2019-05-15', '2019-06-14'),
+(13, 13, '2019-05-15', '2019-06-14');
 
 --
 -- Indexes for dumped tables
@@ -468,7 +533,7 @@ ALTER TABLE `user_adesao`
 -- AUTO_INCREMENT for table `comissoes`
 --
 ALTER TABLE `comissoes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 --
 -- AUTO_INCREMENT for table `conta_users`
 --
@@ -493,7 +558,7 @@ ALTER TABLE `nivel_pontuacao`
 -- AUTO_INCREMENT for table `pedidos`
 --
 ALTER TABLE `pedidos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 --
 -- AUTO_INCREMENT for table `products`
 --
@@ -503,7 +568,7 @@ ALTER TABLE `products`
 -- AUTO_INCREMENT for table `produtos_pedido`
 --
 ALTER TABLE `produtos_pedido`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 --
 -- AUTO_INCREMENT for table `status_pedido`
 --
@@ -518,12 +583,12 @@ ALTER TABLE `tipo_users`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 --
 -- AUTO_INCREMENT for table `user_adesao`
 --
 ALTER TABLE `user_adesao`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 --
 -- Constraints for dumped tables
 --
