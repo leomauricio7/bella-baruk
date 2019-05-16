@@ -171,4 +171,10 @@ class Dados {
         }
 
     }
+
+    public static function getFilhos($indicador){
+        $read = new Read();
+        $read->ExeRead('users','where indicador = '.$indicador);
+        return $read->getResult();
+    }
 }

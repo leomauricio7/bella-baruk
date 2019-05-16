@@ -19,7 +19,7 @@
     <link rel="shortcut icon" href="<?php echo Url::getBase(); ?>../assets/img/logotipos/favicon-bella-baruk.png" type="image/x-icon">
     <!-- Libs CSS -->
     <?php 
-        if(Url::getURL(0) == 'unilevel'){
+        if(Url::getURL(0) == 'unilevel' || Url::getURL(0) == 'matriz'){
             $link = '<link rel="stylesheet" href="'.Url::getBase().'../assets/css/arvore.css">';
             echo $link;
         }
