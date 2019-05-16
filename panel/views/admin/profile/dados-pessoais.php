@@ -20,7 +20,7 @@
                         $request['avatar'] = $_FILES['avatar']['name'];
                         $file = $_FILES['avatar'];
                         $uploud = new Uploud();
-                        $uploud->ImagemEdit($file, 'users/' . $_SESSION['idUser'] . '/');
+                        @$uploud->Imagem($file, 'users/' . $_SESSION['idUser'] . '/');
                     }
                     $user->ExeUpdate('users',$request, 'where id = :id', 'id='.$_SESSION['idUser']);
                     if (!$user->getResult()):
