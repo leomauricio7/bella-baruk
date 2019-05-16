@@ -8,10 +8,11 @@
         $update->ExeUpdate('pedidos', $dadosUpdate, 'where id=:id', 'id='.$dados['idPedido']);
         if($update->getResult()){
             $uploud = new Uploud();
+           
             if(Validation::existComprovante($dados['idPedido'])){
-                $uploud->ImagemEdit($file, 'comprovantes/'.$dados['idPedido'].'/');
-            }else{
-                $uploud->Imagem($file, 'comprovantes/'.$dados['idPedido'].'/');
+                @$uploud->ImagemEdit($file, 'comprovantes/'.$dados['idPedido'].'/');
+            }else{;
+                @$uploud->Imagem($file, 'comprovantes/'.$dados['idPedido'].'/');
             }
             echo '
                 <div class="alert alert-success alert-dismissible fade show" role="alert">

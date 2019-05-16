@@ -111,16 +111,24 @@ function daBaixa($idPedido){
         $user = getUserPedido($idPedido)['user'];
         $valor = getUserPedido($idPedido)['valor'];
         if(setPontuacao($user,$valor)){
+
+            if(verificaFirstCompra($user)){
+                $userRecebedores = Unilevel::getHierarquiaComissaoUnilevel($user);
+                for($i = 1; $i <= count($userRecebedores); $i++){
+                    Dados::setComissao($user, $userRecebedores[$i]['comisao'], $valor, $userRecebedores[$i]['indicador']);
+                }
+            }
+
             if($valor >= 150){
                 if(!verificaFirstCompra($user)){
                     $ativo = ativaUserAdesao($user);
                     if($ativo){
                         $adesao = saveAdesao($user);
                         if($adesao){
-                            if(Dados::setComissao($user, 27, $valor)){
+                            if(Dados::setComissao($user, 25, $valor-50, null)['status']){
                                 echo json_encode(array('status'=>200, 'msg'=>'Pedido dado baixa com sucesso.<br><strong>OBS:</strong> O usuário foi ativado com sucesso.'));
                             }else{
-                                echo json_encode(array('status'=>200, 'msg'=>'Pedido dado baixa com sucesso.<br><strong>OBS:</strong> O usuário foi ativado com sucesso, mas a comissão não foi setada entre em contato com o suporte.'));
+                                echo json_encode(array('status'=>200, 'msg'=>'Pedido dado baixa com sucesso.<br><strong>OBS:</strong> O usuário foi ativado com sucesso, mas a comissão não foi setada entre em contato com o suporte. ERROR:'.Dados::setComissao($user, 25, $valor-50, null)['msg']));
                             }
                         }
                     }

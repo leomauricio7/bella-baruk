@@ -541,15 +541,12 @@ class Validation extends Conn {
 
     public static function existComprovante($id){
         $read = new Read();
-        $read->ExeRead("pedidos", 'WHERE id = '.$id);
-        foreach ($read->getResult() as $dados) {
-            extract($dados);
-            if($comprovante == null){
-               return false;
-            }else{
-                return true;
-            }
-        }
+        $read->ExeRead("pedidos", 'WHERE id=:id AND comprovante IS NULL', 'id='.$id);
+        if($read->getRowCount() > 0){
+            return true;
+        }else{
+            return false;
+        } 
     }
     public static function existeContaUser($id){
         $read = new Read();

@@ -154,16 +154,21 @@ class Dados {
         }
     }
     //seta a primeira comissão para usuário que indicou
-    public static function setComissao($user, $porcentagem, $compra){
+    public static function setComissao($user, $porcentagem, $compra, $indicador_temp){
         $valor = Dados::porcentagem_xn($porcentagem,$compra);
-        $indicador = Dados::getIndicador($user);
-        $save = new Create();
-        $dados = ['id_user_recebedor'=>$indicador, 'id_user_comprador'=>$user, 'valor'=>$valor];
-        $save->ExeCreate('comissoes',$dados);
-        if($save->getResult()){
-            return true;
+        $indicador = $indicador_temp == null ? Dados::getIndicador($user) : $indicador_temp;
+        if(Dados::existePlanoAtivo($indicador)){
+            $save = new Create();
+            $dados = ['id_user_recebedor'=>$indicador, 'id_user_comprador'=>$user, 'valor'=>$valor];
+            $save->ExeCreate('comissoes',$dados);
+            if($save->getResult()){
+                return ['status'=>true, 'msg'=> 'Comissão setda com sucesso.'];
+            }else{
+                return ['status'=>false, 'msg'=> 'Error na procesamento da comissão.'];
+            }
         }else{
-            return false;
+            return ['status'=>false, 'msg'=> 'User indicator is not active.'];
         }
+
     }
 }

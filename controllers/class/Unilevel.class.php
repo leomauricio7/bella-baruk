@@ -75,5 +75,50 @@ class Unilevel {
         $read->ExeRead('products');
         return $read->getRowCount();
     }
+    //retorna os 7 niveis(indicador) de comissoes do meu cadastro
+    public static function getHierarquiaComissaoUnilevel($idComprador){
+        $read = new Read();
+        $my_user = [];
+        $my_user[7]=[
+            'indicador' => Dados::getIndicador($idComprador),
+            'comisao'   => Unilevel::getvaluePorcentagemNivelUnilevel(7)
+        ];
+        $my_user[6]=[
+            'indicador' => Dados::getIndicador($my_user[7]['indicador']),
+            'comisao'   => Unilevel::getvaluePorcentagemNivelUnilevel(6)
+        ];
+        $my_user[5]=[
+            'indicador' => Dados::getIndicador($my_user[6]['indicador']),
+            'comisao'   => Unilevel::getvaluePorcentagemNivelUnilevel(5)
+        ];
+        $my_user[4]=[
+            'indicador' => Dados::getIndicador($my_user[5]['indicador']),
+            'comisao'   => Unilevel::getvaluePorcentagemNivelUnilevel(4)
+        ];
+        $my_user[3]=[
+            'indicador' => Dados::getIndicador($my_user[4]['indicador']),
+            'comisao'   => Unilevel::getvaluePorcentagemNivelUnilevel(3)
+        ];
+        $my_user[2]=[
+            'indicador' => Dados::getIndicador($my_user[3]['indicador']),
+            'comisao'   => Unilevel::getvaluePorcentagemNivelUnilevel(2)
+        ];
+        $my_user[1]=[
+            'indicador' => Dados::getIndicador($my_user[2]['indicador']),
+            'comisao'   => Unilevel::getvaluePorcentagemNivelUnilevel(1)
+        ];
+        return $my_user;
+    } 
+
+    //retorna o valor da porcenta de cada nivel de comissão do unilevel
+    public static function getvaluePorcentagemNivelUnilevel($nivel){
+        $read = new Read();
+        $read->ExeRead('niveis', 'where nivel=:nivel', 'nivel='.$nivel);
+        foreach($read->getResult() as $dados){
+            extract($dados);
+            return $comisao;
+        }
+    }
+     
 
 }
