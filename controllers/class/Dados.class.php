@@ -172,9 +172,25 @@ class Dados {
 
     }
 
-    public static function getFilhos($indicador){
+    public static function getFilhos($indicador,$derramamento = null){
+        $array = [];
         $read = new Read();
-        $read->ExeRead('users','where indicador = '.$indicador);
-        return $read->getResult();
+        $read->ExeRead('users','where indicador = '.$indicador.' AND status = "ativo" ');
+        $filhos = $read->getResult();
+        return $filhos;
+    }
+
+    public static function montaNivel($data){
+        $qualificadores= [];
+        $restantes =[];
+        if(count($data) > 2){
+            for ($i = 0; $i < 2; $i++) {
+               array_push($qualificadores, $data[$i]);
+               unset($data[$i]);
+            }
+            return ['qualificadores'=>$qualificadores,'restantes'=>$data];
+        }
+        return ['qualificadores'=>$data,'restantes'=>[]];
+       
     }
 }
