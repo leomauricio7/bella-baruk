@@ -11,6 +11,7 @@ return array(
     'Dados' => $baseDir . '/controllers/class/Dados.class.php',
     'Data' => $baseDir . '/controllers/class/Data.class.php',
     'Delete' => $baseDir . '/controllers/conn/Delete.class.php',
+    'Derramamento' => $baseDir . '/controllers/class/Derramamento.class.php',
     'Edital' => $baseDir . '/controllers/class/Edital.class.php',
     'Nivel' => $baseDir . '/controllers/class/Nivel.class.php',
     'Pontuacao' => $baseDir . '/controllers/class/Pontuacao.php',

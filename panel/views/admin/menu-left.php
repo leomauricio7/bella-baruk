@@ -258,6 +258,11 @@
                   <i class="fa fa-tags"></i> Ativação
                 </a>
               </li>
+              <li class="nav-item">
+                <a class="nav-link" href="<?php echo Url::getBase() ?>plano-carreira">
+                  <i class="fa fa-wallet"></i> Plano de carreira
+                </a>
+              </li>
 
               
               <li class="nav-item">

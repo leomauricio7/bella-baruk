@@ -17,10 +17,11 @@
             <div class="col-auto"> 
                 <!-- Navigation (button group) -->
                 <div class="nav btn-group" role="tablist">
-                    <button class="btn btn-lg btn-white active" data-toggle="tab" data-target="#tabPaneOne" role="tab" aria-controls="tabPaneOne" aria-selected="true">
+                    
+                    <button class="btn btn-lg btn-white" data-toggle="tab" data-target="#tabPaneOne" role="tab" aria-controls="tabPaneOne" aria-selected="true">
                         <span class="fa fa-grip-vertical"></span>
                     </button>
-                    <button class="btn btn-lg btn-white" data-toggle="tab" data-target="#tabPaneTwo" role="tab" aria-controls="tabPaneTwo" aria-selected="false">
+                    <button class="btn btn-lg btn-white <?php echo !Validation::getPermisionType($tipoUser) ? 'active' : '' ?>" data-toggle="tab" data-target="#tabPaneTwo" role="tab" aria-controls="tabPaneTwo" aria-selected="false">
                         <span class="fa fa-list"></span>
                     </button>
                 </div> <!-- / .nav -->
@@ -42,7 +43,7 @@
 					<div class="col-12 col-md-4 col-xl-4">
 						<!-- Card -->
 						<div class="card">
-							<img src="<?php echo Url::getBase().'docs/nivel-pontuacao/'.$id.'/'.$avatar ?>" alt="..." class="card-img-top img-nivel">
+							<img src="<?php echo Url::getBase().'docs/nivel-pontuacao/'.$id.'/'.$avatar ?>" alt="..." class="card-img-top img-nivel <?php echo !Validation::getPermisionType($tipoUser) ? 'opaco' : '' ?>">
 							<div class="card-body">
 								<div class="row align-items-center">
 									<div class="col">
@@ -112,7 +113,7 @@
 								<div class="col-auto">
 									<!-- Avatar -->
 									<a href="" class="avatar avatar-lg avatar-4by3 img-nivel-xs">
-										<img src="<?php echo Url::getBase().'docs/nivel-pontuacao/'.$id.'/'.$avatar ?>" alt="..." class="avatar-img rounded">
+										<img src="<?php echo Url::getBase().'docs/nivel-pontuacao/'.$id.'/'.$avatar ?>" alt="..." class="avatar-img rounded <?php echo !Validation::getPermisionType($tipoUser) ? 'opaco' : '' ?>">
 									</a>
 								</div>
 								<div class="col ml-n2">
@@ -124,18 +125,18 @@
 									</p>
 									<div class="row align-items-center no-gutters">
 										<div class="col-auto">
-											<div class="small mr-2">29%</div>
+											<div class="small mr-2">0%</div>
 										</div>
 										<div class="col">
 											<!-- Progress -->
 											<div class="progress progress-sm">
-												<div class="progress-bar" role="progressbar" style="width: 29%" aria-valuenow="29" aria-valuemin="0" aria-valuemax="100"></div>
+												<div class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="29" aria-valuemin="0" aria-valuemax="100"></div>
 											</div>
-
+                                            <?php echo $pontuacao ?> pontos
 										</div>
 									</div> <!-- / .row -->
 								</div>
-
+                                <?php if(Validation::getPermisionType($tipoUser)){ ?>
 								<div class="col-auto">
 									<!-- Dropdown -->
 									<div class="dropdown">
@@ -151,7 +152,8 @@
 											</a>
 										</div>
 									</div>
-								</div>
+                                </div>
+                                <?php } ?>
 							</div> <!-- / .row -->
 						</div> <!-- / .card-body -->
 					</div>

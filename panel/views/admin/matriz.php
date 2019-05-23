@@ -16,10 +16,10 @@
         </p>
         <p class="card-text">
           <span class="badge badge-soft-secondary">
-            Equipe BINÁRIA
+            Matriz 2x8
           </span>
           <span class="badge badge-soft-secondary">
-          Informações gerais de sua rede Equipe Binária
+          Informações gerais de sua  Matriz 2x8
           </span>
         </p>
         <hr>

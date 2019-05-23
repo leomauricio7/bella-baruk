@@ -4,7 +4,7 @@
             <div class="col"> 
             <!-- Title -->
             <h4 class="card-header-title">
-                Rede Binária
+                Matriz 2x8
             </h4>
             </div>
         </div> <!-- / .row -->

@@ -9,6 +9,12 @@ class Dados {
         return $read->getRowCount();
     }
 
+    public static function getUsersIndicados($user) {
+        $read = new Read();
+        $read->ExeRead('users', 'where indicador = '.$user);
+        return $read->getResult();
+    }
+
     //pontuacao de um vendendor
     public static function getPontuacao($user) {
         $pontos = 0;
@@ -136,6 +142,24 @@ class Dados {
             return number_format($total, 2, ",","");
         }
     }
+
+    public static function getComissaoComprador($recebedor,$comprador){
+        $total = 0;
+        $read = new Read();
+        $read->ExeRead('comissoes', 'where id_user_recebedor = '.$recebedor.' AND id_user_comprador='.$comprador);
+            foreach($read->getResult() as $dados){
+                extract($dados);
+                $total+=$valor;
+            }
+            return number_format($total, 2, ",","");
+    }
+
+    public static function getComissaoAll($user){
+        $total = 0;
+        $read = new Read();
+        $read->ExeRead('comissoes', 'where id_user_recebedor=:user', 'user='.$user);
+        return $read->getResult();  
+    }
     //caculo de porcentagem
     public static function porcentagem_xn($porcentagem,$total){
         return ( $porcentagem / 100 ) * $total;
@@ -192,5 +216,63 @@ class Dados {
         }
         return ['qualificadores'=>$data,'restantes'=>[]];
        
+    }
+
+    public static function getComissaoNiveis($idRecebedor){
+        $t1=0;$t2=0;$t3=0;$t4=0;$t5=0;$t6=0;$t7=0;//totla de usuáios por niveis
+        $c1=0;$c2=0;$c3=0;$c4=0;$c5=0;$c6=0;$c7=0;//comissão de usuarios por níveis
+        foreach(Dados::getUsersIndicados($idRecebedor) as $raiz){
+                //1º nivel
+                extract($raiz);
+                $c1+=Dados::getComissaoComprador($idRecebedor,$id);
+                $t1++;
+                //2º nível
+                $n2 =Dados::getUsersIndicados($id);
+                for($i=0; $i<count($n2); $i++){  
+                    $c2+=Dados::getComissaoComprador($idRecebedor,$n2[$i]['id']);
+                    $t2++;
+                    //3º nível
+                    $n3 =Dados::getUsersIndicados($n2[$i]['id']);
+                    for($j=0; $j<count($n3); $j++){
+                        $c3+=Dados::getComissaoComprador($idRecebedor,$n3[$j]['id']);
+                        $t3++;
+                        //4º nível
+                        $n4 =Dados::getUsersIndicados($n3[$j]['id']);
+                        for($k=0; $k<count($n4); $k++){
+                            $c4+=Dados::getComissaoComprador($idRecebedor,$n4[$k]['id']);
+                            $t4++;
+                            //5º nível
+                            $n5 =Dados::getUsersIndicados($n4[$k]['id']);
+                            for($l=0; $l<count($n5); $l++){
+                                $c5+=Dados::getComissaoComprador($idRecebedor,$n5[$l]['id']);
+                                $t5++;
+                                //6º nível
+                                $n6 =Dados::getUsersIndicados($n5[$l]['id']);
+                                for($m=0; $m<count($n6); $m++){
+                                    $c6+=Dados::getComissaoComprador($idRecebedor,$n5[$m]['id']);
+                                    $t6++;
+                                    //7º nível
+                                    $n7 =Dados::getUsersIndicados($n6[$m]['id']);
+                                    for($n=0; $n<count($n7); $n++){
+                                        $c7+=Dados::getComissaoComprador($idRecebedor,$n7[$n]['id']);
+                                        $t7++;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+        }
+
+        return array(
+            array('nivel'=>1,'total'=>$t1, 'comissao'=>number_format($c1,2,",","")),
+            array('nivel'=>2,'total'=>$t2, 'comissao'=>number_format($c2,2,",","")),
+            array('nivel'=>3,'total'=>$t3, 'comissao'=>number_format($c3,2,",","")),
+            array('nivel'=>4,'total'=>$t4, 'comissao'=>number_format($c4,2,",","")),
+            array('nivel'=>5,'total'=>$t5, 'comissao'=>number_format($c5,2,",","")),
+            array('nivel'=>6,'total'=>$t6, 'comissao'=>number_format($c6,2,",","")),
+            array('nivel'=>7,'total'=>$t7, 'comissao'=>number_format($c7,2,",",""))
+        );
+
     }
 }
