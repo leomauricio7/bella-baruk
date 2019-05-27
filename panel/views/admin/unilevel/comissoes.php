@@ -1,7 +1,7 @@
 <br>
 <div class="table-responsive" data-toggle="lists"
 data-lists-values='["tables-row", "tables-user", "tables-valor", "tables-data"]'>
-    <table class="table">
+    <table class="table table-striped table-hover table-bordered">
     <thead>
         <tr>
             <th scope="col">

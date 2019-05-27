@@ -45,4 +45,9 @@ $(function(){
         $('#switchOne').prop('disabled', false);
     });
 
+    $('.exibe-dados-user-nivel').click(function(e){
+        var idTr = $(this).attr('alt'); 
+        $( "#"+idTr).toggle('show');
+    });
+
 });

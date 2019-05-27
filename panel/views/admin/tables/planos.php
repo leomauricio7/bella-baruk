@@ -64,7 +64,7 @@
                 <?php } ?>
                 <?php if(!Validation::getPermisionType($tipoUser)){ ?>
                     <!-- Button -->
-                    <a href="#!" class="btn btn-block btn-primary">
+                    <a href="#!" class="btn btn-block btn-primary add-ativacao" alt="<?php echo $id ?>">
                         Comprar
                     </a>
                 <?php } ?>

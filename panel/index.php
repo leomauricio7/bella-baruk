@@ -9,6 +9,7 @@
     endif;
     $url = Url::getURL(0);
     $tipoUser = $_SESSION['idTipo'];
+    $dadosUser = Dados::getDadosUser($_SESSION['idUser'])[0];
 ?>
 <!doctype html>
 <html lang="pt-br">

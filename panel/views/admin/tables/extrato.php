@@ -18,119 +18,119 @@
             </h2>
             <!-- Text -->
             <p class="text-muted mb-6">
-            <input type="hidden" id="id-pedido" value="<?php echo random_int(999999,999999999) ?>">
-            Pedido Nº <?php echo random_int(999999,999999999) ?>
+                <input type="hidden" id="id-pedido" value="<?php echo random_int(999999, 999999999) ?>">
+                Pedido Nº <?php echo random_int(999999, 999999999) ?>
             </p>
         </div>
     </div> <!-- / .row -->
     <div class="row">
         <div class="col-12 col-md-6">
-            
+
             <h6 class="text-uppercase text-muted">
-            Dados da conta do recebedor
+                Dados da conta do recebedor
             </h6>
 
             <p class="text-muted mb-4">
-            <strong class="text-body">Leonardo Mauricio</strong> <br>
-            Conta: 00827400-9 <br>
-            OP: 121 <br>
-            Tipo: Poupança<br>
+                <strong class="text-body">CEF</strong><br>
+                Nome: Mauricio do Carmo Amaro<br>
+                Agência: 1026<br>
+                Conta: 00022590-3 <br>
+                Operação: 001 <br>
+                Tipo: Conta Corrente<br>
             </p>
-
-            <h6 class="text-uppercase text-muted">
-            Ceára Mirim - RN
-            </h6>
+            <p class="text-muted mb-4">
+                <strong class="text-body">Itáu</strong><br>
+                Nome: Mauricio do Carmo Amaro<br>
+                Agência: 5604<br>
+                Conta: 05633-2-3 <br>
+                Tipo: Conta Corrente<br>
+            </p>
         </div>
         <div class="col-12 col-md-6 text-md-right">
 
             <h6 class="text-uppercase text-muted">
-            Dados do Comprador
+                Dados do Comprador
             </h6>
 
             <p class="text-muted mb-4">
-            <strong class="text-body"><?php echo $_SESSION['user'] ?></strong> <br>
-            Acquisitions at Themers <br>
-            236 Main St., #201 <br>
-            Los Angeles, CA
+                <strong class="text-body"><?php echo $dadosUser['nome'] ?></strong> <br>
+                <?php
+                echo $dadosUser['bairro'] . '<br>' . $dadosUser['rua'] . ' - Nº' . $dadosUser['numero'] . '<br>' . $dadosUser['cidade'] . '/' . $dadosUser['uf']
+                ?>
             </p>
-
             <h6 class="text-uppercase text-muted">
-            Due date
+                Data <?php echo date('d/m/Y') ?>
             </h6>
-
-            <p class="mb-4">
-            <time datetime="2018-04-23">Apr 23, 2018</time>
-            </p>
-            
         </div>
     </div> <!-- / .row -->
     <div class="row">
         <div class="col-12">
-            
+
             <!-- Table -->
             <div class="table-responsive">
                 <table class="table my-4">
                     <thead>
-                    <tr>
-                        <th class="px-0 bg-transparent border-top-0">
-                            <span class="h6">Produto</span>
-                        </th>
-                        <th class="px-0 bg-transparent border-top-0">
-                            <span class="h6">Valor Unitario</span>
-                        </th>
-                        <th class="px-0 bg-transparent border-top-0">
-                            <span class="h6">Quantidade</span>
-                        </th>
-                        <th class="px-0 bg-transparent border-top-0 text-right">
-                            <span class="h6">Valor Total</span>
-                        </th>
-                    </tr>
+                        <tr>
+                            <th class="px-0 bg-transparent border-top-0">
+                                <span class="h6">Produto</span>
+                            </th>
+                            <th class="px-0 bg-transparent border-top-0">
+                                <span class="h6">Valor Unitario</span>
+                            </th>
+                            <th class="px-0 bg-transparent border-top-0">
+                                <span class="h6">Quantidade</span>
+                            </th>
+                            <th class="px-0 bg-transparent border-top-0 text-right">
+                                <span class="h6">Valor Total</span>
+                            </th>
+                        </tr>
                     </thead>
                     <tbody>
-                    <?php
-                        if(isset($_SESSION['carrinho'])){
+                        <?php
+                        if (isset($_SESSION['carrinho'])) {
                             $totalPedido = 0;
-                            for($i = 0; $i < sizeof($_SESSION['carrinho']); $i++){
-                        ?>
-                    <tr>
-                        <td class="px-0">
-                            <?php echo Validation::getNameProduto($_SESSION['carrinho'][$i]['id']) ?>
-                        </td>
-                        <td>
-                            R$ <?php echo Dados::getValueProduct($_SESSION['carrinho'][$i]['id']) ?>
-                        </td>
-                        <td class="px-0">
-                            <?php echo $_SESSION['carrinho'][$i]['quantidade'] ?> UNID
-                        </td>
-                        <td class="px-0 text-right">
-                        R$ <?php 
-                            $totalPedido+=Dados::getValueProduct($_SESSION['carrinho'][$i]['id']) * $_SESSION['carrinho'][$i]['quantidade'];
-                            echo number_format(Dados::getValueProduct($_SESSION['carrinho'][$i]['id']) * $_SESSION['carrinho'][$i]['quantidade'],2, ",", "") 
-                        ?>
-                        </td>
-                    </tr>
-                    <?php } } ?>
+                            for ($i = 0; $i < sizeof($_SESSION['carrinho']); $i++) {
+                                ?>
+                                <tr>
+                                    <td class="px-0">
+                                        <?php echo Validation::getNameProduto($_SESSION['carrinho'][$i]['id']) ?>
+                                    </td>
+                                    <td>
+                                        R$ <?php echo Dados::getValueProduct($_SESSION['carrinho'][$i]['id']) ?>
+                                    </td>
+                                    <td class="px-0">
+                                        <?php echo $_SESSION['carrinho'][$i]['quantidade'] ?> UNID
+                                    </td>
+                                    <td class="px-0 text-right">
+                                        R$ <?php
+                                            $totalPedido += Dados::getValueProduct($_SESSION['carrinho'][$i]['id']) * $_SESSION['carrinho'][$i]['quantidade'];
+                                            echo number_format(Dados::getValueProduct($_SESSION['carrinho'][$i]['id']) * $_SESSION['carrinho'][$i]['quantidade'], 2, ",", "")
+                                            ?>
+                                    </td>
+                                </tr>
+                            <?php }
+                    } ?>
 
-                    <tr>
-                        <td class="px-0 border-top border-top-2">
-                        <strong>Total</strong>
-                        </td>
-                        <td colspan="3" class="px-0 text-right border-top border-top-2">
-                        <input type="hidden" id="total-pedido" value="<?php echo $totalPedido ?>">
-                        <span class="h3">
-                            R$ <?php echo number_format($totalPedido,2,",",""); ?>
-                        </span>
-                        </td>
-                    </tr>
+                        <tr>
+                            <td class="px-0 border-top border-top-2">
+                                <strong>Total</strong>
+                            </td>
+                            <td colspan="3" class="px-0 text-right border-top border-top-2">
+                                <input type="hidden" id="total-pedido" value="<?php echo $totalPedido ?>">
+                                <span class="h3">
+                                    R$ <?php echo number_format($totalPedido, 2, ",", ""); ?>
+                                </span>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
 
             <hr class="my-5">
-            
+
             <!-- Title -->
             <h6 class="text-uppercase">
-            Atenção
+                Atenção
             </h6>
 
             <!-- Text -->
