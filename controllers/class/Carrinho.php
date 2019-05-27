@@ -203,6 +203,10 @@ function daBaixa($idPedido)
                             $adesao = saveAdesao($user, 1);
                             if ($adesao) {
                                 if (Dados::setComissao($user, 25, $valor - 50, null, null)['status']) {
+                                        $userRecebedoresMatriz = Unilevel::getHierarquiaComissaoMatriz($user);
+                                        for ($i = 1; $i <= count($userRecebedoresMatriz); $i++) {
+                                            Dados::setComissao($user, null, null, $userRecebedoresMatriz[$i]['indicador'], $userRecebedoresMatriz[$i]['comisao']);
+                                        }
                                     echo json_encode(array('status' => 200, 'msg' => 'Pedido dado baixa com sucesso.<br><strong>OBS:</strong> O usuário foi ativado com sucesso.'));
                                 } else {
                                     echo json_encode(array('status' => 200, 'msg' => 'Pedido dado baixa com sucesso.<br><strong>OBS:</strong> O usuário foi ativado com sucesso, mas a comissão não foi setada entre em contato com o suporte. ERROR:' . Dados::setComissao($user, 25, $valor - 50, null, null)['msg']));
