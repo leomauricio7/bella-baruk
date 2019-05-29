@@ -39,6 +39,9 @@ if ($_POST) {
         case 7:
             daBaixa($idPedido);
             break;
+        case 8:
+            ativaDesconto();
+            break;
             //regra padrão
         default:
             return false;
@@ -56,6 +59,17 @@ function initSession()
     }
 }
 
+function ativaDesconto()
+{
+    $save = new Update();
+    $dados = ['status' => 'ativo'];
+    $save->ExeUpdate('users', $dados, 'where id=:id','id='.$_SESSION['idUser']);
+    if ($save->getResult()) {
+        echo json_encode(array('status' => 200, 'msg' => 'Desconto ativado com sucesso'));
+    } else {
+        echo json_encode(array('status' => 500, 'msg' => 'Erro ao ativar descontos.'));
+    }
+}
 //cria um registro de ativação para o usuario
 function saveAdesao($user, $qt)
 {

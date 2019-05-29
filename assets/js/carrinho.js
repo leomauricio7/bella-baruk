@@ -133,19 +133,36 @@ $(function () {
         });
     }
 
-    function daBaixa(idPedido) {
+    function ativaDesconto() {
         $.ajax({
             type: 'POST',
             url: getBaseUrl() + '/controllers/class/carrinho.php',
-            data: 'type=7&idPedido=' + idPedido,
+            data: 'type=8',
+            dataType: "json",
+        }).done(function (res) {
+            console.log('desconto ativado com sucesso');
+        }).fail(function (xhr, desc, err) {
+            alert('Uups! Ocorreu algum erro ao ativar o desconto!');
+            console.log(xhr);
+            console.log("Detalhes: " + desc + "nErro:" + err);
+        }).always(function () {
+            console.log('closed');
+        });
+    }
+    function closePedido(idPedido, totalPedido) {
+        $.ajax({
+            type: 'POST',
+            url: getBaseUrl() + '/controllers/class/carrinho.php',
+            data: 'type=6&idPedido=' + idPedido + '&totalPedido=' + totalPedido,
             dataType: "json",
         }).done(function (res) {
             if (res.status == 200) {
-                $('#msg-toast').html(res.msg);
+                $('#msg-toast').text(res.msg);
+                $('#modal-close-pedido').modal('hide');
                 $('#alert-toast').toast('show')
-                //window.location.reload();
+
             } else if (res.status == 500) {
-                $('#msg-toast').html(res.msg);
+                $('#msg-toast').text(res.msg);
                 $('#alert-toast').toast('show')
             }
             console.log(res);
@@ -206,6 +223,7 @@ $(function () {
     $('.add-ativacao').click(function(){
         var idProduct = $(this).attr('alt');
         addProduct(idProduct);
+        ativaDesconto();
         window.location.href= "./carrinho";
     });
 
