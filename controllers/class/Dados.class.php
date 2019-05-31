@@ -77,20 +77,19 @@ class Dados
     //verifica se o usuario ja fez a primeira compra
     public static function verificaAdesão($user)
     {
-        $st = null;
-        $ativo = null;
         $read = new Read();
         $read->ExeRead('users', 'where id = ' . $user);
-        foreach ($read->getResult() as $user) {
-            extract($user);
-            $st = $fisrt_adesao;
-            $ativo = $status;
+        foreach ($read->getResult() as $dados) {
+            extract($dados);
+            if($fisrt_adesao == 1){
+                return true;
+            }
+            if($status == "ativo"){
+                return true;
+            }
         }
-        if ($st == 1 || $ativo == 'ativo') {
-            return true;
-        } else {
-            return false;
-        }
+        return false;
+
     }
 
     //pegando o valor de um produto
@@ -115,8 +114,8 @@ class Dados
     {
         $date = date('Y-m-d');
         $read = new Read();
-        $read->ExeRead('user_adesao', "where id_user= $user AND data_validade >= '$date'");
-        if ($read->getResult()) {
+        $read->ExeRead('user_adesao', "WHERE id_user= $user AND data_validade >= '$date'  LIMIT 1");
+        if ($read->getRowCount() > 0) {
             return true;
         } else {
             return false;
@@ -141,7 +140,7 @@ class Dados
 
     public static function getStatus($user)
     {
-        if (!Dados::verificaAdesão($user)) {
+        if (Dados::verificaAdesão($user)) {
             if (Dados::existePlanoAtivo($user)) {
                 return  "<span class='badge badge-soft-success'>Ativo</span>";
             } else {
