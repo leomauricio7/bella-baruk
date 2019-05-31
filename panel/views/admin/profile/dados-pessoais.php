@@ -102,7 +102,9 @@
                     <label for="validationServer04">Tipo Acesso</label>
                     <select name="tipo_user" disabled required class="form-control" data-toggle="select" data-minimum-results-for-search="-1">
                         <option value="">SELECIONE</option>
+                        <?php if(Validation::getPermisionType($tipoUser)){ ?>
                         <option <?php echo $tipo_user == "1" ? 'selected' : '' ?> value="1" data-avatar-src="<?php echo Url::getBase() ?>../assets/img/icons/admin.png">Administrador</option>
+                        <?php } ?>
                         <option <?php echo $tipo_user == "2" ? 'selected' : '' ?> value="2" data-avatar-src="<?php echo Url::getBase() ?>../assets/img/icons/master.png">Vendedor</option>
                     </select>
                 </div>

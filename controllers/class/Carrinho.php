@@ -189,7 +189,9 @@ function daBaixa($idPedido)
                 //comissão matriz
                 if (verificaSeExisteDePlanoAtivacaoNoPedido($idPedido)) {
                     saveAdesao($user, 1);
-                    $userRecebedoresMatriz = Unilevel::getHierarquiaComissaoMatriz($user);
+                    $userRecebedoresMatriz = array_filter(Unilevel::getHierarquiaComissaoMatriz($user), function($userIndicado){
+                        return $userIndicado['indicador'] != null;
+                    });
                     for ($i = 1; $i <= count($userRecebedoresMatriz); $i++) {
                         Dados::setComissao($user, null, null, $userRecebedoresMatriz[$i]['indicador'], $userRecebedoresMatriz[$i]['comisao']);
                     }
@@ -197,9 +199,11 @@ function daBaixa($idPedido)
 
                 if (verificaSeNoPedidoExisteMasdeUmProduto($idPedido) > 0) {
                     //comissão unilevel
-                    $userRecebedoresUnilevel = Unilevel::getHierarquiaComissaoUnilevel($user);
+                    $userRecebedoresUnilevel = array_filter(Unilevel::getHierarquiaComissaoUnilevel($user), function($userIndicado){
+                        return $userIndicado['indicador'] != null;
+                    });
                     for ($i = 1; $i <= count($userRecebedoresUnilevel); $i++) {
-                        Dados::setComissao($user, $userRecebedoresUnilevel[$i]['comisao'], $valor, $userRecebedoresUnilevel[$i]['indicador'], null);
+                        Dados::setComissao($user, $userRecebedoresUnilevel[$i]['comisao'], $valor-50, $userRecebedoresUnilevel[$i]['indicador'], null);
                     }
                 }
 
@@ -217,7 +221,9 @@ function daBaixa($idPedido)
                             $adesao = saveAdesao($user, 1);
                             if ($adesao) {
                                 if (Dados::setComissao($user, 25, $valor - 50, null, null)['status']) {
-                                        $userRecebedoresMatriz = Unilevel::getHierarquiaComissaoMatriz($user);
+                                        $userRecebedoresMatriz = array_filter(Unilevel::getHierarquiaComissaoMatriz($user), function($userIndicado){
+                                            return $userIndicado['indicador'] != null;
+                                        });
                                         for ($i = 1; $i <= count($userRecebedoresMatriz); $i++) {
                                             Dados::setComissao($user, null, null, $userRecebedoresMatriz[$i]['indicador'], $userRecebedoresMatriz[$i]['comisao']);
                                         }

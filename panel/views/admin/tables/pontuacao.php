@@ -109,8 +109,10 @@
                     <?php
                     $read = new Read();
                     $read->ExeRead('nivel_pontuacao');
+                    $start = 0;
                     foreach ($read->getResult() as $dados) {
                         extract($dados);
+                        $start++;
                         ?>
                         <div class="col-12">
                             <div class="card">
@@ -131,12 +133,17 @@
                                             </p>
                                             <div class="row align-items-center no-gutters">
                                                 <div class="col-auto">
+                                                    <!-- função faltar finalizar, para verificar em qual nivel de pontuacao o usuario se encontra-->
+                                                    <?php if($start == 1){?>
                                                     <div class="small mr-2"><?php echo Unilevel::getPocentagemPlanoCarreira(Dados::getPontuacao($_SESSION['idUser']), $pontuacao) ?>%</div>
+                                                    <?php }else{ ?>
+                                                        <div class="small mr-2"><?php echo Dados::verificaSeExistePlanoDeCarreiraAtivo($_SESSION['idUser'],$id) ? Unilevel::getPocentagemPlanoCarreira(Dados::getPontuacao($_SESSION['idUser']), $pontuacao) : 0 ?>%</div> 
+                                                    <?php } ?>
                                                 </div>
                                                 <div class="col">
                                                     <!-- Progress -->
                                                     <div class="progress progress-sm">
-                                                        <div class="progress-bar" role="progressbar" style="width: <?php echo Unilevel::getPocentagemPlanoCarreira(Dados::getPontuacao($_SESSION['idUser']), $pontuacao) ?>%" aria-valuenow="29" aria-valuemin="0" aria-valuemax="100"></div>
+                                                        <div class="progress-bar" role="progressbar" style="width: <?php echo Dados::verificaSeExistePlanoDeCarreiraAtivo($_SESSION['idUser'],$id) ? Unilevel::getPocentagemPlanoCarreira(Dados::getPontuacao($_SESSION['idUser']), $pontuacao) : 0 ?>%" aria-valuenow="29" aria-valuemin="0" aria-valuemax="100"></div>
                                                     </div>
                                                     <?php echo $pontuacao ?> pontos
                                                 </div>
@@ -150,10 +157,10 @@
                                                         <i class="fa fa-ellipsis-v"></i>
                                                     </a>
                                                     <div class="dropdown-menu dropdown-menu-right">
-                                                        <a href="#!" class="dropdown-item">
+                                                        <a href="<?php echo Url::getBase() . 'nivel-pontuacao/edit/' . $id ?>" class="dropdown-item">
                                                             Editar
                                                         </a>
-                                                        <a href="#!" class="dropdown-item">
+                                                        <a href="<?php echo Url::getBase() . '../controllers/delete.php?pag=nivel-pontuacao&tb=nivel_pontuacao&ch=id&value=' . $id ?>" class="dropdown-item">
                                                             Excluir
                                                         </a>
                                                     </div>

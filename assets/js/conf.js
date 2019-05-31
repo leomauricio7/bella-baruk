@@ -1,5 +1,7 @@
 $(function(){
 
+    $('[data-toggle="tooltip"]').tooltip();
+
     $("#text").stringToSlug({
         setEvents: 'keyup keydown blur',
         getPut: '#slug',
@@ -49,5 +51,4 @@ $(function(){
         var idTr = $(this).attr('alt'); 
         $( "#"+idTr).toggle('show');
     });
-
 });

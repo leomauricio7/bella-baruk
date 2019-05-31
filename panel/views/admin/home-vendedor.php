@@ -1,7 +1,7 @@
 <?php if(Validation::getPermisionTypeVendedor($tipoUser)){ ?>
 <div class="container-fluid">
 <!-- não fez a primeira compra -->
-<?php if(Dados::verificaAdesão($_SESSION['idUser'])){ ?>
+<?php if(!Dados::verificaAdesão($_SESSION['idUser'])){ ?>
   <div class="row">
         <div class="col-12">
             <div class="alert alert-danger" role="alert">
@@ -12,9 +12,8 @@
             </div>
         </div>
     </div>
-<?php } ?>
-<!-- ja fez a primeira compra mas ja se passou 30 dias e não compro ativação -->
-<?php if(!Dados::verificaAdesão($_SESSION['idUser']) && !Dados::existePlanoAtivo($_SESSION['idUser'])){?>
+    <!-- ja fez a primeira compra mas ja se passou 30 dias e não compro ativação -->
+<?php }elseif(!Dados::existePlanoAtivo($_SESSION['idUser'])){?>
   <div class="row">
         <div class="col-12">
             <div class="alert alert-danger" role="alert">
@@ -23,14 +22,13 @@
             </div>
         </div>
     </div>
-<?php } ?>
-<!-- ja fez a primeira compra e possui plano ativo -->
-<?php if(!Dados::verificaAdesão($_SESSION['idUser']) && Dados::existePlanoAtivo($_SESSION['idUser'])){ ?>
+    <!-- ja fez a primeira compra e possui plano ativo -->
+<?php }elseif(Dados::existePlanoAtivo($_SESSION['idUser'])){ ?>
   <div class="row">
         <div class="col-12">
             <div class="alert alert-ativacao" role="alert">
-                <h4 class="alert-heading"><i class="fa fa-exclamation-triangle"></i> ATENÇÃO!</h4><hr>
-                <p class="badge badge-pill badge-danger" style="font-size: 15px">Seu plano de ativação vence em <?php echo Dados::diasRestantesAtivacao($_SESSION['idUser']) ?> dias.</p>
+                <h1 class="alert-heading"><i class="fa fa-exclamation-triangle"></i>  Ola, <?php echo $_SESSION['user'] ?> seu cadastrado se encontra <span class="badge badge-success">ATIVADO</span></h1><hr>
+                <p class="badge badge-pill badge-info" style="font-size: 15px">Seu plano de ativação vence em <?php echo Dados::diasRestantesAtivacao($_SESSION['idUser']) ?> dias.</p>
             </div>
         </div>
     </div>
@@ -41,7 +39,17 @@
             <div class="alert alert-dark" role="alert">
                 <p><i class="fa fa-exclamation-circle"></i> Seja bem vindo a área administratva do sistema, para indicar copie o link abaixo.</p>
                 <hr>
-                <h2 class="mb-0"><i class="fa fa-anchor"></i><a href="https://bellabaruk.com.br/new-user/<?php echo Validation::getURI($_SESSION['idUser']) ?>"><span class="badge badge-pill badge-primary">https://bellabaruk.com.br/new-user/<?php echo Validation::getURI($_SESSION['idUser']) ?></span></a></h2>
+                <h2 class="mb-0"><i class="fa fa-anchor">
+                  </i><a href="https://bellabaruk.com.br/<?php echo Validation::getURI($_SESSION['idUser']) ?>" id="url"><span class="badge badge-pill badge-primary">https://bellabaruk.com.br/<?php echo Validation::getURI($_SESSION['idUser']) ?></span></a>
+                  <button 
+                  class="btn btn-sm btn-success"
+                  id="copiar"
+                  data-clipboard-text=""
+                  data-toggle="tooltip-copy"
+                  data-placement="top"
+                  title="Copiado com sucesso!"
+                  >Copiar</button>
+                </h2>
             </div>
         </div>
     </div>

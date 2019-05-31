@@ -32,18 +32,22 @@ require_once './vendor/autoload.php';
     <style>body { display: none; }</style>
     
 
-    <title>Bella Baruk - Login</title>
+    <title>Bella Baruk</title>
   </head>
     <?php
         $pagina = Url::getURL(0);
         if ($pagina == null):
             $pagina = "login";
         endif;
-        if (file_exists("views/site/" . $pagina . ".php")):
+        if(Dados::validaURLPageUser($pagina)){
+          require "views/site/new-user.php";
+        }else{
+          if (file_exists("views/site/" . $pagina . ".php")): 
             require "views/site/" . $pagina . ".php";
-        else:
+          else:
             require "views/site/404.php";
-        endif;
+          endif;
+        }
       ?>
     <div class="loading" id="loading">Loading&#8230;</div>
     <!-- JAVASCRIPT

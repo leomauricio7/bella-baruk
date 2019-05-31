@@ -116,7 +116,7 @@ class Validation extends Conn {
             $_token = hash("sha256", md5(uniqid())); //gerando uma senha aletória para o usuário
             $dados = $rec->fetch(PDO::FETCH_ASSOC);
             $this->setEmail($dados['email']); //pegando o email do usuario
-            //if ($this->enviaEmail($_token, $dados['nome'])) {//enviando o email com a nova senha
+            if ($this->enviaEmail($_token, $dados['nome'])) {//enviando o email com a nova senha
             $update = $pdo->prepare("UPDATE users SET _token = :_token WHERE email = :email");
             $update->execute(array(
                 ':email' => $this->getEmail(),
@@ -126,16 +126,16 @@ class Validation extends Conn {
                         <p><strong>ATENÇÃO: </strong>
                         Foi enviado para o email: <strong>'.$this->getEmail().'</strong>,
                         um link para recuperação de sua senha. Verifique sua caixa de entrada,
-                        caso não tenha chegado, verifique se estar em spam.<br> Link de teste: <a href="?_token='.$_token.'">Clique aqui!</a></p>
+                        caso não tenha chegado, verifique se estar em spam.</p>
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">×</span>
                         </button>
                     </div>';
             return true;
-        // } else {
-        //    $_SESSION['erro'] = '<div class="alert alert-danger"><h5 align="center"><i class="fa fa-warning"></i> Erro ao enviar o email.</h5></div>';
-        //    return false;
-        // }
+        } else {
+           $_SESSION['erro'] = '<div class="alert alert-danger"><h5 align="center"><i class="fa fa-warning"></i> Erro ao enviar o email.</h5></div>';
+           return false;
+        }
         else:
             $this->Msg = '<div class="alert alert-danger"><h5 align="center"><i class="fa fa-warning"></i> Email incorreto.</h5></div>';
             return false;
@@ -153,7 +153,12 @@ class Validation extends Conn {
         $headers = 'MIME-Version: 1.0' . "\r\n";
         $headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
         $headers .= "De: $from";
-        $msg = 'corpo do email';
+        $msg = '
+            <h1>Ola, '.$user.'</h1>
+            <p>Identificamos em nosso sistema, uma solicitação de recuperação de senha, caso não reconheça essa solicitação, desconsidere esse email e entre em contato com o nosso suporte.</p>
+            <a href="https://bellabaruk.com.br/password-reset?_token='.$_token.'">Clique aqui para prosseguir a recuperação de senha.</a>
+            <p>Atenciosamente<br>Suporte BellaBaruk</p>
+        ';
         $enviaremail = mail($destino, $assunto, $msg, $headers);
 
         if ($enviaremail) {

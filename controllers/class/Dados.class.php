@@ -78,13 +78,15 @@ class Dados
     public static function verificaAdesão($user)
     {
         $st = null;
+        $ativo = null;
         $read = new Read();
         $read->ExeRead('users', 'where id = ' . $user);
         foreach ($read->getResult() as $user) {
             extract($user);
             $st = $fisrt_adesao;
+            $ativo = $status;
         }
-        if ($st == 1) {
+        if ($st == 1 || $ativo == 'ativo') {
             return true;
         } else {
             return false;
@@ -111,10 +113,10 @@ class Dados
     ///verifica se existe algum plano de ativação valido
     public static function existePlanoAtivo($user)
     {
-        $date = date('Y/m/d');
+        $date = date('Y-m-d');
         $read = new Read();
-        $read->ExeRead('user_adesao', 'where id_user=:id AND data_validade >= :date', 'id=' . $user . '&date=' . $date);
-        if ($read->getRowCount() > 0) {
+        $read->ExeRead('user_adesao', "where id_user= $user AND data_validade >= '$date'");
+        if ($read->getResult()) {
             return true;
         } else {
             return false;
@@ -125,12 +127,12 @@ class Dados
     {
         $inicio = null;
         $fim = null;
-        $date = date('Y/m/d');
+        $date = date('Y-m-d');
         $read = new Read();
-        $read->ExeRead('user_adesao', 'where id_user=:id AND data_validade >= :date', 'id=' . $user . '&date=' . $date);
+        $read->ExeRead('user_adesao', "where id_user= $user AND data_validade >= '$date'");
         foreach ($read->getResult() as $dados) {
             extract($dados);
-            $inicio = new DateTime($data_ativacao);
+            $inicio = new DateTime(date('d-m-Y'));
             $fim = new DateTime($data_validade);
         }
         $intval = $inicio->diff($fim);
@@ -217,7 +219,7 @@ class Dados
     {
         $valor = $value == null ? Dados::porcentagem_xn($porcentagem, $compra) : $value;
         $indicador = $indicador_temp == null ? Dados::getIndicador($user) : $indicador_temp;
-        if (Dados::existePlanoAtivo($indicador)) {
+        if (Dados::existePlanoAtivo($indicador) && $indicador_temp != null) {
             $save = new Create();
             $dados = ['id_user_recebedor' => $indicador, 'id_user_comprador' => $user, 'valor' => $valor];
             $save->ExeCreate('comissoes', $dados);
@@ -227,7 +229,7 @@ class Dados
                 return ['status' => false, 'msg' => 'Error na procesamento da comissão.'];
             }
         } else {
-            return ['status' => false, 'msg' => 'User indicator is not active.'];
+            return ['status' => false, 'msg' => 'Usuário indicador está inativo ou nã existe usuário raiz.'];
         }
     }
 
@@ -262,7 +264,7 @@ class Dados
         $t4 = 0;
         $t5 = 0;
         $t6 = 0;
-        $t7 = 0; //totla de usuáios por niveis
+        $t7 = 0;
         $c1 = 0;
         $c2 = 0;
         $c3 = 0;
@@ -403,5 +405,17 @@ class Dados
                 return $nivel7;
                 break;
         }
+    }
+
+    public static function verificaSeExistePlanoDeCarreiraAtivo($user,$nivel){
+        $read = new Read();
+        $read->ExeRead('nivel_pontuacao_user', 'where id_user=:user AND id_nivel=:nivel','user='.$user.'&nivel='.$nivel);
+        return $read->getRowCount() > 0 ? true : false;
+    }
+
+    public static function validaURLPageUser($page){
+        $read = new Read();
+        $read->ExeRead('users', 'WHERE slug=:page', 'page='.$page);
+        return $read->getRowCount() > 0 ? true : false;
     }
 }

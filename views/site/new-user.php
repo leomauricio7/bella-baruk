@@ -1,6 +1,6 @@
 <?php 
-if( Url::getURL(1) != null){
-  if(Validation::getNameIndicador(Url::getURL(1)) != null){
+if( Url::getURL(0) != null){
+  if(Validation::getNameIndicador(Url::getURL(0)) != null){
 ?>
 <div class="container-fluid">
     <div class="row justify-content-center">
@@ -86,7 +86,7 @@ if( Url::getURL(1) != null){
             <div class="col-12 col-md-6">
               <div class="form-group">
                 <label>Indicador</label>
-                <input type="text" class="form-control" name="indicador" readonly="readonly" value="<?php echo Validation::getNameIndicador(Url::getURL(1)) ?>">
+                <input type="text" class="form-control" name="indicador" readonly="readonly" value="<?php echo Validation::getNameIndicador(Url::getURL(0)) ?>">
               </div>
             </div>
           </div> <!-- / .row -->
