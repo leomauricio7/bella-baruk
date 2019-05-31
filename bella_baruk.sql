@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 16-Maio-2019 às 03:37
+-- Generation Time: 31-Maio-2019 às 02:02
 -- Versão do servidor: 5.7.14
 -- PHP Version: 7.0.10
 
@@ -185,6 +185,20 @@ INSERT INTO `nivel_pontuacao` (`id`, `titulo`, `descricao`, `pontuacao`, `avatar
 -- --------------------------------------------------------
 
 --
+-- Estrutura da tabela `nivel_pontuacao_user`
+--
+
+CREATE TABLE `nivel_pontuacao_user` (
+  `id` int(11) NOT NULL,
+  `id_user` int(11) NOT NULL,
+  `id_nivel` int(11) NOT NULL,
+  `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Estrutura da tabela `pedidos`
 --
 
@@ -216,11 +230,9 @@ INSERT INTO `pedidos` (`id`, `idPedido`, `id_user`, `id_status`, `valor`, `compr
 (15, 984989177, 14, 3, 211, 'Captura de Tela (108).png', 'sim', '2019-05-15 18:39:07', '2019-05-15 20:22:11'),
 (16, 51112517, 14, 3, 148, 'Captura de Tela (1).png', 'sim', '2019-05-15 19:40:26', '2019-05-15 20:49:51'),
 (17, 716394782, 13, 3, 426, 'Captura de Tela (215).png', 'sim', '2019-05-15 20:25:23', '2019-05-15 20:48:53'),
-(18, 207787728, 12, 3, 426, 'Captura de Tela (134).png', 'sim', '2019-05-15 20:27:05', '2019-05-15 20:47:32'),
 (19, 79097886, 11, 3, 441, 'Captura de Tela (56).png', 'sim', '2019-05-15 20:29:09', '2019-05-15 20:45:36'),
 (20, 391660155, 10, 3, 511, 'Captura de Tela (235).png', 'sim', '2019-05-15 20:30:54', '2019-05-15 20:41:44'),
-(21, 127860002, 9, 3, 441, 'Captura de Tela (136).png', 'sim', '2019-05-15 20:32:06', '2019-05-15 20:40:13'),
-(22, 378655221, 14, 3, 642, 'Captura de Tela (132).png', 'sim', '2019-05-15 21:01:17', '2019-05-15 21:02:57');
+(21, 127860002, 9, 3, 441, 'Captura de Tela (136).png', 'sim', '2019-05-15 20:32:06', '2019-05-15 20:40:13');
 
 -- --------------------------------------------------------
 
@@ -299,16 +311,13 @@ INSERT INTO `produtos_pedido` (`id`, `id_produto`, `id_pedido`, `quantidade`, `c
 (23, 19, 51112517, 1, '2019-05-15 19:40:26', NULL),
 (24, 15, 716394782, 1, '2019-05-15 20:25:23', NULL),
 (25, 13, 716394782, 1, '2019-05-15 20:25:23', NULL),
-(26, 15, 207787728, 1, '2019-05-15 20:27:05', NULL),
-(27, 13, 207787728, 1, '2019-05-15 20:27:05', NULL),
 (28, 13, 79097886, 1, '2019-05-15 20:29:09', NULL),
 (29, 14, 79097886, 1, '2019-05-15 20:29:09', NULL),
 (30, 19, 391660155, 1, '2019-05-15 20:30:54', NULL),
 (31, 15, 391660155, 1, '2019-05-15 20:30:54', NULL),
 (32, 13, 391660155, 1, '2019-05-15 20:30:54', NULL),
 (33, 13, 127860002, 1, '2019-05-15 20:32:06', NULL),
-(34, 14, 127860002, 1, '2019-05-15 20:32:06', NULL),
-(35, 13, 378655221, 2, '2019-05-15 21:01:17', NULL);
+(34, 14, 127860002, 1, '2019-05-15 20:32:06', NULL);
 
 -- --------------------------------------------------------
 
@@ -396,22 +405,29 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `nome`, `cpf`, `cnpj`, `slug`, `email`, `senha`, `tipo_pessoa`, `tipo_user`, `status`, `fisrt_adesao`, `indicador`, `pontuacao`, `rua`, `bairro`, `complemento`, `referencia`, `cep`, `numero`, `cidade`, `uf`, `sexo`, `telefone`, `avatar`, `created`, `_token`, `updated`) VALUES
 (3, 'Leonardo Mauricio da Silva', '017.598.904-48', '', 'lmauricio', 'lf341533@gmail.com', '$2y$10$RCk2.0Hv4R9EDO26n5MJFuN7szVyJzxdPtj1m.N5inW24T6HqJ4Su', 'fisica', 1, 'inativo', 0, NULL, 0, 'Rua Prisco Rocha', 'Passe e fica', 'Casa 50', 'Em frente ao orelhÃ£o', '59570-000', 1163, 'CearÃ¡-Mirim', 'RN', 'M', '(84)99482-9780', 'IMG_2022.JPG', '2019-02-21 20:22:23', NULL, '2019-04-28 15:17:31'),
-(6, 'Pedro Neto', '054.852.774-11', '', 'pedro-neto', 'neto@gmail.com', '$2y$10$Mjpcsj2V4YQbSVRRTu84lusMagUXncYWEcoRc4sroihC7fK1.DunS', 'fisica', 2, 'ativo', 1, 3, 504, 'Rua Prisco Rocha', 'Passe e fica', 'Zona Urbana', 'Em frente ao orelhÃ£o', '59570-000', 12, 'CearÃ¡-Mirim', 'RN', 'M', '(84)45454-6546', '_LNO4840.jpg', '2019-02-21 20:37:28', NULL, '2019-05-15 20:33:47'),
+(6, 'Pedro Neto', '054.852.774-11', '', 'pedro-neto', 'neto@gmail.com', '$2y$10$Mjpcsj2V4YQbSVRRTu84lusMagUXncYWEcoRc4sroihC7fK1.DunS', 'fisica', 2, 'ativo', 0, 3, 654, 'Rua Prisco Rocha', 'Passe e fica', 'Zona Urbana', 'Em frente ao orelhÃ£o', '59570-000', 12, 'CearÃ¡-Mirim', 'RN', 'M', '(84)45454-6546', '_LNO4840.jpg', '2019-02-21 20:37:28', NULL, '2019-05-28 23:16:04'),
 (7, 'Teste Franqueado', NULL, NULL, 'teste', 'leomauricio7@gmail.com', '$2y$10$LcIp4mEV5yPZI6hTs.Qn7uAleVT0f952tY7oLRkUimyvI8xtf29Oe', 'fisica', 2, 'ativo', 1, 6, 1041, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'RN', NULL, '(84) 99430-2191', NULL, '2019-02-22 16:13:22', NULL, '2019-05-15 20:34:33'),
 (8, 'teste cliente', '628.636.680-64', '', 'teste-cliente', 'teste@gmail.com', '$2y$10$yfbbJabS.UCj.WAzrPYfBeK3i7/2OMyPnsg6cpKrcP0l3ZHk.FCvm', 'fisica', 1, 'inativo', 0, NULL, 0, 'Rua Prisco Richa', 'Passe e fica', 'Zona Urbana', 'Em frente ao orelhÃ£o', '59490-000', 1163, 'Ielmo Marinho', 'RN', 'M', '(84)32670-013', 'user.png', '2019-02-22 19:24:47', NULL, '2019-04-28 15:17:31'),
 (9, 'Indicado do I', '', '', 'teste1', 'teste1@gmail.com', '$2y$10$SZrDXAJaveiio0P6rMs/3uzOgtncuWFSw.6SnEzRjHF6wFcJSSScu', 'fisica', 2, 'ativo', 1, 6, 441, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'RN', '', '(84)32670-013', 'IMG_20150606_101536.jpg', '2019-04-07 00:58:13', NULL, '2019-05-15 21:25:48'),
-(10, 'teste 2', NULL, NULL, 'teste2', 'teste2@gmail.com', '$2y$10$y2csTcI32o5RmQ/R/bsQdOvKZeYXIi3wp1U.BHH9a4GzmHuRA.FPm', 'fisica', 2, 'ativo', 1, 9, 511, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'RN', NULL, '(84) 32670-013', NULL, '2019-04-07 01:00:19', NULL, '2019-05-15 20:41:44'),
-(11, 'teste3', NULL, NULL, 'teste3', 'teste3@gmail.com', '$2y$10$y2csTcI32o5RmQ/R/bsQdOvKZeYXIi3wp1U.BHH9a4GzmHuRA.FPm', 'fisica', 2, 'ativo', 1, 10, 441, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'RN', NULL, '(84) 32670-013', NULL, '2019-04-07 01:00:54', NULL, '2019-05-15 20:45:36'),
-(12, 'teste  4', NULL, NULL, 'teste4', 'teste4@gmail.com', '$2y$10$y2csTcI32o5RmQ/R/bsQdOvKZeYXIi3wp1U.BHH9a4GzmHuRA.FPm', 'fisica', 2, 'ativo', 1, 16, 426, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'RN', NULL, '(98) 79897-5466', NULL, '2019-05-15 16:34:10', NULL, '2019-05-16 00:27:48'),
-(13, 'teste 5 ', NULL, NULL, 'teste5', 'teste5@gmail.com', '$2y$10$qzVwW6azQg7RRHH4L0By9OOfEgC0O50dhJ6NziXYgAlLZIcAWPajK', 'fisica', 2, 'ativo', 1, 17, 426, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'RN', NULL, '(84) 32670-013', NULL, '2019-05-15 16:34:41', NULL, '2019-05-16 00:28:39'),
-(14, 'teste 6', NULL, NULL, 'teste6', 'teste6@gmail.com', '$2y$10$8kI.KH.XB6JORY.V5JmzsuttS/SliMdHDY6Zt8PlhilmpFHOEeWCS', 'fisica', 2, 'ativo', 1, 17, 1423, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'RN', NULL, '(84) 32670-013', NULL, '2019-05-15 16:35:11', NULL, '2019-05-16 00:28:58'),
+(10, 'indicado pelo 9', NULL, NULL, 'teste2', 'teste2@gmail.com', '$2y$10$y2csTcI32o5RmQ/R/bsQdOvKZeYXIi3wp1U.BHH9a4GzmHuRA.FPm', 'fisica', 2, 'ativo', 1, 9, 511, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'RN', NULL, '(84) 32670-013', NULL, '2019-04-07 01:00:19', NULL, '2019-05-22 13:34:29'),
+(11, 'indicado pelo 10', NULL, NULL, 'teste3', 'teste3@gmail.com', '$2y$10$y2csTcI32o5RmQ/R/bsQdOvKZeYXIi3wp1U.BHH9a4GzmHuRA.FPm', 'fisica', 2, 'ativo', 1, 10, 441, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'RN', NULL, '(84) 32670-013', NULL, '2019-04-07 01:00:54', NULL, '2019-05-22 13:48:08'),
+(13, 'indicado pleo 17', NULL, NULL, 'teste5', 'teste5@gmail.com', '$2y$10$qzVwW6azQg7RRHH4L0By9OOfEgC0O50dhJ6NziXYgAlLZIcAWPajK', 'fisica', 2, 'ativo', 1, 17, 426, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'RN', NULL, '(84) 32670-013', NULL, '2019-05-15 16:34:41', NULL, '2019-05-22 13:47:16'),
+(14, 'indicado pelo 17', NULL, NULL, 'teste6', 'teste6@gmail.com', '$2y$10$8kI.KH.XB6JORY.V5JmzsuttS/SliMdHDY6Zt8PlhilmpFHOEeWCS', 'fisica', 2, 'ativo', 1, 17, 1423, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'RN', NULL, '(84) 32670-013', NULL, '2019-05-15 16:35:11', NULL, '2019-05-22 13:47:22'),
 (15, 'mas um indicado 9', NULL, NULL, 'teste9', 'teste9@gmail.com', '$2y$10$gnBoFK5xNHoNzEpUoG/YR.P67.kgEHJs/aue44/deyYg0NdwB1MnC', 'fisica', 2, 'inativo', 0, 9, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'RN', NULL, '(87) 98789-7897', NULL, '2019-05-16 00:06:13', NULL, NULL),
 (16, 'indicado pelo 7', NULL, NULL, 'teste10', 'testeuuu@gmaoil.com', '$2y$10$oPLiSexnsMNHJxlbhCaPe.o2avkn3OhzgnSI0Xm.JlwWNncIyNXTe', 'fisica', 2, 'inativo', 0, 7, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'RN', NULL, '(45) 64867-9788', NULL, '2019-05-16 00:23:22', NULL, NULL),
 (17, 'mas um  indicado pelo 7', NULL, NULL, 'mai7', 'teste222@gmail.com', '$2y$10$OQZFkfTy3rmF1izi9GZCL.6RzpXstmPUHsOE4qtPwgVUOmhN4qoiG', 'fisica', 2, 'inativo', 0, 7, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'RN', NULL, '(84) 32670-013', NULL, '2019-05-16 00:24:03', NULL, NULL),
-(18, 'Indicado do 13', NULL, NULL, 'teste13', 'test13e@gmail.com', '$2y$10$x1hK6YoVMNjre1D9KZyOH.djlXZgSYo2bqZarZU747LJZ2cnjkdxi', 'fisica', 2, 'inativo', 0, 16, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'RN', NULL, '(84) 32670-013', NULL, '2019-05-16 00:25:46', NULL, '2019-05-16 00:26:41'),
 (20, 'mas um indicado pelo 10 ', NULL, NULL, 'teste1010', 'teste1010@gmail.com', '$2y$10$D6wkRKyEqFR.AfAfsv9rB.nuFMIROZDLjjHnv2G9ioGJgesrNpobe', 'fisica', 2, 'inativo', 0, 10, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'RN', NULL, '(84) 32670-013', NULL, '2019-05-16 00:32:21', NULL, NULL),
 (21, 'indicado pelo 15', NULL, NULL, 'teste1515', 'teste1515@gmail.com', '$2y$10$pqwAWPn0UD1EsQMxrsFB8.Hi0xCR7C0/iyAoPiZc0N8WLd5f0JQPW', 'fisica', 2, 'inativo', 0, 15, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'RN', NULL, '(84) 32670-013', NULL, '2019-05-16 00:33:42', NULL, NULL),
-(22, 'mas um indicado pelo 15', NULL, NULL, 'teste152', 'teste152@gmail.com', '$2y$10$TCa2zn4W/.qifTqMFvMDcu6p3LZN3P5kjywL5r8t2yosG55yT4Cie', 'fisica', 2, 'inativo', 0, 15, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'RN', NULL, '(84) 32670-013', NULL, '2019-05-16 00:34:18', NULL, NULL);
+(22, 'mas um indicado pelo 15', NULL, NULL, 'teste152', 'teste152@gmail.com', '$2y$10$TCa2zn4W/.qifTqMFvMDcu6p3LZN3P5kjywL5r8t2yosG55yT4Cie', 'fisica', 2, 'inativo', 0, 15, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'RN', NULL, '(84) 32670-013', NULL, '2019-05-16 00:34:18', NULL, NULL),
+(23, 'indicado do 6', NULL, NULL, 'teste24', 'teste24@gmail.com', '$2y$10$BTd6QJeOwLzcNUrGyo97Du3YPUiTZBhiAGzXnDBQZ4TdfCCfOwfCW', 'fisica', 2, 'inativo', 0, 6, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'RN', NULL, '(84) 32670-013', NULL, '2019-05-17 21:10:44', NULL, '2019-05-22 14:22:47'),
+(24, 'indicado pelo 9', NULL, NULL, 'teste99', 'tes12te@gmail.com', '$2y$10$Olqia7fliubheTrFrlPQQukZc8udoqYq2asfP1Zcr3sMeWTztWRBG', 'fisica', 2, 'inativo', 0, 9, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'RN', NULL, '(84) 32670-013', NULL, '2019-05-22 13:35:43', NULL, NULL),
+(25, 'indicado do 12', NULL, NULL, 'indicadodo12', 'teste1212@gmail.com', '$2y$10$.OT4tZxS0ZWWLCMLlZJGKeQ4144HKkFFjeLafk0L3xt6FwVEC1612', 'fisica', 2, 'inativo', 0, 12, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'RN', NULL, '(84) 32670-013', NULL, '2019-05-22 14:27:39', NULL, NULL),
+(26, 'indicado pelo 6', NULL, NULL, 'ind-6', 'ind6@gmailcom', '$2y$10$oObs6/ldow0URr.u.GLvwO2zuRbz7a.cF814vczcNccNL5RNspuem', 'fisica', 2, 'inativo', 0, 6, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'RN', NULL, '(84) 99430-2191', NULL, '2019-05-22 14:42:42', NULL, NULL),
+(27, 'indicado pelo 6', NULL, NULL, 'ind-6-2', 'teste12121@gmail.com', '$2y$10$34ag0CoPeSDWdTdt7FDbMuylEradwH7J2s1ax9yCZXgsDyiNgVcFa', 'fisica', 2, 'inativo', 0, 6, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'RN', NULL, '(84) 32670-013', NULL, '2019-05-22 14:43:38', NULL, NULL),
+(28, 'indicado do 21', NULL, NULL, 'ind-21', 'teste21@gmail.com', '$2y$10$r1jFMNWDT4SG0qIR0fyD/OciN2mGK5pI2284s0ytbS6U0vhi13iKK', 'fisica', 2, 'inativo', 0, 21, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'RN', NULL, '(84) 32670-013', NULL, '2019-05-22 14:55:30', NULL, NULL),
+(29, 'indicado do 12', NULL, NULL, 'ind-12-12', 'teste12-12@gmail.com', '$2y$10$rlXYDm3S.gO5KBX4Fzm4lOsB/qqMN1hEcLbOJSsZrQEKZpPTZHn1y', 'fisica', 2, 'inativo', 0, 12, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'RN', NULL, '(84) 32670-013', NULL, '2019-05-22 15:03:03', NULL, NULL),
+(30, 'indicado do 17', NULL, NULL, 'ind-17', 'teste17@gmail.com', '$2y$10$Nq0k68BksyIFJraSH8x5zunnc7AeQozWTfrxq.lw6Qs.c7wUzh1y2', 'fisica', 2, 'inativo', 0, 14, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'RN', NULL, '(84) 32670-013', NULL, '2019-05-22 15:15:27', NULL, NULL),
+(31, 'indicado do 22', NULL, NULL, 'ind-22', 'teste22@gmail.com', '$2y$10$jhb4Bs2hX.GZRwX/n19viOS5wfgpcd0r4Ynj4D.29gNenIv5XL9lK', 'fisica', 2, 'inativo', 0, 22, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'RN', NULL, '(84) 32670-013', NULL, '2019-05-22 15:22:09', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -439,7 +455,10 @@ INSERT INTO `user_adesao` (`id`, `id_user`, `data_ativacao`, `data_validade`) VA
 (10, 10, '2019-05-15', '2019-06-14'),
 (11, 11, '2019-05-15', '2019-06-14'),
 (12, 12, '2019-05-15', '2019-06-14'),
-(13, 13, '2019-05-15', '2019-06-14');
+(13, 13, '2019-05-15', '2019-06-14'),
+(14, 6, '2019-05-26', '2019-06-25'),
+(15, 6, '2019-05-26', '2019-06-25'),
+(16, 6, '2019-05-26', '2019-06-25');
 
 --
 -- Indexes for dumped tables
@@ -478,6 +497,14 @@ ALTER TABLE `niveis`
 --
 ALTER TABLE `nivel_pontuacao`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `nivel_pontuacao_user`
+--
+ALTER TABLE `nivel_pontuacao_user`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `id_user` (`id_user`),
+  ADD KEY `id_nivel` (`id_nivel`);
 
 --
 -- Indexes for table `pedidos`
@@ -562,10 +589,15 @@ ALTER TABLE `niveis`
 ALTER TABLE `nivel_pontuacao`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
+-- AUTO_INCREMENT for table `nivel_pontuacao_user`
+--
+ALTER TABLE `nivel_pontuacao_user`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--
 -- AUTO_INCREMENT for table `pedidos`
 --
 ALTER TABLE `pedidos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 --
 -- AUTO_INCREMENT for table `products`
 --
@@ -575,7 +607,7 @@ ALTER TABLE `products`
 -- AUTO_INCREMENT for table `produtos_pedido`
 --
 ALTER TABLE `produtos_pedido`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 --
 -- AUTO_INCREMENT for table `status_pedido`
 --
@@ -590,12 +622,12 @@ ALTER TABLE `tipo_users`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 --
 -- AUTO_INCREMENT for table `user_adesao`
 --
 ALTER TABLE `user_adesao`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 --
 -- Constraints for dumped tables
 --
@@ -618,6 +650,13 @@ ALTER TABLE `conta_users`
 --
 ALTER TABLE `image_products`
   ADD CONSTRAINT `image_products_ibfk_1` FOREIGN KEY (`id_product`) REFERENCES `products` (`id`) ON DELETE CASCADE;
+
+--
+-- Limitadores para a tabela `nivel_pontuacao_user`
+--
+ALTER TABLE `nivel_pontuacao_user`
+  ADD CONSTRAINT `nivel_pontuacao_user_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `nivel_pontuacao_user_ibfk_2` FOREIGN KEY (`id_nivel`) REFERENCES `nivel_pontuacao` (`id`) ON DELETE CASCADE;
 
 --
 -- Limitadores para a tabela `pedidos`
