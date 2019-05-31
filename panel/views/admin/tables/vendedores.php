@@ -35,7 +35,10 @@
             $read->ExeRead('users', "where status = '$status'");
             foreach($read->getResult() as $user){
                 extract($user);
+                if(Url::getURL(1) == 'atvo'){
+                    if(Dados::existePlanoAtivo($id)){
             ?>
+            <!-- users ativos -->
             <tr>
                 <td class="tables-first"><?php echo $nome ?></td>
                 <td class="tables-last"><?php echo $cpf.''.$cnpj ?></td>
@@ -76,7 +79,49 @@
                     </div>
                 </div>
             </div> 
-            <?php } ?>
+            <?php } }else{ ?>
+            <!-- users inativos -->
+                        <tr>
+                <td class="tables-first"><?php echo $nome ?></td>
+                <td class="tables-last"><?php echo $cpf.''.$cnpj ?></td>
+                <td class="tables-last">
+                    <?php echo Dados::getStatus($id) ?>
+                </td>
+                <td class="tables-first"><span class="badge badge-success"><?php echo Validation::getIndicador($indicador) ? Validation::getIndicador($indicador) : '-' ?></span></td>
+                <td class="tables-first"><?php echo $pontuacao ?></td>
+                <td class="tables-first"><?php echo ucfirst($tipo_pessoa) ?></td>
+                <td class="tables-first"><?php echo Validation::getTipoUsario($tipo_user) ?></td>
+                <td class="tables-handle">
+                    <!-- <a href="<?php echo Url::getBase().'new-user/'.$id ?>" class="btn btn-outline-warning btn-sm"><i class="fa fa-edit"></i></a> -->
+                    <button type="button" data-toggle="modal" data-target="#modal-del<?php echo $id ?>" class="btn btn-outline-danger btn-sm"><i class="fa fa-trash"></i></button>
+                </td>
+            </tr>
+            <!-- Modal -->
+            <div class="modal fade" id="modal-del<?php echo $id ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle"><i class="fa fa-exclamation-triangle"></i> ATENÇÃO</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body text-center">
+                            <div class="header">
+                                <div class="header-body">
+                                    <h4 class="header-pretitle text-center">
+                                    Tem certeza que deseja remover esse registro?
+                                    </h4>
+                                </div>
+                            </div>
+
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Não</button>
+                            <a href="<?php echo Url::getBase().'../controllers/delete.php?pag=vendedores&tb=users&ch=id&value='.$id ?>" class="btn btn-danger">SIM</a>
+                        </div>
+                    </div>
+                </div>
+            </div> 
+            <?php } } ?>
         </tbody>
     </table>
 </div>
