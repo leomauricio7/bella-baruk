@@ -114,9 +114,18 @@ class Dados
     {
         $date = date('Y-m-d');
         $read = new Read();
-        $read->ExeRead('user_adesao', "WHERE id_user= $user AND data_validade >= '$date'  LIMIT 1");
+        $read->ExeRead('user_adesao', 'WHERE id_user=:id', 'id='.$user);
+        //$read->ExeRead('user_adesao', "WHERE id_user=$user AND data_validade >= '$date'");
         if ($read->getRowCount() > 0) {
-            return true;
+            foreach($read->getResult() as $dados){
+                extract($dados);
+               if(strtotime($data_validade) > strtotime($date)){
+                    return true;
+               }else if(strtotime($data_validade) == strtotime($date)){
+                   return true;
+               }
+            }
+            return false;
         } else {
             return false;
         }
@@ -218,7 +227,7 @@ class Dados
     {
         $valor = $value == null ? Dados::porcentagem_xn($porcentagem, $compra) : $value;
         $indicador = $indicador_temp == null ? Dados::getIndicador($user) : $indicador_temp;
-        if (Dados::existePlanoAtivo($indicador) && $indicador_temp != null) {
+        if (Dados::existePlanoAtivo($indicador)) {
             $save = new Create();
             $dados = ['id_user_recebedor' => $indicador, 'id_user_comprador' => $user, 'valor' => $valor];
             $save->ExeCreate('comissoes', $dados);
