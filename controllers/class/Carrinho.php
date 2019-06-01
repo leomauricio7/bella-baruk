@@ -63,7 +63,7 @@ function ativaDesconto()
 {
     $save = new Update();
     $dados = ['status' => 'ativo'];
-    $save->ExeUpdate('users', $dados, 'where id=:id','id='.$_SESSION['idUser']);
+    $save->ExeUpdate('users', $dados, 'where id=:id', 'id=' . $_SESSION['idUser']);
     if ($save->getResult()) {
         echo json_encode(array('status' => 200, 'msg' => 'Desconto ativado com sucesso'));
     } else {
@@ -184,26 +184,37 @@ function daBaixa($idPedido)
         $user = getUserPedido($idPedido)['user'];
         $valor = getUserPedido($idPedido)['valor'];
         if (setPontuacao($user, $valor)) {
+            //setando pontuacao unilevel
+            $userRecebedoresUnilevel = array_filter(Unilevel::getHierarquiaComissaoUnilevel($user), function ($userIndicado) {
+                return $userIndicado['indicador'] != null;
+            });
+            foreach ($userRecebedoresUnilevel as $unilevel) {
+                extract($unilevel);
+                setPontuacao($indicador, $valor);
+            }
 
             if (verificaFirstCompra($user)) {
                 //comissão matriz
                 if (verificaSeExisteDePlanoAtivacaoNoPedido($idPedido)) {
                     saveAdesao($user, 1);
-                    $userRecebedoresMatriz = array_filter(Unilevel::getHierarquiaComissaoMatriz($user), function($userIndicado){
+                    $userRecebedoresMatriz = array_filter(Unilevel::getHierarquiaComissaoMatriz($user), function ($userIndicado) {
                         return $userIndicado['indicador'] != null;
                     });
-                    for ($i = 1; $i <= count($userRecebedoresMatriz); $i++) {
-                        Dados::setComissao($user, null, null, $userRecebedoresMatriz[$i]['indicador'], $userRecebedoresMatriz[$i]['comisao']);
+                    foreach ($userRecebedoresMatriz as $matriz) {
+                        extract($matriz);
+                        Dados::setComissao($user, null, null, $indicador, $comisao, 'matriz');
                     }
                 }
 
                 if (verificaSeNoPedidoExisteMasdeUmProduto($idPedido) > 0) {
                     //comissão unilevel
-                    $userRecebedoresUnilevel = array_filter(Unilevel::getHierarquiaComissaoUnilevel($user), function($userIndicado){
+                    $userRecebedoresUnilevel = array_filter(Unilevel::getHierarquiaComissaoUnilevel($user), function ($userIndicado) {
                         return $userIndicado['indicador'] != null;
                     });
-                    for ($i = 1; $i <= count($userRecebedoresUnilevel); $i++) {
-                        Dados::setComissao($user, $userRecebedoresUnilevel[$i]['comisao'], $valor-50, $userRecebedoresUnilevel[$i]['indicador'], null);
+                    $valor_bruto = verificaSeExisteDePlanoAtivacaoNoPedido($idPedido) ? $valor - 50 : $valor;
+                    foreach ($userRecebedoresUnilevel as $unilevel) {
+                        extract($unilevel);
+                        Dados::setComissao($user, $comisao, $valor_bruto, $indicador, null, 'unilevel');
                     }
                 }
 
@@ -220,16 +231,18 @@ function daBaixa($idPedido)
                         if ($ativo) {
                             $adesao = saveAdesao($user, 1);
                             if ($adesao) {
-                                if (Dados::setComissao($user, 25, $valor - 50, null, null)['status']) {
-                                        $userRecebedoresMatriz = array_filter(Unilevel::getHierarquiaComissaoMatriz($user), function($userIndicado){
-                                            return $userIndicado['indicador'] != null;
-                                        });
-                                        for ($i = 1; $i <= count($userRecebedoresMatriz); $i++) {
-                                            Dados::setComissao($user, null, null, $userRecebedoresMatriz[$i]['indicador'], $userRecebedoresMatriz[$i]['comisao']);
-                                        }
+                                $statusComissao =Dados::setComissao($user, 25, $valor - 50, null, null, 'unilevel');
+                                if ($statusComissao['status']) {
+                                    $userRecebedoresMatriz = array_filter(Unilevel::getHierarquiaComissaoMatriz($user), function ($userIndicado) {
+                                        return $userIndicado['indicador'] != null;
+                                    });
+                                    foreach ($userRecebedoresMatriz as $matriz) {
+                                        extract($matriz);
+                                        Dados::setComissao($user, null, null, $indicador, $comisao, 'matriz');
+                                    }
                                     echo json_encode(array('status' => 200, 'msg' => 'Pedido dado baixa com sucesso.<br><strong>OBS:</strong> O usuário foi ativado com sucesso.'));
                                 } else {
-                                    echo json_encode(array('status' => 200, 'msg' => 'Pedido dado baixa com sucesso.<br><strong>OBS:</strong> O usuário foi ativado com sucesso, mas a comissão não foi setada entre em contato com o suporte. ERROR:' . Dados::setComissao($user, 25, $valor - 50, null, null)['msg']));
+                                    echo json_encode(array('status' => 200, 'msg' => 'Pedido dado baixa com sucesso.<br><strong>OBS:</strong> O usuário foi ativado com sucesso, mas a comissão não foi setada entre em contato com o suporte. ERROR:' . $statusComissao['msg']));
                                 }
                             }
                         }

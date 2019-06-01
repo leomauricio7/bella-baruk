@@ -174,6 +174,31 @@ $(function () {
             console.log('closed');
         });
     }
+    
+    function daBaixa(idPedido){
+        $.ajax({
+            type: 'POST',
+            url: getBaseUrl()+'/controllers/class/carrinho.php',
+            data: 'type=7&idPedido='+idPedido,
+            dataType: "json",
+        }).done(function(res) {
+            if(res.status == 200){
+                $('#msg-toast').html(res.msg);
+                $('#alert-toast').toast('show')
+                //window.location.reload();
+            }else if(res.status == 500){
+                $('#msg-toast').html(res.msg);
+                $('#alert-toast').toast('show')
+            }
+            console.log(res);
+        }).fail(function(xhr, desc, err) {
+            alert('Uups! Ocorreu algum erro!');
+            console.log(xhr);
+            console.log("Detalhes: " + desc + "nErro:" + err);
+        }).always(function() {
+            console.log('closed');
+        });
+    }
 
     $('.add-produto').click(function () {
         var idProduct = $(this).attr('alt');

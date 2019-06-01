@@ -223,22 +223,25 @@ class Dados
         }
     }
     //seta a primeira comissão para usuário que indicou
-    public static function setComissao($user, $porcentagem, $compra, $indicador_temp, $value)
+    public static function setComissao($user, $porcentagem, $compra, $indicador_temp, $value, $tipo)
     {
         $valor = $value == null ? Dados::porcentagem_xn($porcentagem, $compra) : $value;
         $indicador = $indicador_temp == null ? Dados::getIndicador($user) : $indicador_temp;
-        if (Dados::existePlanoAtivo($indicador)) {
-            $save = new Create();
-            $dados = ['id_user_recebedor' => $indicador, 'id_user_comprador' => $user, 'valor' => $valor];
-            $save->ExeCreate('comissoes', $dados);
-            if ($save->getResult()) {
-                return ['status' => true, 'msg' => 'Comissão setda com sucesso.'];
+        if($valor > 0){
+            if (Dados::existePlanoAtivo($indicador)) {
+                $save = new Create();
+                $dados = ['id_user_recebedor' => $indicador, 'id_user_comprador' => $user, 'valor' => $valor, 'tipo'=>$tipo];
+                $save->ExeCreate('comissoes', $dados);
+                if ($save->getResult()) {
+                    return ['status' => true, 'msg' => 'Comissão setada com sucesso.'];
+                } else {
+                    return ['status' => false, 'msg' => 'Error na procesamento da comissão.'];
+                }
             } else {
-                return ['status' => false, 'msg' => 'Error na procesamento da comissão.'];
+                return ['status' => false, 'msg' => 'Usuário indicador esta inativo ou não existe usuário raiz.'];
             }
-        } else {
-            return ['status' => false, 'msg' => 'Usuário indicador está inativo ou nã existe usuário raiz.'];
         }
+
     }
 
     public static function getFilhos($indicador, $derramamento = null)
