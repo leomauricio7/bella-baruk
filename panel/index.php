@@ -17,7 +17,7 @@ $dadosUser = Dados::getDadosUser($_SESSION['idUser'])[0];
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="A fully featured admin theme which can be used to build CRM, CMS, etc.">
+    <meta name="description" content="BellaBruk sistema de marketing multinivel para vendas e gestão de produtos de cosméticos.">
     <link rel="shortcut icon" href="<?php echo Url::getBase(); ?>../assets/img/logotipos/favicon-bella-baruk.png" type="image/x-icon">
     <!-- Libs CSS -->
     <?php
@@ -81,7 +81,8 @@ $dadosUser = Dados::getDadosUser($_SESSION['idUser'])[0];
     <script src="<?php echo Url::getBase(); ?>../assets/libs/dropzone/dist/min/dropzone.min.js"></script>
     <script src="<?php echo Url::getBase(); ?>../assets/libs/select2/dist/js/select2.min.js"></script>
     <script src="<?php echo Url::getBase(); ?>../assets/libs/chart.js/Chart.extension.min.js"></script>
-
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="<?php echo Url::getBase(); ?>../assets/js/graficos.js"></script>
     <!-- Theme JS -->
     <script src="<?php echo Url::getBase(); ?>../assets/js/theme.min.js"></script>
 
@@ -111,7 +112,7 @@ $dadosUser = Dados::getDadosUser($_SESSION['idUser'])[0];
                 console.error('Trigger:', e.trigger);
             });
             $("#loading").delay(1000).fadeOut("slow");
-        })
+        });
     </script>
 </body>
 
