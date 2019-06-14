@@ -9,7 +9,12 @@ a.no{
  a.no span{
 	 font-size: 27px; margin:-5px;  padding: 0px;  font-weight: 550;
 }
-
+.inativo{
+	background-color: #fd4f4f!important;
+}
+.inativo{
+	background-color: #17d81f!important;
+}
 .tree ul {
 	padding-top: 20px; position: relative;
 	

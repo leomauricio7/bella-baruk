@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 01-Jun-2019 às 00:10
+-- Generation Time: 14-Jun-2019 às 21:06
 -- Versão do servidor: 5.7.14
 -- PHP Version: 7.0.10
 
@@ -41,15 +41,7 @@ CREATE TABLE `comissoes` (
 --
 
 INSERT INTO `comissoes` (`id`, `id_user_recebedor`, `id_user_comprador`, `valor`, `tipo`, `created`, `updated`) VALUES
-(1, 6, 7, 53, 'unilevel', '2019-05-31 20:54:28', NULL),
-(2, 6, 7, 15, 'matriz', '2019-05-31 20:54:28', NULL),
-(3, 7, 16, 40, 'unilevel', '2019-05-31 20:56:54', NULL),
-(4, 7, 16, 15, 'matriz', '2019-05-31 20:56:54', NULL),
-(5, 6, 16, 5, 'matriz', '2019-05-31 20:56:54', NULL),
-(8, 7, 16, 2, 'unilevel', '2019-05-31 21:03:02', NULL),
-(9, 6, 16, 3, 'unilevel', '2019-05-31 21:03:02', NULL),
-(11, 7, 16, 1.6, 'unilevel', '2019-05-31 21:09:01', NULL),
-(12, 6, 16, 3.2, 'unilevel', '2019-05-31 21:09:01', NULL);
+(1, 6, 7, 40, 'unilevel', '2019-06-14 17:12:21', NULL);
 
 -- --------------------------------------------------------
 
@@ -106,6 +98,28 @@ INSERT INTO `image_products` (`id`, `url_image`, `id_product`, `created`, `updat
 (14, 'testimonial-2.jpg', 20, '2019-03-23 13:46:27', NULL),
 (15, 'pl1.png', 21, '2019-04-06 07:40:16', NULL),
 (16, 'pl1.png', 22, '2019-04-06 19:57:34', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `matriz`
+--
+
+CREATE TABLE `matriz` (
+  `id` int(11) NOT NULL,
+  `id_user_matriz` int(11) NOT NULL,
+  `id_user` int(11) NOT NULL,
+  `level` int(11) NOT NULL,
+  `id_no` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Extraindo dados da tabela `matriz`
+--
+
+INSERT INTO `matriz` (`id`, `id_user_matriz`, `id_user`, `level`, `id_no`) VALUES
+(1, 3, 6, 1, 3),
+(2, 6, 7, 1, 6);
 
 -- --------------------------------------------------------
 
@@ -197,10 +211,8 @@ CREATE TABLE `pedidos` (
 --
 
 INSERT INTO `pedidos` (`id`, `idPedido`, `id_user`, `id_status`, `valor`, `comprovante`, `dado_baixa`, `created`, `updated`) VALUES
-(2, 353248956, 6, 3, 210, 'Captura de Tela (10).png', 'sim', '2019-05-31 20:52:23', '2019-05-31 20:52:51'),
-(3, 862992787, 7, 3, 260, 'Captura de Tela (103).png', 'sim', '2019-05-31 20:54:01', '2019-05-31 20:54:28'),
-(4, 264910388, 16, 3, 210, 'Captura de Tela (56).png', 'sim', '2019-05-31 20:56:34', '2019-05-31 20:56:54'),
-(5, 416844012, 16, 3, 160, 'Captura de Tela (140).png', 'sim', '2019-05-31 20:59:17', '2019-05-31 21:09:01');
+(3, 253484483, 6, 3, 210, 'Captura de Tela (140).png', 'sim', '2019-06-14 16:23:15', '2019-06-14 16:40:17'),
+(4, 465898274, 7, 3, 210, 'Captura de Tela (1).png', 'sim', '2019-06-14 17:11:33', '2019-06-14 17:12:20');
 
 -- --------------------------------------------------------
 
@@ -258,45 +270,10 @@ CREATE TABLE `produtos_pedido` (
 --
 
 INSERT INTO `produtos_pedido` (`id`, `id_produto`, `id_pedido`, `quantidade`, `created`, `updated`) VALUES
-(5, 17, 522396940, 1, '2019-03-23 16:56:01', NULL),
-(6, 14, 522396940, 1, '2019-03-23 16:56:01', NULL),
-(7, 16, 752250755, 1, '2019-03-23 17:02:45', NULL),
-(8, 17, 843083225, 1, '2019-03-23 17:19:14', NULL),
-(9, 20, 82363968, 2, '2019-03-23 17:24:44', NULL),
-(10, 19, 82363968, 1, '2019-03-23 17:24:44', NULL),
-(11, 14, 385747603, 1, '2019-03-23 18:41:35', NULL),
-(12, 16, 385747603, 1, '2019-03-23 18:41:35', NULL),
-(13, 14, 689788982, 1, '2019-03-23 19:39:48', NULL),
-(14, 18, 890742676, 1, '2019-04-28 10:57:35', NULL),
-(15, 13, 890742676, 2, '2019-04-28 10:57:35', NULL),
-(16, 19, 783871190, 1, '2019-04-28 15:09:35', NULL),
-(17, 18, 783871190, 2, '2019-04-28 15:09:35', NULL),
-(18, 17, 783871190, 1, '2019-04-28 15:09:36', NULL),
-(19, 20, 984989177, 1, '2019-05-15 18:39:07', NULL),
-(20, 19, 984989177, 1, '2019-05-15 18:39:07', NULL),
-(21, 15, 984989177, 1, '2019-05-15 18:39:07', NULL),
-(22, 18, 51112517, 1, '2019-05-15 19:40:26', NULL),
-(23, 19, 51112517, 1, '2019-05-15 19:40:26', NULL),
-(24, 15, 716394782, 1, '2019-05-15 20:25:23', NULL),
-(25, 13, 716394782, 1, '2019-05-15 20:25:23', NULL),
-(28, 13, 79097886, 1, '2019-05-15 20:29:09', NULL),
-(29, 14, 79097886, 1, '2019-05-15 20:29:09', NULL),
-(30, 19, 391660155, 1, '2019-05-15 20:30:54', NULL),
-(31, 15, 391660155, 1, '2019-05-15 20:30:54', NULL),
-(32, 13, 391660155, 1, '2019-05-15 20:30:54', NULL),
-(33, 13, 127860002, 1, '2019-05-15 20:32:06', NULL),
-(34, 14, 127860002, 1, '2019-05-15 20:32:06', NULL),
-(37, 22, 207672417, 1, '2019-05-31 20:04:13', NULL),
-(38, 13, 207672417, 1, '2019-05-31 20:04:13', NULL),
-(39, 22, 187707839, 1, '2019-05-31 20:37:59', NULL),
-(40, 13, 187707839, 1, '2019-05-31 20:37:59', NULL),
-(43, 22, 353248956, 1, '2019-05-31 20:52:23', NULL),
-(44, 13, 353248956, 1, '2019-05-31 20:52:23', NULL),
-(45, 22, 862992787, 2, '2019-05-31 20:54:01', NULL),
-(46, 13, 862992787, 1, '2019-05-31 20:54:01', NULL),
-(47, 22, 264910388, 1, '2019-05-31 20:56:35', NULL),
-(48, 13, 264910388, 1, '2019-05-31 20:56:35', NULL),
-(49, 13, 416844012, 1, '2019-05-31 20:59:17', NULL);
+(5, 22, 253484483, 1, '2019-06-14 16:23:15', NULL),
+(6, 13, 253484483, 1, '2019-06-14 16:23:15', NULL),
+(7, 22, 465898274, 1, '2019-06-14 17:11:33', NULL),
+(8, 13, 465898274, 1, '2019-06-14 17:11:33', NULL);
 
 -- --------------------------------------------------------
 
@@ -383,9 +360,9 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `nome`, `cpf`, `cnpj`, `slug`, `email`, `senha`, `tipo_pessoa`, `tipo_user`, `status`, `fisrt_adesao`, `indicador`, `pontuacao`, `rua`, `bairro`, `complemento`, `referencia`, `cep`, `numero`, `cidade`, `uf`, `sexo`, `telefone`, `avatar`, `created`, `_token`, `updated`) VALUES
-(3, 'Leonardo Mauricio da Silva', '017.598.904-48', '', 'lmauricio', 'lf341533@gmail.com', '$2y$10$RCk2.0Hv4R9EDO26n5MJFuN7szVyJzxdPtj1m.N5inW24T6HqJ4Su', 'fisica', 1, 'inativo', 0, NULL, 1160, 'Rua Prisco Rocha', 'Passe e fica', 'Casa 50', 'Em frente ao orelhÃ£o', '59570-000', 1163, 'CearÃ¡-Mirim', 'RN', 'M', '(84)99482-9780', 'IMG_2022.JPG', '2019-02-21 20:22:23', NULL, '2019-05-31 21:09:01'),
-(6, 'Pedro Neto', '054.852.774-11', '', 'pedro-neto', 'neto@gmail.com', '$2y$10$Mjpcsj2V4YQbSVRRTu84lusMagUXncYWEcoRc4sroihC7fK1.DunS', 'fisica', 2, 'ativo', 1, 3, 1160, 'Rua Prisco Rocha', 'Passe e fica', 'Zona Urbana', 'Em frente ao orelhÃ£o', '59570-000', 12, 'CearÃ¡-Mirim', 'RN', 'M', '(84)45454-6546', '_LNO4840.jpg', '2019-02-21 20:37:28', NULL, '2019-05-31 21:09:01'),
-(7, 'Teste Franqueado', NULL, NULL, 'teste', 'leomauricio7@gmail.com', '$2y$10$LcIp4mEV5yPZI6hTs.Qn7uAleVT0f952tY7oLRkUimyvI8xtf29Oe', 'fisica', 2, 'ativo', 1, 6, 950, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'RN', NULL, '(84) 99430-2191', NULL, '2019-02-22 16:13:22', NULL, '2019-05-31 21:09:01'),
+(3, 'Leonardo Mauricio da Silva', '017.598.904-48', '', 'lmauricio', 'lf341533@gmail.com', '$2y$10$RCk2.0Hv4R9EDO26n5MJFuN7szVyJzxdPtj1m.N5inW24T6HqJ4Su', 'fisica', 1, 'inativo', 0, NULL, 420, 'Rua Prisco Rocha', 'Passe e fica', 'Casa 50', 'Em frente ao orelhÃ£o', '59570-000', 1163, 'CearÃ¡-Mirim', 'RN', 'M', '(84)99482-9780', 'IMG_2022.JPG', '2019-02-21 20:22:23', NULL, '2019-06-14 17:12:20'),
+(6, 'Pedro Neto', '054.852.774-11', '', 'pedro-neto', 'neto@gmail.com', '$2y$10$Mjpcsj2V4YQbSVRRTu84lusMagUXncYWEcoRc4sroihC7fK1.DunS', 'fisica', 2, 'ativo', 1, 3, 420, 'Rua Prisco Rocha', 'Passe e fica', 'Zona Urbana', 'Em frente ao orelhÃ£o', '59570-000', 12, 'CearÃ¡-Mirim', 'RN', 'M', '(84)45454-6546', '_LNO4840.jpg', '2019-02-21 20:37:28', NULL, '2019-06-14 17:12:20'),
+(7, 'Teste Franqueado', NULL, NULL, 'teste', 'leomauricio7@gmail.com', '$2y$10$LcIp4mEV5yPZI6hTs.Qn7uAleVT0f952tY7oLRkUimyvI8xtf29Oe', 'fisica', 2, 'ativo', 1, 6, 210, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'RN', NULL, '(84) 99430-2191', NULL, '2019-02-22 16:13:22', NULL, '2019-06-14 17:12:20'),
 (8, 'teste cliente', '628.636.680-64', '', 'teste-cliente', 'teste@gmail.com', '$2y$10$yfbbJabS.UCj.WAzrPYfBeK3i7/2OMyPnsg6cpKrcP0l3ZHk.FCvm', 'fisica', 1, 'inativo', 0, NULL, 0, 'Rua Prisco Richa', 'Passe e fica', 'Zona Urbana', 'Em frente ao orelhÃ£o', '59490-000', 1163, 'Ielmo Marinho', 'RN', 'M', '(84)32670-013', 'user.png', '2019-02-22 19:24:47', NULL, '2019-04-28 15:17:31'),
 (9, 'Indicado do I', '', '', 'teste1', 'teste1@gmail.com', '$2y$10$SZrDXAJaveiio0P6rMs/3uzOgtncuWFSw.6SnEzRjHF6wFcJSSScu', 'fisica', 2, 'inativo', 0, 6, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'RN', '', '(84)32670-013', 'IMG_20150606_101536.jpg', '2019-04-07 00:58:13', NULL, '2019-05-31 20:51:22'),
 (10, 'indicado pelo 9', NULL, NULL, 'teste2', 'teste2@gmail.com', '$2y$10$y2csTcI32o5RmQ/R/bsQdOvKZeYXIi3wp1U.BHH9a4GzmHuRA.FPm', 'fisica', 2, 'inativo', 0, 9, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'RN', NULL, '(84) 32670-013', NULL, '2019-04-07 01:00:19', NULL, '2019-05-31 20:51:22'),
@@ -393,7 +370,7 @@ INSERT INTO `users` (`id`, `nome`, `cpf`, `cnpj`, `slug`, `email`, `senha`, `tip
 (13, 'indicado pleo 17', NULL, NULL, 'teste5', 'teste5@gmail.com', '$2y$10$qzVwW6azQg7RRHH4L0By9OOfEgC0O50dhJ6NziXYgAlLZIcAWPajK', 'fisica', 2, 'inativo', 0, 17, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'RN', NULL, '(84) 32670-013', NULL, '2019-05-15 16:34:41', NULL, '2019-05-31 20:51:22'),
 (14, 'indicado pelo 17', NULL, NULL, 'teste6', 'teste6@gmail.com', '$2y$10$8kI.KH.XB6JORY.V5JmzsuttS/SliMdHDY6Zt8PlhilmpFHOEeWCS', 'fisica', 2, 'inativo', 0, 17, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'RN', NULL, '(84) 32670-013', NULL, '2019-05-15 16:35:11', NULL, '2019-05-31 20:51:22'),
 (15, 'mas um indicado 9', NULL, NULL, 'teste9', 'teste9@gmail.com', '$2y$10$gnBoFK5xNHoNzEpUoG/YR.P67.kgEHJs/aue44/deyYg0NdwB1MnC', 'fisica', 2, 'inativo', 0, 9, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'RN', NULL, '(87) 98789-7897', NULL, '2019-05-16 00:06:13', NULL, NULL),
-(16, 'indicado pelo 7', NULL, NULL, 'teste10', 'testeuuu@gmaoil.com', '$2y$10$oPLiSexnsMNHJxlbhCaPe.o2avkn3OhzgnSI0Xm.JlwWNncIyNXTe', 'fisica', 2, 'ativo', 1, 7, 690, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'RN', NULL, '(45) 64867-9788', NULL, '2019-05-16 00:23:22', NULL, '2019-05-31 21:09:01'),
+(16, 'indicado pelo 7', NULL, NULL, 'teste10', 'testeuuu@gmaoil.com', '$2y$10$oPLiSexnsMNHJxlbhCaPe.o2avkn3OhzgnSI0Xm.JlwWNncIyNXTe', 'fisica', 2, 'inativo', 0, 7, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'RN', NULL, '(45) 64867-9788', NULL, '2019-05-16 00:23:22', NULL, '2019-06-14 15:51:10'),
 (17, 'mas um  indicado pelo 7', NULL, NULL, 'mai7', 'teste222@gmail.com', '$2y$10$OQZFkfTy3rmF1izi9GZCL.6RzpXstmPUHsOE4qtPwgVUOmhN4qoiG', 'fisica', 2, 'inativo', 0, 7, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'RN', NULL, '(84) 32670-013', NULL, '2019-05-16 00:24:03', NULL, NULL),
 (20, 'mas um indicado pelo 10 ', NULL, NULL, 'teste1010', 'teste1010@gmail.com', '$2y$10$D6wkRKyEqFR.AfAfsv9rB.nuFMIROZDLjjHnv2G9ioGJgesrNpobe', 'fisica', 2, 'inativo', 0, 10, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'RN', NULL, '(84) 32670-013', NULL, '2019-05-16 00:32:21', NULL, NULL),
 (21, 'indicado pelo 15', NULL, NULL, 'teste1515', 'teste1515@gmail.com', '$2y$10$pqwAWPn0UD1EsQMxrsFB8.Hi0xCR7C0/iyAoPiZc0N8WLd5f0JQPW', 'fisica', 2, 'inativo', 0, 15, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'RN', NULL, '(84) 32670-013', NULL, '2019-05-16 00:33:42', NULL, NULL),
@@ -426,9 +403,8 @@ CREATE TABLE `user_adesao` (
 --
 
 INSERT INTO `user_adesao` (`id`, `id_user`, `data_ativacao`, `data_validade`) VALUES
-(2, 6, '2019-05-31', '2019-06-30'),
-(3, 7, '2019-05-31', '2019-06-30'),
-(4, 16, '2019-05-31', '2019-06-30');
+(5, 6, '2019-06-14', '2019-07-14'),
+(6, 7, '2019-06-14', '2019-07-14');
 
 --
 -- Indexes for dumped tables
@@ -455,6 +431,15 @@ ALTER TABLE `conta_users`
 ALTER TABLE `image_products`
   ADD PRIMARY KEY (`id`),
   ADD KEY `id_product` (`id_product`);
+
+--
+-- Indexes for table `matriz`
+--
+ALTER TABLE `matriz`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `id_user` (`id_user`),
+  ADD KEY `id_user_matriz` (`id_user_matriz`),
+  ADD KEY `id_no` (`id_no`);
 
 --
 -- Indexes for table `niveis`
@@ -537,7 +522,7 @@ ALTER TABLE `user_adesao`
 -- AUTO_INCREMENT for table `comissoes`
 --
 ALTER TABLE `comissoes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `conta_users`
 --
@@ -548,6 +533,11 @@ ALTER TABLE `conta_users`
 --
 ALTER TABLE `image_products`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+--
+-- AUTO_INCREMENT for table `matriz`
+--
+ALTER TABLE `matriz`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `niveis`
 --
@@ -567,7 +557,7 @@ ALTER TABLE `nivel_pontuacao_user`
 -- AUTO_INCREMENT for table `pedidos`
 --
 ALTER TABLE `pedidos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `products`
 --
@@ -577,7 +567,7 @@ ALTER TABLE `products`
 -- AUTO_INCREMENT for table `produtos_pedido`
 --
 ALTER TABLE `produtos_pedido`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT for table `status_pedido`
 --
@@ -597,7 +587,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `user_adesao`
 --
 ALTER TABLE `user_adesao`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 --
 -- Constraints for dumped tables
 --
@@ -620,6 +610,14 @@ ALTER TABLE `conta_users`
 --
 ALTER TABLE `image_products`
   ADD CONSTRAINT `image_products_ibfk_1` FOREIGN KEY (`id_product`) REFERENCES `products` (`id`) ON DELETE CASCADE;
+
+--
+-- Limitadores para a tabela `matriz`
+--
+ALTER TABLE `matriz`
+  ADD CONSTRAINT `matriz_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `matriz_ibfk_2` FOREIGN KEY (`id_user_matriz`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `matriz_ibfk_3` FOREIGN KEY (`id_no`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 
 --
 -- Limitadores para a tabela `nivel_pontuacao_user`
