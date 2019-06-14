@@ -2,7 +2,11 @@
 
 class Dados
 {
-
+    public static function getUsersAll($id){
+        $read = new Read();
+        $read->ExeRead('users', 'where id > ' . $id);
+        return $read->getResult();
+    }
     //indicados de um usuário master
     public static function getIndicados($user)
     {
