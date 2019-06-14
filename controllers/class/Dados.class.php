@@ -2,11 +2,31 @@
 
 class Dados
 {
+    //pega  nivel do usuario namatriz
+    public static function getNivelMatrizUser($id){
+        $read = new Read();
+        $read->ExeRead('matriz', 'where id_user = ' . $id);
+        return $read->getResult();
+    }
+    //pega todos os usuarios pelo id
     public static function getUsersAll($id){
         $read = new Read();
         $read->ExeRead('users', 'where id > ' . $id);
         return $read->getResult();
     }
+    //pega todos os dados de um matriz
+    public static function getUsersMatriz($id){
+        $read = new Read();
+        $read->ExeRead('matriz', 'where id_user_matriz = ' . $id);
+        return $read->getResult();
+    }
+    //função de ppegar os dados de no na matriz
+    public static function getByNoMatriz($id,$no,$level){
+        $read = new Read();
+        $read->ExeRead('matriz', 'where id_user_matriz=:id and id_no=:no and level=:level', 'id='.$id.'&no='.$no.'&level='.$level);
+        return $read->getResult();
+    }
+
     //indicados de um usuário master
     public static function getIndicados($user)
     {

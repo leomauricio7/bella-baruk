@@ -1,5 +1,6 @@
 <?php
 
+//ini_set('xdebug.max_nesting_level', 500);
 abstract class Conn {
 
     private static $Host = HOST;

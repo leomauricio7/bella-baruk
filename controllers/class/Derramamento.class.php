@@ -1,27 +1,24 @@
 <?php
 class Derramamento
 {
-
-	// print de arvore binaria sem derramamento
-	function printTree($root){
-		$array=$this->getBinary($root);
-		$tree='<ul>';
-		$level=0;
-		foreach ( $array as $value ) {
+	// print de arvore binaria sem derramamento 
+	// função esta com erro de extrapolar o limite de requisições ao servidor
+	function printTree($root, $no, $nivel)
+	{
+		$array = $this->getBinary($root, $no, $nivel);
+		$tree = '<ul>';
+		foreach ($array as $value) {
 			extract($value);
-			if(1==1){
-				$tree.= '
+			$tree .= '
 				<li>
 					<a class="no">
 					<img class="img-pai" src="https://www.shareicon.net/download/2016/05/24/770136_man_512x512.png" width="50px" alt=""><br>
-						<span>'.$id.'</span>
+						<span>' . $id_user . '</span>
 					</a> 
-					'.$this->printTree($id).'
+					' . $this->printTree($root, $id_no, $level) . '
 				</li>';
-			}
-			$level++;
 		}
-		$tree.="</ul>";
+		$tree .= "</ul>";
 		return $tree;
 	}
 
@@ -30,10 +27,161 @@ class Derramamento
 		return $valor > 0 ? ($valor % 2) == 0 ? true : false : 0;
 	}
 
-	function getBinary($root)
+	function getBinary($root, $no, $level)
+	{
+		//filtra os ativos 
+		//$filhos = Dados::getFilhos($root);
+		//filtra todos os indicados
+		//$matriz = Dados::getUsersMatriz($root);
+		$matriz = Dados::getByNoMatriz($root, $no, $level);
+		return $matriz;
+	}
+
+	//funções de montar a matriz individualmente
+	function saveUserMatriz($root, $indicado)
+	{
+		$save = new Create();
+		//verifica se a matriz do usuario que lhe indicou estar preenchida
+		$isLivrePositionMatriz = $this->validaLevelMatriz($root);
+		//verifica se a matriz do usuario indicador estar preenchida
+
+		$root_raiz = Dados::getIndicador($root);
+		if (!$root_raiz) {
+			$isLivrePositionMatrizRoot = $this->validaLevelMatriz($root_raiz);
+			if ($this->validaLevelMatriz($root_raiz) > 0) {
+				if ($isLivrePositionMatrizRoot == 1) {
+					$dados = ['id_user_matriz' => $root_raiz, 'id_user' => $indicado, 'level' => $isLivrePositionMatrizRoot, 'id_no' => $root_raiz];
+					$save->ExeCreate('matriz', $dados);
+				} else if ($this->getByIdNoMatriz($root_raiz, ($isLivrePositionMatrizRoot - 1))['status']) {
+					$dados = ['id_user_matriz' => $root_raiz, 'id_user' => $indicado, 'level' => $isLivrePositionMatrizRoot, 'id_no' => $this->getByIdNoMatriz($root_raiz, ($isLivrePositionMatrizRoot - 1))['no']];
+					$save->ExeCreate('matriz', $dados);
+				}
+			}
+		}
+
+		//verifica se sua matriz esta preenchida
+		if ($isLivrePositionMatriz > 0) {
+			if ($isLivrePositionMatriz == 1) {
+				$dados = ['id_user_matriz' => $root, 'id_user' => $indicado, 'level' => $isLivrePositionMatriz, 'id_no' => $root];
+				$save->ExeCreate('matriz', $dados);
+			} else if ($this->getByIdNoMatriz($root, ($isLivrePositionMatriz - 1))['status']) {
+				$dados = ['id_user_matriz' => $root, 'id_user' => $indicado, 'level' => $isLivrePositionMatriz, 'id_no' => $this->getByIdNoMatriz($root, ($isLivrePositionMatriz - 1))['no']];
+				$save->ExeCreate('matriz', $dados);
+			}
+		}
+	}
+
+	//funções de montar a matriz all
+	function saveUserAllMatriz($root)
 	{
 		$filhos = Dados::getUsersIndicados($root);
-		return $filhos;
+		$save = new Create();
+		foreach ($filhos as $user) {
+			extract($user);
+			$isLivrePositionMatriz = $this->validaLevelMatriz($root);
+			//verifica se a matriz do usuario que lhe indicou esta preenchida
+			$root_raiz = Dados::getIndicador($root);
+			$isLivrePositionMatrizRoot = $this->validaLevelMatriz($root_raiz);
+			if ($this->validaLevelMatriz($root_raiz) > 0) {
+				if ($isLivrePositionMatrizRoot == 1) {
+					$dados = ['id_user_matriz' => $root_raiz, 'id_user' => $id, 'level' => $isLivrePositionMatrizRoot, 'id_no' => $root_raiz];
+					$save->ExeCreate('matriz', $dados);
+				} else if ($this->getByIdNoMatriz($root_raiz, ($isLivrePositionMatrizRoot - 1))['status']) {
+					$dados = ['id_user_matriz' => $root_raiz, 'id_user' => $id, 'level' => $isLivrePositionMatrizRoot, 'id_no' => $this->getByIdNoMatriz($root_raiz, ($isLivrePositionMatrizRoot - 1))['no']];
+					$save->ExeCreate('matriz', $dados);
+				}
+			}
+			//verifica se sua matriz esta preenchida
+			if ($isLivrePositionMatriz > 0) {
+				if ($isLivrePositionMatriz == 1) {
+					$dados = ['id_user_matriz' => $root, 'id_user' => $id, 'level' => $isLivrePositionMatriz, 'id_no' => $root];
+					$save->ExeCreate('matriz', $dados);
+				} else if ($this->getByIdNoMatriz($root, ($isLivrePositionMatriz - 1))['status']) {
+					$dados = ['id_user_matriz' => $root, 'id_user' => $id, 'level' => $isLivrePositionMatriz, 'id_no' => $this->getByIdNoMatriz($root, ($isLivrePositionMatriz - 1))['no']];
+					$save->ExeCreate('matriz', $dados);
+				}
+			}
+		}
+	}
+
+	//função que chama a função de checar ha algum nivel livre da matriz
+	function validaLevelMatriz($root)
+	{
+		for ($i = 1; $i <= 8; $i++) {
+			if ($this->geCountUserstLevel($root, $i)) {
+				return $i;
+			}
+		}
+		return 0;
+	}
+
+	//função que verifica se o nivel esta com posição disponiveis ou não
+	function geCountUserstLevel($root, $level)
+	{
+		$read = new Read();
+		$read->ExeRead('matriz', 'where id_user_matriz=:root and level=:level', 'root=' . $root . '&level=' . $level);
+		$totalMaximo = 0;
+		switch ($level) {
+			case 1:
+				$totalMaximo = 2;
+				break;
+			case 2:
+				$totalMaximo = 4;
+				break;
+			case 3:
+				$totalMaximo = 8;
+				break;
+			case 4:
+				$totalMaximo = 16;
+				break;
+			case 5:
+				$totalMaximo = 32;
+				break;
+			case 6:
+				$totalMaximo = 64;
+				break;
+			case 7:
+				$totalMaximo = 128;
+				break;
+			case 8:
+				$totalMaximo = 256;
+				break;
+		}
+		if ($read->getRowCount() < $totalMaximo) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	//função para pegar o id do no ques ta com posições livres
+	function getByIdNoMatriz($root, $level)
+	{
+		$read = new Read();
+		$read->ExeRead('matriz', 'where id_user_matriz=:root and level=:level', 'root=' . $root . '&level=' . $level);
+		if ($read->getRowCount() > 0) {
+			$noss = '';
+			foreach ($read->getResult() as $nos) {
+				extract($nos);
+				if ($this->isvalidNo($root, $id_user)['status']) {
+					return array('status' => true, 'no' => $id_user);
+				}
+				$noss .= ' ' . $id_user . '=>' . $this->isvalidNo($root, $id_user)['msg'];
+			}
+			return array('status' => false, 'no' => 'undefined', 'nos_encontrados' => $noss);
+		}
+	}
+
+	//função para valida no 
+	function isvalidNo($root, $no)
+	{
+		$read = new Read();
+		$read->ExeRead('matriz', 'where id_user_matriz=:root and id_no=:no', 'root=' . $root . '&no=' . $no);
+		if ($read->getRowCount() < 2) {
+			return array('status' => true, 'msg' => 'level possui posições livres');
+		} else {
+			return array('status' => false, 'msg' => 'esse no ja posicionou duas pessoas');;
+		}
 	}
 
 	//função de exibir o array original

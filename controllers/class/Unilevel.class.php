@@ -83,78 +83,119 @@ class Unilevel
         $read->ExeRead('products');
         return $read->getRowCount();
     }
+
+    //pega os dados dos nivel e veifica qual é a comissão correta de acordo com a poisição
+    public static function transformHierarquiaNiveisUnilevel($array){
+        $new_array = [];
+        $indice = 1;
+        $total = count($array);
+        if($total == 1){
+            foreach($array as $value){
+                extract($value);
+                array_push($new_array, [
+                    'indicador' => $indicador,
+                    'comisao'   => Unilevel::getvaluePorcentagemNivelUnilevel($indice),
+                    'nivel'=> $indice
+                ]);
+                $indice++;
+            }
+        }else{
+            rsort($array);
+            foreach($array as $value){
+                extract($value);
+                array_push($new_array, [
+                    'indicador' => $indicador,
+                    'comisao'   => Unilevel::getvaluePorcentagemNivelUnilevel($indice),
+                    'nivel'=> $indice
+                ]);
+                $indice++;
+            }
+        }
+
+        return $new_array;
+    }
     //retorna os 7 niveis(indicador) de comissoes do meu cadastro
     public static function getHierarquiaComissaoUnilevel($idComprador)
     {
-        $read = new Read();
         $my_user = [];
         $my_user[7] = [
             'indicador' => Dados::getIndicador($idComprador),
-            'comisao'   => Unilevel::getvaluePorcentagemNivelUnilevel(7)
+            'comisao'   => Unilevel::getvaluePorcentagemNivelUnilevel(7),
+            'nivel'=> 7
         ];
         $my_user[6] = [
             'indicador' => Dados::getIndicador($my_user[7]['indicador']),
-            'comisao'   => Unilevel::getvaluePorcentagemNivelUnilevel(6)
+            'comisao'   => Unilevel::getvaluePorcentagemNivelUnilevel(6),
+            'nivel'=> 6
         ];
         $my_user[5] = [
             'indicador' => Dados::getIndicador($my_user[6]['indicador']),
-            'comisao'   => Unilevel::getvaluePorcentagemNivelUnilevel(5)
+            'comisao'   => Unilevel::getvaluePorcentagemNivelUnilevel(5),
+            'nivel'=> 5
         ];
         $my_user[4] = [
             'indicador' => Dados::getIndicador($my_user[5]['indicador']),
-            'comisao'   => Unilevel::getvaluePorcentagemNivelUnilevel(4)
+            'comisao'   => Unilevel::getvaluePorcentagemNivelUnilevel(4),
+            'nivel'=> 4
         ];
         $my_user[3] = [
             'indicador' => Dados::getIndicador($my_user[4]['indicador']),
-            'comisao'   => Unilevel::getvaluePorcentagemNivelUnilevel(3)
+            'comisao'   => Unilevel::getvaluePorcentagemNivelUnilevel(3),
+            'nivel'=> 3
         ];
         $my_user[2] = [
             'indicador' => Dados::getIndicador($my_user[3]['indicador']),
-            'comisao'   => Unilevel::getvaluePorcentagemNivelUnilevel(2)
+            'comisao'   => Unilevel::getvaluePorcentagemNivelUnilevel(2),
+            'nivel'=> 2
         ];
         $my_user[1] = [
             'indicador' => Dados::getIndicador($my_user[2]['indicador']),
-            'comisao'   => Unilevel::getvaluePorcentagemNivelUnilevel(1)
+            'comisao'   => Unilevel::getvaluePorcentagemNivelUnilevel(1),
+            'nivel'=> 1
         ];
-        return $my_user;
+
+        $indicadores = array_filter($my_user, function ($userIndicado) {
+            return $userIndicado['indicador'] != null;
+        });
+
+        return Unilevel::transformHierarquiaNiveisUnilevel($indicadores);
     }
 
+    public static function comissaoLevelMatriz($level){
+        switch($level){
+            case 1: return 0; break;
+            case 2:
+            case 3:
+            case 4:
+            case 5:
+            case 6:
+            case 7:
+                return 5; break;
+            case 8: return 15; break;
+
+        }
+    }
+ 
     public static function getHierarquiaComissaoMatriz($idComprador)
     {
+
+        $indicadoresMatriz = Dados::getNivelMatrizUser($idComprador);
         $my_user = [];
-        $my_user[8] = [
-            'indicador' => Dados::getIndicador($idComprador),
-            'comisao'   => 15
-        ];
-        $my_user[7] = [
-            'indicador' => Dados::getIndicador($my_user[8]['indicador']),
-            'comisao'   => 5
-        ];
-        $my_user[6] = [
-            'indicador' => Dados::getIndicador($my_user[7]['indicador']),
-            'comisao'   => 5
-        ];
-        $my_user[5] = [
-            'indicador' => Dados::getIndicador($my_user[6]['indicador']),
-            'comisao'   => 5
-        ];
-        $my_user[4] = [
-            'indicador' => Dados::getIndicador($my_user[5]['indicador']),
-            'comisao'   => 5
-        ];
-        $my_user[3] = [
-            'indicador' => Dados::getIndicador($my_user[4]['indicador']),
-            'comisao'   => 5
-        ];
-        $my_user[2] = [
-            'indicador' => Dados::getIndicador($my_user[3]['indicador']),
-            'comisao'   => 5
-        ];
-        $my_user[1] = [
-            'indicador' => Dados::getIndicador($my_user[2]['indicador']),
-            'comisao'   => 0
-        ];
-        return $my_user;
+        foreach($indicadoresMatriz as $dados){
+            extract($dados);
+            array_push($my_user,[
+                'indicador' => Dados::getIndicador($idComprador),
+                'comisao'   => Unilevel::comissaoLevelMatriz($level),
+                'nivel' => $level,
+            ]);
+
+        }
+        
+        $indicadores = array_filter($my_user, function ($userIndicado) {
+            return $userIndicado['indicador'] != null;
+        });
+        
+        return $indicadores;
     }
 
     //retorna o valor da porcenta de cada nivel de comissão do unilevel
