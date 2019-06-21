@@ -240,6 +240,23 @@
             </div>
           </li>
 
+          <li class="nav-item">
+            <a class="nav-link collapsed" href="<?php echo Url::getBase() ?>escritorio-virtual" role="button">
+              <i class="fa fa-user-secret"></i> Escritório Virtual
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link collapsed" href="<?php echo Url::getBase() ?>saques" role="button">
+              <i class="fa fa-money-check-alt"></i> Saques
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link collapsed" href="<?php echo Url::getBase() ?>transferencias" role="button">
+              <i class="fa fa-exchange-alt"></i> Transferências
+            </a>
+          </li>
         <?php } ?>
 
         <?php if (!Validation::getPermisionType($tipoUser)) { ?>
@@ -263,8 +280,11 @@
               <i class="fa fa-wallet"></i> Plano de carreira
             </a>
           </li>
-
-
+          <li class="nav-item">
+            <a class="nav-link" href="<?php echo Url::getBase() ?>carteira-digital">
+              <i class="fa fa-money-check-alt"></i> Carteira Digital
+            </a>
+          </li>
           <li class="nav-item">
             <a class="nav-link" href="<?php echo Url::getBase() ?>products">
               <i class="fa fa-cart-plus"></i> Loja

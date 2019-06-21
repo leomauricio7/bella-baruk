@@ -82,6 +82,22 @@
     padding: 0px;
     border: 6px solid #dbdbdb;
 }
+
+.animate-bottom {
+    position: relative;
+    -webkit-animation-name: animatebottom;
+    -webkit-animation-duration: 1s;
+    animation-name: animatebottom;
+    animation-duration: 1s
+}
+
+img#load{
+    width: 50px;
+}
+#text-load {
+    display: none;
+    text-align: center;
+}
 /*print table*/
 @media print {
     body * {

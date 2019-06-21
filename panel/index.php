@@ -21,7 +21,7 @@ $dadosUser = Dados::getDadosUser($_SESSION['idUser'])[0];
     <link rel="shortcut icon" href="<?php echo Url::getBase(); ?>../assets/img/logotipos/favicon-bella-baruk.png" type="image/x-icon">
     <!-- Libs CSS -->
     <?php
-    if (Url::getURL(0) == 'unilevel' || Url::getURL(0) == 'matriz') {
+    if (Url::getURL(0) == 'unilevel' || Url::getURL(0) == 'matriz' || Url::getURL(0) == 'escritorio-virtual') {
         $link = '<link rel="stylesheet" href="' . Url::getBase() . '../assets/css/arvore.css">';
         echo $link;
     }

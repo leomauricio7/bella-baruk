@@ -2,14 +2,14 @@
 <?php 
 require_once './controllers/conf.php';
 require_once './vendor/autoload.php';
-//Validation::forceHTTPS();
+if(DOMAIN != 'localhost'){Validation::forceHTTPS();}
 ?>
 <!doctype html>
 <html lang="pt-br">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="A fully featured admin theme which can be used to build CRM, CMS, etc.">
+    <meta name="description" content="Sistema de Marketing Multnivel, bellabaruk, BELLABARUK BELLA, bella, BARUK, baruk">
     <link rel="shortcut icon" href="<?php echo Url::getBase(); ?>assets/img/logotipos/favicon-bella-baruk.png" type="image/x-icon">
     <!-- Libs CSS -->
     <link rel="stylesheet" href="<?php echo Url::getBase(); ?>assets/fonts/feather/feather.min.css">

@@ -2,6 +2,60 @@
 
 class Dados
 {
+    //pega todos os pedidos onde o pagamento foi feito por bonus de comissão
+    public static function getBySizePedidos($user){
+        $read = new Read();
+        $read->ExeRead('pedidos', 'where id_user=:user and payment="bonus"', 'user='.$user);
+        return $read->getRowCount();
+    }
+    //pega todos os saques de um usuário
+    public static function getBySaques($user){
+        $read = new Read();
+        $read->getSaques('where sq.id_user = ' . $user);
+        return $read->getResult();
+    }
+    //pega todos os saques
+    public static function getByAllSaques(){
+        $read = new Read();
+        $read->getSaques();
+        return $read->getResult();
+    }
+    //pega todas as transferencias de um usuario
+    public static function getByTransferencias($user){
+        $read = new Read();
+        $read->getTransferencias('where id_user_origem = ' . $user);
+        return $read->getResult();
+    }
+    //pega todas as transferencias
+    public static function getByAllTransferencias(){
+        $read = new Read();
+        $read->getTransferencias();
+        return $read->getResult();
+    }
+    //pega o total de saques que um usuário efetuou
+    public static function getBySizeSaque($user){
+        $read = new Read();
+        $read->ExeRead('saques', 'where id_user = ' . $user);
+        return $read->getRowCount();
+    }
+    //pega o total de transferências de um usuário
+    public static function getBySizeTransferencias($user){
+        $read = new Read();
+        $read->ExeRead('transacoes', 'where id_user_origem = ' . $user);
+        return $read->getRowCount();
+    }
+    //pega o id do usuário pelo login
+    public static function getById($slug){
+        $read = new Read();
+        $read->ExeRead('users', 'where slug = "' . $slug.'"');
+
+        if($read->getRowCount() > 0){
+            foreach($read->getResult() as $dados){
+                extract($dados);
+                return $id;
+            }
+        }
+    } 
     //pega  nivel do usuario namatriz
     public static function getNivelMatrizUser($id){
         $read = new Read();
@@ -12,6 +66,12 @@ class Dados
     public static function getUsersAll($id){
         $read = new Read();
         $read->ExeRead('users', 'where id > ' . $id);
+        return $read->getResult();
+    }
+    //pega todos os usaros do tipo vendedor
+    public static function getUsersAllVendedor(){
+        $read = new Read();
+        $read->ExeRead('users', 'where tipo_user = 2');
         return $read->getResult();
     }
     //pega todos os dados de um matriz
@@ -194,11 +254,49 @@ class Dados
                 extract($dados);
                 $total += $valor;
             }
+            $pedidos = Dados::totalValorPedidosBonus($user);
+            $saques = Dados::totalValorSaques($user);
+            $transferencias = Dados::totalValorTransferencias($user);
+            $total = $total - ($saques+$transferencias+$pedidos);
             return number_format($total, 2, ",", "");
         } else {
             return number_format($total, 2, ",", "");
         }
     }
+
+    public static function totalValorTransferencias($user) {
+        $read = new Read();
+        $read->getTransferencias('where id_user_origem = ' . $user);
+        $total = 0;
+        foreach($read->getResult() as $dados){
+            extract($dados);
+            $total+=$valor_bruto;
+        }
+        return $total;
+    }
+
+    public static function totalValorSaques($user) {
+        $read = new Read();
+        $read->getSaques('where sq.id_user= ' . $user .' and sq.status = "aprovado"');
+        $total = 0;
+        foreach($read->getResult() as $dados){
+            extract($dados);
+            $total+=$valor_bruto;
+        }
+        return $total;
+    }
+
+    public static function totalValorPedidosBonus($user) {
+        $read = new Read();
+        $read->ExeRead('pedidos', 'where id_user= ' . $user .' and payment = "bonus"');
+        $total = 0;
+        foreach($read->getResult() as $dados){
+            extract($dados);
+            $total+=$valor;
+        }
+        return $total;
+    }
+
 
     public static function getComissaoComprador($recebedor, $comprador)
     {

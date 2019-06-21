@@ -25,6 +25,22 @@ class Read extends Conn {
         $this->ExecuteSQL();
     }
 
+    public function getSaques($Termos = null) {
+        if (empty($Termos)):
+            $Termos = '';
+        endif;
+        $this->Select = 'SELECT sq.id, CONCAT("R$",FORMAT(sq.valor,2,"de_DE")) as valor, sq.status, sq.valor as valor_bruto, DATE_FORMAT(sq.created, "%d/%m/%Y") as data, us.nome as user FROM saques sq INNER JOIN users us ON sq.id_user = us.id ' . $Termos;
+        $this->ExecuteSQL();
+    }
+
+    public function getTransferencias($Termos = null) {
+        if (empty($Termos)):
+            $Termos = '';
+        endif;
+        $this->Select = 'SELECT id, id_user_origem, id_user_destino, CONCAT("R$",FORMAT(valor,2,"de_DE")) as valor, valor as valor_bruto, DATE_FORMAT(created, "%d/%m/%Y") as data FROM transacoes ' . $Termos;
+        $this->ExecuteSQL();
+    }
+
     public function getResult() {
         return $this->Result;
     }

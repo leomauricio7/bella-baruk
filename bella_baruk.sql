@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 14-Jun-2019 às 21:06
+-- Generation Time: 21-Jun-2019 às 00:31
 -- Versão do servidor: 5.7.14
 -- PHP Version: 7.0.10
 
@@ -19,6 +19,8 @@ SET time_zone = "+00:00";
 --
 -- Database: `bella_baruk`
 --
+CREATE DATABASE IF NOT EXISTS `bella_baruk` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+USE `bella_baruk`;
 
 -- --------------------------------------------------------
 
@@ -26,6 +28,7 @@ SET time_zone = "+00:00";
 -- Estrutura da tabela `comissoes`
 --
 
+DROP TABLE IF EXISTS `comissoes`;
 CREATE TABLE `comissoes` (
   `id` int(11) NOT NULL,
   `id_user_recebedor` int(11) NOT NULL,
@@ -49,6 +52,7 @@ INSERT INTO `comissoes` (`id`, `id_user_recebedor`, `id_user_comprador`, `valor`
 -- Estrutura da tabela `conta_users`
 --
 
+DROP TABLE IF EXISTS `conta_users`;
 CREATE TABLE `conta_users` (
   `id` int(11) NOT NULL,
   `titular` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
@@ -75,6 +79,7 @@ INSERT INTO `conta_users` (`id`, `titular`, `cpf_titular`, `banco`, `agencia`, `
 -- Estrutura da tabela `image_products`
 --
 
+DROP TABLE IF EXISTS `image_products`;
 CREATE TABLE `image_products` (
   `id` int(11) NOT NULL,
   `url_image` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
@@ -105,6 +110,7 @@ INSERT INTO `image_products` (`id`, `url_image`, `id_product`, `created`, `updat
 -- Estrutura da tabela `matriz`
 --
 
+DROP TABLE IF EXISTS `matriz`;
 CREATE TABLE `matriz` (
   `id` int(11) NOT NULL,
   `id_user_matriz` int(11) NOT NULL,
@@ -127,6 +133,7 @@ INSERT INTO `matriz` (`id`, `id_user_matriz`, `id_user`, `level`, `id_no`) VALUE
 -- Estrutura da tabela `niveis`
 --
 
+DROP TABLE IF EXISTS `niveis`;
 CREATE TABLE `niveis` (
   `id` int(11) NOT NULL,
   `nivel` int(11) DEFAULT '0',
@@ -154,6 +161,7 @@ INSERT INTO `niveis` (`id`, `nivel`, `comisao`, `created`, `updated`) VALUES
 -- Estrutura da tabela `nivel_pontuacao`
 --
 
+DROP TABLE IF EXISTS `nivel_pontuacao`;
 CREATE TABLE `nivel_pontuacao` (
   `id` int(11) NOT NULL,
   `titulo` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
@@ -169,10 +177,15 @@ CREATE TABLE `nivel_pontuacao` (
 --
 
 INSERT INTO `nivel_pontuacao` (`id`, `titulo`, `descricao`, `pontuacao`, `avatar`, `created`, `updated`) VALUES
-(1, 'Diamante - Cruzeiro BellaBaruk', 'Ao chegar no nÃ­vel de Diamante BellaBaruk, vocÃª terÃ¡ direito a participar do Cruzeiro anual, sem dÃºvidas, vocÃª viverÃ¡ momentos incrÃ­veis!', 60000, 'Diamante.png', '2019-04-07 01:34:52', NULL),
-(2, 'Two Stars - Bora bora', 'Como Imperial Two Stars, vocÃª estarÃ¡ no topo do Plano de Marketing da empresa. VocÃª ganharÃ¡ uma viagem de 12 dias em Bora Bora no Tahiti. AlÃ©m dessa mega viagem, receberÃ¡ uma incrÃ­vel JÃ³ia Tiffany e um Rolex', 30000, 'Imperial-Two-Star.png', '2019-04-07 01:35:53', NULL),
-(3, 'Titan - Lamborghini ou Ferrari', 'VocÃª como Titan acaba de atingir o topo do Plano de Marketing da Hinode. E ao bater essa qualificaÃ§Ã£o vocÃª terÃ¡ a possibilidade de escolher entre um fantÃ¡stico Lamborghini ou uma incrÃ­vel Ferrari.', 20000, 'Titan.png', '2019-04-07 01:36:37', NULL),
-(4, 'Three Stars - Programa Super Carros', 'Como Imperial Three Stars vocÃª farÃ¡ parte de um programa da Hinode e poderÃ¡ escolher um Super Carro', 60000, 'Imperial-Three-Star.png', '2019-04-07 01:37:39', NULL);
+(5, 'BRONZE', 'R$ 250,00 (Prêmio em dinheiro)', 3000, 'BRONZE-MIN.png', '2019-05-21 20:09:47', NULL),
+(6, 'PRATA', 'R$ 500,00 (Prêmio em dinheiro)', 15000, 'PRATA-MIN.png', '2019-05-21 20:10:45', NULL),
+(7, 'OURO', 'R$ 1.500,00 (Prêmio em dinheiro)', 40000, 'OURO-MIN.png', '2019-05-21 20:11:27', NULL),
+(8, 'RUBI', 'R$ 4.000,00 (Prêmio em dinheiro)', 100000, 'RUBI-MIN.png', '2019-05-21 20:12:10', NULL),
+(9, 'SAFIRA', 'R$ 7.000,00 (Prêmio em dinheiro)', 150000, 'SAFIRA-MIN.png', '2019-05-21 20:12:45', NULL),
+(10, 'DIAMANTE', 'R$ 10.000,00 (Prêmio em dinheiro)', 250000, 'DIAMANTE-MIN.png', '2019-05-21 20:13:24', NULL),
+(11, 'DUPLO DIAMANTE', 'R$ 20.000,00 (Prêmio em dinheiro)', 500000, 'DUPLO DUAMANTE-MIN.png', '2019-05-21 20:13:53', NULL),
+(12, 'TRIPLO DIAMANTE', 'R$ 50.000,00 (Prêmio em dinheiro)', 1000000, 'TRIPLO DIAMANTE-MIN.png', '2019-05-21 20:14:32', NULL),
+(13, 'IMPERIAL DIAMANTE BARUK', 'R$ 100.000,00 (Prêmio em dinheiro)', 2000000, 'IMPERIAL-MIN.png', '2019-05-21 20:15:13', NULL);
 
 -- --------------------------------------------------------
 
@@ -180,6 +193,7 @@ INSERT INTO `nivel_pontuacao` (`id`, `titulo`, `descricao`, `pontuacao`, `avatar
 -- Estrutura da tabela `nivel_pontuacao_user`
 --
 
+DROP TABLE IF EXISTS `nivel_pontuacao_user`;
 CREATE TABLE `nivel_pontuacao_user` (
   `id` int(11) NOT NULL,
   `id_user` int(11) NOT NULL,
@@ -194,6 +208,7 @@ CREATE TABLE `nivel_pontuacao_user` (
 -- Estrutura da tabela `pedidos`
 --
 
+DROP TABLE IF EXISTS `pedidos`;
 CREATE TABLE `pedidos` (
   `id` int(11) NOT NULL,
   `idPedido` int(50) NOT NULL,
@@ -202,6 +217,7 @@ CREATE TABLE `pedidos` (
   `valor` double NOT NULL DEFAULT '0',
   `comprovante` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
   `dado_baixa` char(3) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'nao',
+  `payment` enum('dinheiro','bonus','pagseguro') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'dinheiro',
   `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -210,9 +226,10 @@ CREATE TABLE `pedidos` (
 -- Extraindo dados da tabela `pedidos`
 --
 
-INSERT INTO `pedidos` (`id`, `idPedido`, `id_user`, `id_status`, `valor`, `comprovante`, `dado_baixa`, `created`, `updated`) VALUES
-(3, 253484483, 6, 3, 210, 'Captura de Tela (140).png', 'sim', '2019-06-14 16:23:15', '2019-06-14 16:40:17'),
-(4, 465898274, 7, 3, 210, 'Captura de Tela (1).png', 'sim', '2019-06-14 17:11:33', '2019-06-14 17:12:20');
+INSERT INTO `pedidos` (`id`, `idPedido`, `id_user`, `id_status`, `valor`, `comprovante`, `dado_baixa`, `payment`, `created`, `updated`) VALUES
+(3, 253484483, 6, 3, 210, 'Captura de Tela (140).png', 'sim', 'dinheiro', '2019-06-14 16:23:15', '2019-06-14 16:40:17'),
+(4, 465898274, 7, 3, 210, 'Captura de Tela (1).png', 'sim', 'dinheiro', '2019-06-14 17:11:33', '2019-06-14 17:12:20'),
+(5, 853151210, 6, 1, 62, NULL, 'nao', 'dinheiro', '2019-06-20 13:01:05', '2019-06-20 20:24:01');
 
 -- --------------------------------------------------------
 
@@ -220,6 +237,7 @@ INSERT INTO `pedidos` (`id`, `idPedido`, `id_user`, `id_status`, `valor`, `compr
 -- Estrutura da tabela `products`
 --
 
+DROP TABLE IF EXISTS `products`;
 CREATE TABLE `products` (
   `id` int(11) NOT NULL,
   `titulo` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -256,6 +274,7 @@ INSERT INTO `products` (`id`, `titulo`, `descricao`, `slug`, `preco`, `quantidad
 -- Estrutura da tabela `produtos_pedido`
 --
 
+DROP TABLE IF EXISTS `produtos_pedido`;
 CREATE TABLE `produtos_pedido` (
   `id` int(11) NOT NULL,
   `id_produto` int(11) NOT NULL,
@@ -273,7 +292,34 @@ INSERT INTO `produtos_pedido` (`id`, `id_produto`, `id_pedido`, `quantidade`, `c
 (5, 22, 253484483, 1, '2019-06-14 16:23:15', NULL),
 (6, 13, 253484483, 1, '2019-06-14 16:23:15', NULL),
 (7, 22, 465898274, 1, '2019-06-14 17:11:33', NULL),
-(8, 13, 465898274, 1, '2019-06-14 17:11:33', NULL);
+(8, 13, 465898274, 1, '2019-06-14 17:11:33', NULL),
+(9, 18, 853151210, 2, '2019-06-20 13:01:05', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `saques`
+--
+
+DROP TABLE IF EXISTS `saques`;
+CREATE TABLE `saques` (
+  `id` int(11) NOT NULL,
+  `id_user` int(11) NOT NULL,
+  `valor` float NOT NULL,
+  `status` enum('aprovado','reprovado','em analise') COLLATE utf8_unicode_ci NOT NULL,
+  `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Extraindo dados da tabela `saques`
+--
+
+INSERT INTO `saques` (`id`, `id_user`, `valor`, `status`, `created`, `updated`) VALUES
+(1, 6, 10, 'reprovado', '2019-06-20 15:02:09', '2019-06-20 21:24:00'),
+(2, 6, 20, 'reprovado', '2019-06-20 17:31:05', '2019-06-20 21:24:02'),
+(3, 6, 23.5, 'aprovado', '2019-06-20 17:33:12', '2019-06-20 21:23:31'),
+(4, 6, 5.5, 'aprovado', '2019-06-20 20:00:38', '2019-06-20 21:23:34');
 
 -- --------------------------------------------------------
 
@@ -281,6 +327,7 @@ INSERT INTO `produtos_pedido` (`id`, `id_produto`, `id_pedido`, `quantidade`, `c
 -- Estrutura da tabela `status_pedido`
 --
 
+DROP TABLE IF EXISTS `status_pedido`;
 CREATE TABLE `status_pedido` (
   `id` int(11) NOT NULL,
   `status` varchar(100) COLLATE utf8_unicode_ci NOT NULL
@@ -306,6 +353,7 @@ INSERT INTO `status_pedido` (`id`, `status`) VALUES
 -- Estrutura da tabela `tipo_users`
 --
 
+DROP TABLE IF EXISTS `tipo_users`;
 CREATE TABLE `tipo_users` (
   `id` int(11) NOT NULL,
   `tipo` varchar(100) COLLATE utf8_unicode_ci NOT NULL
@@ -322,9 +370,35 @@ INSERT INTO `tipo_users` (`id`, `tipo`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Estrutura da tabela `transacoes`
+--
+
+DROP TABLE IF EXISTS `transacoes`;
+CREATE TABLE `transacoes` (
+  `id` int(11) NOT NULL,
+  `id_user_origem` int(10) NOT NULL,
+  `id_user_destino` int(10) NOT NULL,
+  `valor` double NOT NULL,
+  `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Extraindo dados da tabela `transacoes`
+--
+
+INSERT INTO `transacoes` (`id`, `id_user_origem`, `id_user_destino`, `valor`, `created`, `updated`) VALUES
+(1, 6, 8, 10, '2019-06-20 15:24:09', NULL),
+(2, 6, 7, 5, '2019-06-20 19:59:10', NULL),
+(3, 6, 3, 2.5, '2019-06-20 20:00:23', NULL);
+
+-- --------------------------------------------------------
+
+--
 -- Estrutura da tabela `users`
 --
 
+DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
   `id` int(11) NOT NULL,
   `nome` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
@@ -361,7 +435,7 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `nome`, `cpf`, `cnpj`, `slug`, `email`, `senha`, `tipo_pessoa`, `tipo_user`, `status`, `fisrt_adesao`, `indicador`, `pontuacao`, `rua`, `bairro`, `complemento`, `referencia`, `cep`, `numero`, `cidade`, `uf`, `sexo`, `telefone`, `avatar`, `created`, `_token`, `updated`) VALUES
 (3, 'Leonardo Mauricio da Silva', '017.598.904-48', '', 'lmauricio', 'lf341533@gmail.com', '$2y$10$RCk2.0Hv4R9EDO26n5MJFuN7szVyJzxdPtj1m.N5inW24T6HqJ4Su', 'fisica', 1, 'inativo', 0, NULL, 420, 'Rua Prisco Rocha', 'Passe e fica', 'Casa 50', 'Em frente ao orelhÃ£o', '59570-000', 1163, 'CearÃ¡-Mirim', 'RN', 'M', '(84)99482-9780', 'IMG_2022.JPG', '2019-02-21 20:22:23', NULL, '2019-06-14 17:12:20'),
-(6, 'Pedro Neto', '054.852.774-11', '', 'pedro-neto', 'neto@gmail.com', '$2y$10$Mjpcsj2V4YQbSVRRTu84lusMagUXncYWEcoRc4sroihC7fK1.DunS', 'fisica', 2, 'ativo', 1, 3, 420, 'Rua Prisco Rocha', 'Passe e fica', 'Zona Urbana', 'Em frente ao orelhÃ£o', '59570-000', 12, 'CearÃ¡-Mirim', 'RN', 'M', '(84)45454-6546', '_LNO4840.jpg', '2019-02-21 20:37:28', NULL, '2019-06-14 17:12:20'),
+(6, 'Pedro Neto', '054.852.774-11', '', 'pedro-neto', 'neto@gmail.com', '$2y$10$Mjpcsj2V4YQbSVRRTu84lusMagUXncYWEcoRc4sroihC7fK1.DunS', 'fisica', 2, 'ativo', 1, 3, 420, 'Rua Prisco Rocha', 'Passe e fica', 'Zona Urbana', 'Em frente ao orelhÃ£o', '59570-000', 12, 'CearÃ¡-Mirim', 'RN', 'M', '(84)45454-6546', '_LNO4840.jpg', '2019-02-21 20:37:28', NULL, '2019-06-20 12:14:44'),
 (7, 'Teste Franqueado', NULL, NULL, 'teste', 'leomauricio7@gmail.com', '$2y$10$LcIp4mEV5yPZI6hTs.Qn7uAleVT0f952tY7oLRkUimyvI8xtf29Oe', 'fisica', 2, 'ativo', 1, 6, 210, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'RN', NULL, '(84) 99430-2191', NULL, '2019-02-22 16:13:22', NULL, '2019-06-14 17:12:20'),
 (8, 'teste cliente', '628.636.680-64', '', 'teste-cliente', 'teste@gmail.com', '$2y$10$yfbbJabS.UCj.WAzrPYfBeK3i7/2OMyPnsg6cpKrcP0l3ZHk.FCvm', 'fisica', 1, 'inativo', 0, NULL, 0, 'Rua Prisco Richa', 'Passe e fica', 'Zona Urbana', 'Em frente ao orelhÃ£o', '59490-000', 1163, 'Ielmo Marinho', 'RN', 'M', '(84)32670-013', 'user.png', '2019-02-22 19:24:47', NULL, '2019-04-28 15:17:31'),
 (9, 'Indicado do I', '', '', 'teste1', 'teste1@gmail.com', '$2y$10$SZrDXAJaveiio0P6rMs/3uzOgtncuWFSw.6SnEzRjHF6wFcJSSScu', 'fisica', 2, 'inativo', 0, 6, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'RN', '', '(84)32670-013', 'IMG_20150606_101536.jpg', '2019-04-07 00:58:13', NULL, '2019-05-31 20:51:22'),
@@ -391,6 +465,7 @@ INSERT INTO `users` (`id`, `nome`, `cpf`, `cnpj`, `slug`, `email`, `senha`, `tip
 -- Estrutura da tabela `user_adesao`
 --
 
+DROP TABLE IF EXISTS `user_adesao`;
 CREATE TABLE `user_adesao` (
   `id` int(11) NOT NULL,
   `id_user` int(11) NOT NULL,
@@ -486,6 +561,13 @@ ALTER TABLE `produtos_pedido`
   ADD KEY `id_produto` (`id_produto`);
 
 --
+-- Indexes for table `saques`
+--
+ALTER TABLE `saques`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `id_user` (`id_user`);
+
+--
 -- Indexes for table `status_pedido`
 --
 ALTER TABLE `status_pedido`
@@ -496,6 +578,16 @@ ALTER TABLE `status_pedido`
 --
 ALTER TABLE `tipo_users`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `transacoes`
+--
+ALTER TABLE `transacoes`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `id_user_origem` (`id_user_origem`),
+  ADD KEY `id_user_destino` (`id_user_destino`),
+  ADD KEY `id_user_origem_2` (`id_user_origem`),
+  ADD KEY `id_user_destino_2` (`id_user_destino`);
 
 --
 -- Indexes for table `users`
@@ -547,7 +639,7 @@ ALTER TABLE `niveis`
 -- AUTO_INCREMENT for table `nivel_pontuacao`
 --
 ALTER TABLE `nivel_pontuacao`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 --
 -- AUTO_INCREMENT for table `nivel_pontuacao_user`
 --
@@ -557,7 +649,7 @@ ALTER TABLE `nivel_pontuacao_user`
 -- AUTO_INCREMENT for table `pedidos`
 --
 ALTER TABLE `pedidos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT for table `products`
 --
@@ -567,7 +659,12 @@ ALTER TABLE `products`
 -- AUTO_INCREMENT for table `produtos_pedido`
 --
 ALTER TABLE `produtos_pedido`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+--
+-- AUTO_INCREMENT for table `saques`
+--
+ALTER TABLE `saques`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `status_pedido`
 --
@@ -578,6 +675,11 @@ ALTER TABLE `status_pedido`
 --
 ALTER TABLE `tipo_users`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
+-- AUTO_INCREMENT for table `transacoes`
+--
+ALTER TABLE `transacoes`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `users`
 --
@@ -645,6 +747,19 @@ ALTER TABLE `products`
 ALTER TABLE `produtos_pedido`
   ADD CONSTRAINT `pedido_produto` FOREIGN KEY (`id_pedido`) REFERENCES `pedidos` (`idPedido`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `produto_pedido_produto` FOREIGN KEY (`id_produto`) REFERENCES `products` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Limitadores para a tabela `saques`
+--
+ALTER TABLE `saques`
+  ADD CONSTRAINT `saques_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `users` (`id`);
+
+--
+-- Limitadores para a tabela `transacoes`
+--
+ALTER TABLE `transacoes`
+  ADD CONSTRAINT `transacoes_ibfk_1` FOREIGN KEY (`id_user_origem`) REFERENCES `users` (`id`),
+  ADD CONSTRAINT `transacoes_ibfk_2` FOREIGN KEY (`id_user_destino`) REFERENCES `users` (`id`);
 
 --
 -- Limitadores para a tabela `users`
