@@ -9,7 +9,6 @@ if ($_POST) {
     $idProduct = filter_input(INPUT_POST, 'idProduct', FILTER_SANITIZE_STRING);
     $idPedido = filter_input(INPUT_POST, 'idPedido', FILTER_SANITIZE_STRING);
     $valorPedido = filter_input(INPUT_POST, 'totalPedido', FILTER_SANITIZE_STRING);
-
     switch ($type) {
             //init session
         case 1:
@@ -37,7 +36,12 @@ if ($_POST) {
             break;
             //da baixa
         case 7:
-            daBaixa($idPedido);
+            $payment = filter_input(INPUT_POST, 'payment', FILTER_SANITIZE_STRING);
+            if ($payment != null) {
+                daBaixa($idPedido, $payment);
+            } else {
+                daBaixa($idPedido);
+            }
             break;
         case 8:
             ativaDesconto();
@@ -175,10 +179,10 @@ function setPontuacao($user, $pontos)
 }
 
 //da baixa no pedido
-function daBaixa($idPedido)
+function daBaixa($idPedido, $payment = null)
 {
     $update = new Update();
-    $dados = ["dado_baixa" => "sim", "id_status" => 3];
+    $dados = ["dado_baixa" => "sim", "id_status" => 3, 'payment' => $payment != null ? $payment : 'dinheiro'];
     $update->ExeUpdate('pedidos', $dados, 'where idPedido=:id', 'id=' . $idPedido);
     if ($update->getResult()) {
         $user = getUserPedido($idPedido)['user'];
@@ -226,8 +230,8 @@ function daBaixa($idPedido)
                             $adesao = saveAdesao($user, 1);
                             if ($adesao) {
                                 $Derramento = new Derramamento();
-                                $Derramento->saveUserMatriz(Dados::getIndicador($user),$user);
-                                $statusComissao =Dados::setComissao($user, 25, $valor - 50, null, null, 'unilevel');
+                                $Derramento->saveUserMatriz(Dados::getIndicador($user), $user);
+                                $statusComissao = Dados::setComissao($user, 25, $valor - 50, null, null, 'unilevel');
                                 if ($statusComissao['status']) {
                                     $userRecebedoresMatriz = Unilevel::getHierarquiaComissaoMatriz($user);
                                     foreach ($userRecebedoresMatriz as $matriz) {
@@ -237,7 +241,7 @@ function daBaixa($idPedido)
                                     echo json_encode(array('status' => 200, 'msg' => 'Pedido dado baixa com sucesso.<br><strong>OBS:</strong> O usuário foi ativado com sucesso.'));
                                 } else {
                                     echo json_encode(array('status' => 200, 'msg' => 'Pedido dado baixa com sucesso.<br><strong>OBS:</strong> O usuário foi ativado com sucesso, mas a comissão não foi setada entre em contato com o suporte. ERROR:' . $statusComissao['msg']));
-                                } 
+                                }
                             }
                         }
                     } else {

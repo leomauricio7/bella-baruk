@@ -174,28 +174,28 @@ $(function () {
             console.log('closed');
         });
     }
-    
-    function daBaixa(idPedido){
+
+    function daBaixa(idPedido, payment = null) {
         $.ajax({
             type: 'POST',
-            url: getBaseUrl()+'/controllers/class/carrinho.php',
-            data: 'type=7&idPedido='+idPedido,
+            url: getBaseUrl() + '/controllers/class/carrinho.php',
+            data: 'type=7&idPedido=' + idPedido + "&payment=" + payment,
             dataType: "json",
-        }).done(function(res) {
-            if(res.status == 200){
+        }).done(function (res) {
+            if (res.status == 200) {
                 $('#msg-toast').html(res.msg);
                 $('#alert-toast').toast('show')
                 //window.location.reload();
-            }else if(res.status == 500){
+            } else if (res.status == 500) {
                 $('#msg-toast').html(res.msg);
                 $('#alert-toast').toast('show')
             }
             console.log(res);
-        }).fail(function(xhr, desc, err) {
+        }).fail(function (xhr, desc, err) {
             alert('Uups! Ocorreu algum erro!');
             console.log(xhr);
             console.log("Detalhes: " + desc + "nErro:" + err);
-        }).always(function() {
+        }).always(function () {
             console.log('closed');
         });
     }
@@ -236,6 +236,11 @@ $(function () {
         var idPedido = $(this).attr('alt');
         daBaixa(idPedido);
     });
+    $('.pg-bonus').click(function () {
+        var idPedido = $(this).attr('alt');
+        daBaixa(idPedido,'bonus');
+    });
+
 
     $('#modal-product').on('hide.bs.modal', function (event) {
         window.location.reload();
@@ -245,11 +250,11 @@ $(function () {
         window.location.reload();
     });
 
-    $('.add-ativacao').click(function(){
+    $('.add-ativacao').click(function () {
         var idProduct = $(this).attr('alt');
         addProduct(idProduct);
         ativaDesconto();
-        window.location.href= "./carrinho";
+        window.location.href = "./carrinho";
     });
 
 });
