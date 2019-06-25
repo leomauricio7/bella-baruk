@@ -230,7 +230,7 @@ function daBaixa($idPedido, $payment = null)
                             $adesao = saveAdesao($user, 1);
                             if ($adesao) {
                                 $Derramento = new Derramamento();
-                                $Derramento->saveUserMatriz(Dados::getIndicador($user), $user);
+                                $Derramento->saveUserMatriz($user);
                                 $statusComissao = Dados::setComissao($user, 25, $valor - 50, null, null, 'unilevel');
                                 if ($statusComissao['status']) {
                                     $userRecebedoresMatriz = Unilevel::getHierarquiaComissaoMatriz($user);

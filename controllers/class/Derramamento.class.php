@@ -38,14 +38,14 @@ class Derramamento
 	}
 
 	//funções de montar a matriz individualmente
-	function saveUserMatriz($root, $indicado)
+	function saveUserMatriz($indicado)
 	{
 		$save = new Create();
+		$root = Dados::getIndicador($indicado);
+		$root_raiz = Dados::getIndicador($root);
 		//verifica se a matriz do usuario que lhe indicou estar preenchida
 		$isLivrePositionMatriz = $this->validaLevelMatriz($root);
-		//verifica se a matriz do usuario indicador estar preenchida
 
-		$root_raiz = Dados::getIndicador($root);
 		if (!$root_raiz) {
 			$isLivrePositionMatrizRoot = $this->validaLevelMatriz($root_raiz);
 			if ($this->validaLevelMatriz($root_raiz) > 0) {
@@ -110,6 +110,7 @@ class Derramamento
 		for ($i = 1; $i <= 8; $i++) {
 			if ($this->geCountUserstLevel($root, $i)) {
 				return $i;
+				break;
 			}
 		}
 		return 0;
