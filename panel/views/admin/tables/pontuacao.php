@@ -18,16 +18,16 @@
                 <!-- Navigation (button group) -->
                 <div class="nav btn-group" role="tablist">
                     <?php if (Validation::getPermisionType($tipoUser)) { ?>
-                    <button class="btn btn-lg btn-white active" data-toggle="tab" data-target="#tabPaneOne" role="tab" aria-controls="tabPaneOne" aria-selected="true">
-                        <span class="fa fa-grip-vertical"></span>
-                    </button>
-                    <button class="btn btn-lg btn-white" data-toggle="tab" data-target="#tabPaneTwo" role="tab" aria-controls="tabPaneTwo" aria-selected="false">
-                        <span class="fa fa-list"></span>
-                    </button>
-                    <?php }else{ ?>
+                        <button class="btn btn-lg btn-white active" data-toggle="tab" data-target="#tabPaneOne" role="tab" aria-controls="tabPaneOne" aria-selected="true">
+                            <span class="fa fa-grip-vertical"></span>
+                        </button>
+                        <button class="btn btn-lg btn-white" data-toggle="tab" data-target="#tabPaneTwo" role="tab" aria-controls="tabPaneTwo" aria-selected="false">
+                            <span class="fa fa-list"></span>
+                        </button>
+                    <?php } else { ?>
                         <button class="btn btn-lg btn-white active" data-toggle="tab" data-target="#tabPaneTwo" role="tab" aria-controls="tabPaneTwo" aria-selected="false">
-                        <span class="fa fa-list"></span>
-                    </button>
+                            <span class="fa fa-list"></span>
+                        </button>
                     <?php } ?>
 
                 </div> <!-- / .nav -->
@@ -89,9 +89,9 @@
                                                 </div>
                                                 <div class="col">
                                                     <!-- Progress
-                                                <div class="progress progress-sm">
-                                                    <div class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="29" aria-valuemin="0" aria-valuemax="100"></div>
-                                                </div> -->
+                                                    <div class="progress progress-sm">
+                                                        <div class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="29" aria-valuemin="0" aria-valuemax="100"></div>
+                                                    </div> -->
                                                 </div>
                                             </div> <!-- / .row -->
                                         </div>
@@ -109,10 +109,8 @@
                     <?php
                     $read = new Read();
                     $read->ExeRead('nivel_pontuacao');
-                    $start = 0;
                     foreach ($read->getResult() as $dados) {
                         extract($dados);
-                        $start++;
                         ?>
                         <div class="col-12">
                             <div class="card">
@@ -121,7 +119,7 @@
                                         <div class="col-auto">
                                             <!-- Avatar -->
                                             <a href="" class="avatar avatar-lg avatar-4by3 img-nivel-xs">
-                                                <img src="<?php echo Url::getBase() . 'docs/nivel-pontuacao/' . $id . '/' . $avatar ?>" alt="..." class="avatar-img rounded <?php echo !Validation::getPermisionType($tipoUser) ? 'opaco' : '' ?>">
+                                                <img src="<?php echo Url::getBase() . 'docs/nivel-pontuacao/' . $id . '/' . $avatar ?>" alt="..." class="avatar-img rounded <?php echo !Validation::getPermisionType($tipoUser) ? Dados::getPontuacao($_SESSION['idUser']) >= $pontuacao ? '' : 'opaco' : '' ?>">
                                             </a>
                                         </div>
                                         <div class="col ml-n2">
@@ -134,16 +132,12 @@
                                             <div class="row align-items-center no-gutters">
                                                 <div class="col-auto">
                                                     <!-- função faltar finalizar, para verificar em qual nivel de pontuacao o usuario se encontra-->
-                                                    <?php if($start == 1){?>
-                                                    <div class="small mr-2"><?php echo Unilevel::getPocentagemPlanoCarreira(Dados::getPontuacao($_SESSION['idUser']), $pontuacao) ?>%</div>
-                                                    <?php }else{ ?>
-                                                        <div class="small mr-2"><?php echo Dados::verificaSeExistePlanoDeCarreiraAtivo($_SESSION['idUser'],$id) ? Unilevel::getPocentagemPlanoCarreira(Dados::getPontuacao($_SESSION['idUser']), $pontuacao) : 0 ?>%</div> 
-                                                    <?php } ?>
+                                                    <div class="small mr-2"><?php echo Unilevel::getPocentagemPlanoCarreira(Dados::getPontuacao($_SESSION['idUser']), $pontuacao, $id, $_SESSION['idUser']) ?>%</div>
                                                 </div>
                                                 <div class="col">
                                                     <!-- Progress -->
                                                     <div class="progress progress-sm">
-                                                        <div class="progress-bar" role="progressbar" style="width: <?php echo Dados::verificaSeExistePlanoDeCarreiraAtivo($_SESSION['idUser'],$id) ? Unilevel::getPocentagemPlanoCarreira(Dados::getPontuacao($_SESSION['idUser']), $pontuacao) : 0 ?>%" aria-valuenow="29" aria-valuemin="0" aria-valuemax="100"></div>
+                                                        <div class="progress-bar" role="progressbar" style="width: <?php echo Dados::verificaSeExistePlanoDeCarreiraAtivo($_SESSION['idUser'], $id) ? Unilevel::getPocentagemPlanoCarreira(Dados::getPontuacao($_SESSION['idUser']), $pontuacao, $id, $_SESSION['idUser']) : 0 ?>%" aria-valuenow="29" aria-valuemin="0" aria-valuemax="100"></div>
                                                     </div>
                                                     <?php echo $pontuacao ?> pontos
                                                 </div>

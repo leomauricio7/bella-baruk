@@ -3,87 +3,109 @@
 class Dados
 {
     //pega todos os pedidos onde o pagamento foi feito por bonus de comissão
-    public static function getBySizePedidos($user){
+    public static function getBySizePedidos($user)
+    {
         $read = new Read();
-        $read->ExeRead('pedidos', 'where id_user=:user and payment="bonus"', 'user='.$user);
+        $read->ExeRead('pedidos', 'where id_user=:user and payment="bonus"', 'user=' . $user);
         return $read->getRowCount();
     }
     //pega todos os saques de um usuário
-    public static function getBySaques($user){
+    public static function getBySaques($user)
+    {
         $read = new Read();
         $read->getSaques('where sq.id_user = ' . $user);
         return $read->getResult();
     }
     //pega todos os saques
-    public static function getByAllSaques(){
+    public static function getByAllSaques()
+    {
         $read = new Read();
         $read->getSaques();
         return $read->getResult();
     }
-    //pega todas as transferencias de um usuario
-    public static function getByTransferencias($user){
+    //pega todas as transferencias enviadas de um usuario
+    public static function getByTransferencias($user)
+    {
         $read = new Read();
         $read->getTransferencias('where id_user_origem = ' . $user);
         return $read->getResult();
     }
+    //pega todas as transferencias enviadas de um usuario
+    public static function getByTransferenciasRecebidas($user)
+    {
+        $read = new Read();
+        $read->getTransferencias('where id_user_destino = ' . $user);
+        return $read->getResult();
+    }
     //pega todas as transferencias
-    public static function getByAllTransferencias(){
+    public static function getByAllTransferencias()
+    {
         $read = new Read();
         $read->getTransferencias();
         return $read->getResult();
     }
     //pega o total de saques que um usuário efetuou
-    public static function getBySizeSaque($user){
+    public static function getBySizeSaque($user)
+    {
         $read = new Read();
         $read->ExeRead('saques', 'where id_user = ' . $user);
         return $read->getRowCount();
     }
     //pega o total de transferências de um usuário
-    public static function getBySizeTransferencias($user){
-        $read = new Read();
-        $read->ExeRead('transacoes', 'where id_user_origem = ' . $user);
-        return $read->getRowCount();
+    public static function getBySizeTransferencias($user)
+    {
+        $in = new Read();
+        $out = new Read();
+        $in->ExeRead('transacoes', 'where id_user_origem = ' . $user);
+        $out->ExeRead('transacoes', 'where id_user_destino = ' . $user);
+        return $in->getRowCount() + $out->getRowCount();
     }
     //pega o id do usuário pelo login
-    public static function getById($slug){
+    public static function getById($slug)
+    {
         $read = new Read();
-        $read->ExeRead('users', 'where slug = "' . $slug.'"');
+        $read->ExeRead('users', 'where slug = "' . $slug . '"');
 
-        if($read->getRowCount() > 0){
-            foreach($read->getResult() as $dados){
+        if ($read->getRowCount() > 0) {
+            foreach ($read->getResult() as $dados) {
                 extract($dados);
                 return $id;
             }
         }
-    } 
+    }
     //pega  nivel do usuario namatriz
-    public static function getNivelMatrizUser($id){
+    public static function getNivelMatrizUser($id)
+    {
         $read = new Read();
         $read->ExeRead('matriz', 'where id_user = ' . $id);
         return $read->getResult();
     }
     //pega todos os usuarios pelo id
-    public static function getUsersAll($id){
+    public static function getUsersAll($id)
+    {
         $read = new Read();
         $read->ExeRead('users', 'where id > ' . $id);
         return $read->getResult();
     }
     //pega todos os usaros do tipo vendedor
-    public static function getUsersAllVendedor(){
+    public static function getUsersAllVendedor()
+    {
         $read = new Read();
         $read->ExeRead('users', 'where tipo_user = 2');
         return $read->getResult();
     }
     //pega todos os dados de um matriz
-    public static function getUsersMatriz($id){
+    public static function getUsersMatriz($id)
+    {
         $read = new Read();
         $read->ExeRead('matriz', 'where id_user_matriz = ' . $id);
         return $read->getResult();
     }
     //função de ppegar os dados de no na matriz
-    public static function getByNoMatriz($id,$no,$level){
+    public static function getByNoMatriz($id, $no, $level)
+    {
         $read = new Read();
-        $read->ExeRead('matriz', 'where id_user_matriz=:id and id_no=:no and level=:level', 'id='.$id.'&no='.$no.'&level='.$level);
+        $read->ExeRead('matriz', 'where id_user_matriz=:id and id_no=:no and level=:level', 'id=' . $id . '&no=' . $no . '&level=' . $level);
         return $read->getResult();
     }
 
@@ -165,15 +187,14 @@ class Dados
         $read->ExeRead('users', 'where id = ' . $user);
         foreach ($read->getResult() as $dados) {
             extract($dados);
-            if($fisrt_adesao == 1){
+            if ($fisrt_adesao == 1) {
                 return true;
             }
-            if($status == "ativo"){
+            if ($status == "ativo") {
                 return true;
             }
         }
         return false;
-
     }
 
     //pegando o valor de um produto
@@ -198,16 +219,16 @@ class Dados
     {
         $date = date('Y-m-d');
         $read = new Read();
-        $read->ExeRead('user_adesao', 'WHERE id_user=:id', 'id='.$user);
+        $read->ExeRead('user_adesao', 'WHERE id_user=:id', 'id=' . $user);
         //$read->ExeRead('user_adesao', "WHERE id_user=$user AND data_validade >= '$date'");
         if ($read->getRowCount() > 0) {
-            foreach($read->getResult() as $dados){
+            foreach ($read->getResult() as $dados) {
                 extract($dados);
-               if(strtotime($data_validade) > strtotime($date)){
+                if (strtotime($data_validade) > strtotime($date)) {
                     return true;
-               }else if(strtotime($data_validade) == strtotime($date)){
-                   return true;
-               }
+                } else if (strtotime($data_validade) == strtotime($date)) {
+                    return true;
+                }
             }
             return false;
         } else {
@@ -248,51 +269,68 @@ class Dados
     {
         $total = 0;
         $read = new Read();
+        $dp_pedidos = Dados::totalValorPedidosBonus($user);
+        $dp_saques = Dados::totalValorSaques($user);
+        $dp_transferencias = Dados::totalValorTransferencias($user);
+        $at_transferencias = Dados::getTotalValorTransferencias($user);
         $read->ExeRead('comissoes', 'where id_user_recebedor=:user', 'user=' . $user);
         if ($read->getRowCount() > 0) {
             foreach ($read->getResult() as $dados) {
                 extract($dados);
                 $total += $valor;
             }
-            $pedidos = Dados::totalValorPedidosBonus($user);
-            $saques = Dados::totalValorSaques($user);
-            $transferencias = Dados::totalValorTransferencias($user);
-            $total = $total - ($saques+$transferencias+$pedidos);
+            $total = ($total - ($dp_saques + $dp_transferencias + $dp_pedidos)) + $at_transferencias;
             return number_format($total, 2, ",", "");
         } else {
+            $total = ($total - ($dp_saques + $dp_transferencias + $dp_pedidos)) + $at_transferencias;
             return number_format($total, 2, ",", "");
         }
     }
 
-    public static function totalValorTransferencias($user) {
+    public static function totalValorTransferencias($user)
+    {
         $read = new Read();
         $read->getTransferencias('where id_user_origem = ' . $user);
         $total = 0;
-        foreach($read->getResult() as $dados){
+        foreach ($read->getResult() as $dados) {
             extract($dados);
-            $total+=$valor_bruto;
+            $total += $valor_bruto;
         }
         return $total;
     }
 
-    public static function totalValorSaques($user) {
+    public static function getTotalValorTransferencias($user)
+    {
         $read = new Read();
-        $read->getSaques('where sq.id_user= ' . $user .' and sq.status = "aprovado"');
+        $read->getTransferencias('where id_user_destino = ' . $user);
         $total = 0;
-        foreach($read->getResult() as $dados){
+        foreach ($read->getResult() as $dados) {
             extract($dados);
-            $total+=$valor_bruto;
+            $total += $valor_bruto;
         }
         return $total;
     }
 
-    public static function totalValorPedidosBonus($user) {
+    public static function totalValorSaques($user)
+    {
         $read = new Read();
-        $read->ExeRead('pedidos', 'where id_user= ' . $user .' and payment = "bonus"');
+        $read->getSaques('where sq.id_user= ' . $user . ' and sq.status = "aprovado"');
         $total = 0;
-        foreach($read->getResult() as $dados){
+        foreach ($read->getResult() as $dados) {
             extract($dados);
-            $total+=$valor;
+            $total += $valor_bruto;
+        }
+        return $total;
+    }
+
+    public static function totalValorPedidosBonus($user)
+    {
+        $read = new Read();
+        $read->ExeRead('pedidos', 'where id_user= ' . $user . ' and payment = "bonus"');
+        $total = 0;
+        foreach ($read->getResult() as $dados) {
+            extract($dados);
+            $total += $valor;
         }
         return $total;
     }
@@ -349,10 +387,10 @@ class Dados
     {
         $valor = $value == null ? Dados::porcentagem_xn($porcentagem, $compra) : $value;
         $indicador = $indicador_temp == null ? Dados::getIndicador($user) : $indicador_temp;
-        if($valor > 0){
+        if ($valor > 0) {
             if (Dados::existePlanoAtivo($indicador)) {
                 $save = new Create();
-                $dados = ['id_user_recebedor' => $indicador, 'id_user_comprador' => $user, 'valor' => $valor, 'tipo'=>$tipo];
+                $dados = ['id_user_recebedor' => $indicador, 'id_user_comprador' => $user, 'valor' => $valor, 'tipo' => $tipo];
                 $save->ExeCreate('comissoes', $dados);
                 if ($save->getResult()) {
                     return ['status' => true, 'msg' => 'Comissão setada com sucesso.'];
@@ -363,7 +401,6 @@ class Dados
                 return ['status' => false, 'msg' => 'Usuário indicador esta inativo ou não existe usuário raiz.'];
             }
         }
-
     }
 
     public static function getFilhos($indicador, $derramamento = null)
@@ -540,15 +577,17 @@ class Dados
         }
     }
 
-    public static function verificaSeExistePlanoDeCarreiraAtivo($user,$nivel){
+    public static function verificaSeExistePlanoDeCarreiraAtivo($user, $nivel)
+    {
         $read = new Read();
-        $read->ExeRead('nivel_pontuacao_user', 'where id_user=:user AND id_nivel=:nivel','user='.$user.'&nivel='.$nivel);
+        $read->ExeRead('nivel_pontuacao_user', 'where id_user=:user AND id_nivel=:nivel', 'user=' . $user . '&nivel=' . $nivel);
         return $read->getRowCount() > 0 ? true : false;
     }
 
-    public static function validaURLPageUser($page){
+    public static function validaURLPageUser($page)
+    {
         $read = new Read();
-        $read->ExeRead('users', 'WHERE slug=:page', 'page='.$page);
+        $read->ExeRead('users', 'WHERE slug=:page', 'page=' . $page);
         return $read->getRowCount() > 0 ? true : false;
     }
 }
