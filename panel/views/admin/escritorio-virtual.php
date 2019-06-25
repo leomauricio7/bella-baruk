@@ -50,7 +50,7 @@ if ($_SESSION['idTipo'] == 1) { ?>
     </div>
 
     <div class="container-fluid">
-        <div class="row">
+        <div class="row justify-content-md-center">
             <?php
             if (Url::getURL(0) == 'escritorio-virtual' && empty(Url::getURL(1))) {
                 require_once 'escritorio/login.php';

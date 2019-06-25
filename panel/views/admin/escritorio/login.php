@@ -1,5 +1,5 @@
-<div class="col"></div>
-<div class="col-4">
+
+<div class="col-md-auto">
     <div class="card">
         <div class="card-body">
             <form id="form-escritorio">
@@ -21,4 +21,3 @@
         </div>
     </div>
 </div>
-<div class="col"></div>
