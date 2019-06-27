@@ -16,18 +16,35 @@
                 <?php
                 if ($_POST && $_POST['save']) {
                     $dados = Validation::limpaDados(filter_input_array(INPUT_POST, FILTER_DEFAULT));
-                    $user = new Update();
-                    $request = [
-                        'nome' => $dados['nome'],
-                        'slug' => $dados['slug'],
-                        'cpf' => $dados['cpf'] != '' ? $dados['cpf'] : '',
-                        'cnpj' => $dados['cnpj'] != '' ? $dados['cnpj'] : '',
-                        'sexo' => $dados['sexo'],
-                        'tipo_pessoa' => $dados['tipo_pessoa'],
-                        'email' => $dados['email'],
-                        'telefone' => $dados['telefone'],
-                        'tipo_user' => $dados['tipo_user'],
-                    ];
+                                        $user = new Update();
+                    if(isset($dados['senha']) && !empty($dados['senha'])){
+                        $request = [
+                            'nome' => $dados['nome'],
+                            'slug' => $dados['slug'],
+                            'cpf' => $dados['cpf'] != '' ? $dados['cpf'] : '',
+                            'cnpj' => $dados['cnpj'] != '' ? $dados['cnpj'] : '',
+                            'sexo' => $dados['sexo'],
+                            'tipo_pessoa' => $dados['tipo_pessoa'],
+                            'email' => $dados['email'],
+                            'telefone' => $dados['telefone'],
+                            'tipo_user' => $dados['tipo_user'],
+                            'senha' => password_hash($dados['senha'], PASSWORD_DEFAULT)
+                        ];
+                    }else{
+                        $request = [
+                            'nome' => $dados['nome'],
+                            'slug' => $dados['slug'],
+                            'cpf' => $dados['cpf'] != '' ? $dados['cpf'] : '',
+                            'cnpj' => $dados['cnpj'] != '' ? $dados['cnpj'] : '',
+                            'sexo' => $dados['sexo'],
+                            'tipo_pessoa' => $dados['tipo_pessoa'],
+                            'email' => $dados['email'],
+                            'telefone' => $dados['telefone'],
+                            'tipo_user' => $dados['tipo_user'],
+                        ];
+                    }
+
+
                     $dados['avatar'] = ($_FILES['avatar']['tmp_name'] ? $_FILES['avatar'] : null);
                     if ($dados['avatar'] != null) {
                         $request['avatar'] = $_FILES['avatar']['name'];
@@ -89,9 +106,15 @@
                                 <input type="text" class="form-control" id="cpf_cnpj" name="cnpj" value="<?php echo $cnpj ?>" data-mask="00.000.000/0000-00" disabled required>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label for="exampleFormControlFile1">Avatar</label>
-                            <input type="file" class="form-control-file" name="avatar" disabled required>
+                        <div class="form-row">
+                            <div class="col-8">
+                                <label for="exampleFormControlFile1">Avatar</label>
+                                <input type="file" class="form-control-file" name="avatar" disabled required>
+                            </div>
+                            <div class="col">
+                                <label for="exampleFormControlFile1">Senha</label>
+                                <input type="password" class="form-control" name="senha" placeholder="Resetar senha" disabled>
+                            </div>
                         </div>
                         <!--dados pessoais-->
                         <div class="form-row">
