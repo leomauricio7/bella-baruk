@@ -11,6 +11,12 @@
         </div>
     </div>
     <div class="card-body">
+        <?php 
+            if(isset($_SESSION['msg'])){
+                echo $_SESSION['msg'];
+                unset($_SESSION['msg']);
+            }
+        ?>
         <div class="table-responsive" data-toggle="lists" data-lists-values='["tables-row", "tables-user", "tables-valor", "tables-data"]'>
             <table class="table table-striped table-hover table-bordered">
                 <thead>
@@ -30,6 +36,9 @@
                         <th scope="col">
                             <a href="#" class="text-muted sort" data-sort="tables-data">Origem</a>
                         </th>
+                        <th scope="col">
+                           <i class="fa fa-cogs"></i>
+                        </th> 
                     </tr>
                 </thead>
                 <tbody class="list">
@@ -45,6 +54,9 @@
                             <td class="tables-valor"><span class="badge badge-success"><i class="fa fa-money-check-alt"></i>R$ <?php echo number_format($valor, 2, ",", "") ?></span></td>
                             <td class="tables-data"><?php echo date('d/m/Y', strtotime($created)) ?></td>
                             <td class="tables-data"><?php echo $tipo ?></td>
+                            <td>
+                                <a href="<?php echo Url::getBase().'../controllers/delete.php?pag=escritotio-vrtual&tb=comissoes&ch=id&value='.$id ?>" title="Excluir comissão" class="btn btn-outline-danger btn-sm"><i class="fa fa-trash"></i></a>
+                            </td>
                         </tr>
                     <?php } ?>
                     <tr scope="col">
