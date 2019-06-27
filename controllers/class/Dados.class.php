@@ -382,6 +382,21 @@ class Dados
             return false;
         }
     }
+    // valdia comissão 
+    public static function validaComissao($id_user_recebedor,$id_user_comprador,$valor_send, $tipo){
+        $read  = new Read();
+        $read->getComisaoUser("where (id_user_comprador = $id_user_comprador) and (id_user_recebedor = $id_user_recebedor) and tipo = '$tipo'");
+        if($read->getRowCount() > 0){
+            $now = date('Y-m-d');
+            foreach($read->getResult() as $dados){
+                extract($dados);
+                if($valor == $valor_send && $data == $now){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
     //seta a primeira comissão para usuário que indicou
     public static function setComissao($user, $porcentagem, $compra, $indicador_temp, $value, $tipo)
     {
@@ -389,14 +404,19 @@ class Dados
         $indicador = $indicador_temp == null ? Dados::getIndicador($user) : $indicador_temp;
         if ($valor > 0) {
             if (Dados::existePlanoAtivo($indicador)) {
-                $save = new Create();
-                $dados = ['id_user_recebedor' => $indicador, 'id_user_comprador' => $user, 'valor' => $valor, 'tipo' => $tipo];
-                $save->ExeCreate('comissoes', $dados);
-                if ($save->getResult()) {
-                    return ['status' => true, 'msg' => 'Comissão setada com sucesso.'];
-                } else {
-                    return ['status' => false, 'msg' => 'Error na procesamento da comissão.'];
+                if(Dados::validaComissao($indicador,$user, $valor, $tipo)){
+                    $save = new Create();
+                    $dados = ['id_user_recebedor' => $indicador, 'id_user_comprador' => $user, 'valor' => $valor, 'tipo' => $tipo];
+                    $save->ExeCreate('comissoes', $dados);
+                    if ($save->getResult()) {
+                        return ['status' => true, 'msg' => 'Comissão setada com sucesso.'];
+                    } else {
+                        return ['status' => false, 'msg' => 'Error na procesamento da comissão.'];
+                    }
+                }else{
+                     return ['status' => false, 'msg' => 'Duplicate Comissão.'];
                 }
+                
             } else {
                 return ['status' => false, 'msg' => 'Usuário indicador esta inativo ou não existe usuário raiz.'];
             }
