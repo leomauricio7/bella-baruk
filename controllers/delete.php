@@ -22,5 +22,5 @@ if (isset($_GET) && !empty($_GET)) {
                     <span aria-hidden="true" style="cursor: pointer;">&times;</span>
                 </button>
             </div>';
-    echo '<script>window.location.href="../panel/' . $read_pag . '";</script>';
+    echo '<script>window.history.back();</script>';
 }
