@@ -40,6 +40,14 @@ class Read extends Conn {
         $this->Select = 'SELECT id, id_user_origem, id_user_destino, CONCAT("R$",FORMAT(valor,2,"de_DE")) as valor, valor as valor_bruto, DATE_FORMAT(created, "%d/%m/%Y") as data FROM transacoes ' . $Termos;
         $this->ExecuteSQL();
     }
+    
+    public function getComisaoUser($Termos = null) {
+        if (empty($Termos)):
+            $Termos = '';
+        endif;
+        $this->Select = 'SELECT id, id_user_comprador, id_user_recebedor, valor, tipo, DATE_FORMAT(created, "%Y-%m-%d") as data FROM comissoes ' . $Termos;
+        $this->ExecuteSQL();
+    }
 
     public function getResult() {
         return $this->Result;
