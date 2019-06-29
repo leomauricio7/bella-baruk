@@ -82,14 +82,27 @@ function saveAdesao($user, $qt)
     $start = date('Y/m/d');
     $end = date('Y/m/d', strtotime('+' . $dias . ' days'));
     $dados = ['id_user' => $user, 'data_ativacao' => $start, 'data_validade' => $end];
-    $save->ExeCreate('user_adesao', $dados);
-    if ($save->getResult()) {
-        return true;
-    } else {
+    if(!isDuplicateAdesao($user,date('Y-m-d'))){
+        $save->ExeCreate('user_adesao', $dados);
+        if ($save->getResult()) {
+            return true;
+        } else {
+            return false;
+        }
+    }else{
         return false;
     }
 }
 
+function isDuplicateAdesao($user, $data){
+    $read = new Read();
+    $read->ExeRead('user_adesao', 'where id_user=:user and data_ativacao=:data_ativacao', 'user='.$user.'&data_ativacao='.$data);
+    if($read->getRowCount() > 0){
+        return true;
+    }else{
+        return false;
+    }
+}
 //ativa usuario na primeira compra efetuada
 function ativaUserAdesao($user)
 {

@@ -41,68 +41,169 @@ class Derramamento
 	function saveUserMatriz($indicado)
 	{
 		$save = new Create();
-		$root = Dados::getIndicador($indicado);
-		$root_raiz = Dados::getIndicador($root);
-		//verifica se a matriz do usuario que lhe indicou estar preenchida
+		$root = $this->getPatrocinador($indicado);
+		$userPrecedente = $root;
+		//verifica se sua matriz esta preenchida
 		$isLivrePositionMatriz = $this->validaLevelMatriz($root);
-
-		if (!$root_raiz) {
-			$isLivrePositionMatrizRoot = $this->validaLevelMatriz($root_raiz);
-			if ($this->validaLevelMatriz($root_raiz) > 0) {
-				if ($isLivrePositionMatrizRoot == 1) {
-					$dados = ['id_user_matriz' => $root_raiz, 'id_user' => $indicado, 'level' => $isLivrePositionMatrizRoot, 'id_no' => $root_raiz];
+		if (!$this->existUserMatriz($indicado, $root)) {
+			if ($isLivrePositionMatriz > 0) {
+				if ($isLivrePositionMatriz == 1) {
+					$dados = ['id_user_matriz' => $root, 'id_user' => $indicado, 'level' => $isLivrePositionMatriz, 'id_no' => $root];
 					$save->ExeCreate('matriz', $dados);
-				} else if ($this->getByIdNoMatriz($root_raiz, ($isLivrePositionMatrizRoot - 1))['status']) {
-					$dados = ['id_user_matriz' => $root_raiz, 'id_user' => $indicado, 'level' => $isLivrePositionMatrizRoot, 'id_no' => $this->getByIdNoMatriz($root_raiz, ($isLivrePositionMatrizRoot - 1))['no']];
+					$userPrecedente = $root;
+				} else if ($this->getByIdNoMatriz($root, ($isLivrePositionMatriz - 1))['status']) {
+					$userPrecedente = $this->getByIdNoMatriz($root, ($isLivrePositionMatriz - 1))['no'];
+					$dados = ['id_user_matriz' => $root, 'id_user' => $indicado, 'level' => $isLivrePositionMatriz, 'id_no' => $this->getByIdNoMatriz($root, ($isLivrePositionMatriz - 1))['no']];
+					$save->ExeCreate('matriz', $dados);
+					$this->setMatrizNoIndicador($root, $indicado, ($isLivrePositionMatriz - 1));
+				}
+			}
+		}
+		//seta a hierarquia
+		$this->setHierarquiaIsPatrocinio($root, $userPrecedente, $indicado);
+		$this->setHierarquiaIsPrecedente($userPrecedente, $indicado);
+
+	}
+
+	//percore os patrocinadores ate achar um ativo
+	function getPatrocinador($indicado){
+		$root_temp = 0;
+		for($i=1;$i<200;$i++){
+			$patrocinador_temp = $i == 1 ? Dados::getIndicador($indicado) : Dados::getIndicador($root_temp);
+			if(Dados::existePlanoAtivo($patrocinador_temp)){
+				return $patrocinador_temp;
+				break;
+			}
+			$root_temp = $patrocinador_temp;
+		}	
+	}
+	
+	//seta a hierarquia por patrocinio
+	function setHierarquiaIsPatrocinio($root, $userPrecedente, $indicado){
+	    $save = new Create();
+	    $root_temp = 1;
+	    for($i=0; $i<8; $i++){
+    	    $root_raiz = $i == 1 ?$this->getPatrocinador($root) : $this->getPatrocinador($root_temp);
+    		if ($root_raiz) {
+    			$isLivrePositionMatrizRoot = $this->validaLevelMatriz($root_raiz);
+    			if (!$this->existUserMatriz($indicado, $root_raiz)) {
+    				if ($this->validaLevelMatriz($root_raiz) > 0) {
+    					if ($isLivrePositionMatrizRoot == 1) {
+    						$dados = ['id_user_matriz' => $root_raiz, 'id_user' => $indicado, 'level' => $isLivrePositionMatrizRoot, 'id_no' => $root_raiz];
+    						$save->ExeCreate('matriz', $dados);
+    					} else if ($this->getByIdNoMatriz($root_raiz, ($isLivrePositionMatrizRoot - 1))['status']) {
+    					    //$levelIsValide = $this->getLevelUserProcedente($root_raiz, $userPrecedente);
+    						$levelIsValide = $this->getLevelUserProcedente($root_raiz, $userPrecedente == null ? $this->getByIdNoMatriz($root_raiz, ($isLivrePositionMatrizRoot - 1))['no'] : $userPrecedente);
+    						$dados = [
+    						    'id_user_matriz' => $root_raiz,
+    						    'id_user' => $indicado,
+    						    'level' => $levelIsValide,//$isLivrePositionMatrizRoot,
+    						    //'id_no' => $userPrecedente,
+    						    'id_no' => $userPrecedente == null ? $this->getByIdNoMatriz($root_raiz, ($isLivrePositionMatrizRoot - 1))['no'] : $userPrecedente
+    						    ];
+    						$save->ExeCreate('matriz', $dados);
+    						// $this->setMatrizNoIndicador($this->getByIdNoMatriz($root_raiz, ($isLivrePositionMatrizRoot - 1))['no'],$indicado);
+    					}
+    				}
+    			}
+    		}
+    		$root_temp = $root_raiz;
+	    }
+	}
+	function setHierarquiaIsPrecedente($no, $indicado){
+		$save = new Create();
+		$read = new Read();
+		$read->ExeRead('matriz', 'where id_user=:root or id_no=:no', 'root='.$no.'&no='.$no);
+		if($read->getRowCount() > 0){
+			foreach($read->getResult() as $dados){
+				extract($dados);
+				if (!$this->existUserMatriz($indicado, $id_user_matriz)) {
+					$dados = ['id_user_matriz' => $id_user_matriz, 'id_user' => $indicado, 'level' => $level+1, 'id_no' => $no];
 					$save->ExeCreate('matriz', $dados);
 				}
 			}
 		}
-
-		//verifica se sua matriz esta preenchida
-		if ($isLivrePositionMatriz > 0) {
-			if ($isLivrePositionMatriz == 1) {
-				$dados = ['id_user_matriz' => $root, 'id_user' => $indicado, 'level' => $isLivrePositionMatriz, 'id_no' => $root];
-				$save->ExeCreate('matriz', $dados);
-			} else if ($this->getByIdNoMatriz($root, ($isLivrePositionMatriz - 1))['status']) {
-				$dados = ['id_user_matriz' => $root, 'id_user' => $indicado, 'level' => $isLivrePositionMatriz, 'id_no' => $this->getByIdNoMatriz($root, ($isLivrePositionMatriz - 1))['no']];
-				$save->ExeCreate('matriz', $dados);
-			}
+	}
+	//pega o level valido de acordo com a ordem do usuário indicador
+	function getLevelUserProcedente($root, $no){
+		$read = new Read();
+		$read->ExeRead('matriz', 'where id_user_matriz=:root and id_no=:no', 'root='.$root.'&no='.$no);
+		if($read->getRowCount() > 0){
+		   foreach($read->getResult() as $dados){
+			extract($dados);
+			return $level;
+		    }
+		}else{
+	    	$readNO = new Read();
+	        $readNO->ExeRead('matriz', 'where id_user_matriz=:root and id_user=:no', 'root='.$root.'&no='.$no);
+	        foreach($readNO->getResult() as $dados){
+    			extract($dados);
+    			return $level+1;
+	        }
 		}
+	}
+	//setar a matriz do no
+	function setMatrizNoIndicador($root, $indicado, $level)
+	{
+		$save = new Create();
+		$idNo = $this->getByIdNoIndicador($root, $indicado);
+		$levelNo = $this->validaLevelMatriz($idNo);
+		$dados = ['id_user_matriz' => $idNo, 'id_user' => $indicado, 'level' => $level, 'id_no' => $idNo];
+		$save->ExeCreate('matriz', $dados);
+	}
+	//pega o id_no indicador
+	function getByIdNoIndicador($matriz, $indicado)
+	{
+		$read = new Read();
+		$read->ExeRead('matriz', 'where id_user_matriz=' . $matriz . ' and id_user=' . $indicado);
+		foreach ($read->getResult() as $dados) {
+			extract($dados);
+			return $id_no;
+		}
+	}
+	//verifica se o usuário esta na matriz ou não
+	function existUserMatriz($id_user, $idNo)
+	{
+		$read = new Read();
+		$read->ExeRead('matriz', 'where id_user_matriz=:idNo and id_user=:user', 'idNo=' . $idNo . '&user=' . $id_user);
+		if ($read->getRowCount() > 0) {
+			return true;
+		}
+		return false;
 	}
 
 	//funções de montar a matriz all
-	function saveUserAllMatriz($root)
-	{
-		$filhos = Dados::getUsersIndicados($root);
-		$save = new Create();
-		foreach ($filhos as $user) {
-			extract($user);
-			$isLivrePositionMatriz = $this->validaLevelMatriz($root);
-			//verifica se a matriz do usuario que lhe indicou esta preenchida
-			$root_raiz = Dados::getIndicador($root);
-			$isLivrePositionMatrizRoot = $this->validaLevelMatriz($root_raiz);
-			if ($this->validaLevelMatriz($root_raiz) > 0) {
-				if ($isLivrePositionMatrizRoot == 1) {
-					$dados = ['id_user_matriz' => $root_raiz, 'id_user' => $id, 'level' => $isLivrePositionMatrizRoot, 'id_no' => $root_raiz];
-					$save->ExeCreate('matriz', $dados);
-				} else if ($this->getByIdNoMatriz($root_raiz, ($isLivrePositionMatrizRoot - 1))['status']) {
-					$dados = ['id_user_matriz' => $root_raiz, 'id_user' => $id, 'level' => $isLivrePositionMatrizRoot, 'id_no' => $this->getByIdNoMatriz($root_raiz, ($isLivrePositionMatrizRoot - 1))['no']];
-					$save->ExeCreate('matriz', $dados);
-				}
-			}
-			//verifica se sua matriz esta preenchida
-			if ($isLivrePositionMatriz > 0) {
-				if ($isLivrePositionMatriz == 1) {
-					$dados = ['id_user_matriz' => $root, 'id_user' => $id, 'level' => $isLivrePositionMatriz, 'id_no' => $root];
-					$save->ExeCreate('matriz', $dados);
-				} else if ($this->getByIdNoMatriz($root, ($isLivrePositionMatriz - 1))['status']) {
-					$dados = ['id_user_matriz' => $root, 'id_user' => $id, 'level' => $isLivrePositionMatriz, 'id_no' => $this->getByIdNoMatriz($root, ($isLivrePositionMatriz - 1))['no']];
-					$save->ExeCreate('matriz', $dados);
-				}
-			}
-		}
-	}
+	// function saveUserAllMatriz($root)
+	// {
+	// 	$filhos = Dados::getUsersIndicados($root);
+	// 	$save = new Create();
+	// 	foreach ($filhos as $user) {
+	// 		extract($user);
+	// 		$isLivrePositionMatriz = $this->validaLevelMatriz($root);
+	// 		//verifica se a matriz do usuario que lhe indicou esta preenchida
+	// 		$root_raiz = Dados::getIndicador($root);
+	// 		$isLivrePositionMatrizRoot = $this->validaLevelMatriz($root_raiz);
+	// 		if ($this->validaLevelMatriz($root_raiz) > 0) {
+	// 			if ($isLivrePositionMatrizRoot == 1) {
+	// 				$dados = ['id_user_matriz' => $root_raiz, 'id_user' => $id, 'level' => $isLivrePositionMatrizRoot, 'id_no' => $root_raiz];
+	// 				$save->ExeCreate('matriz', $dados);
+	// 			} else if ($this->getByIdNoMatriz($root_raiz, ($isLivrePositionMatrizRoot - 1))['status']) {
+	// 				$dados = ['id_user_matriz' => $root_raiz, 'id_user' => $id, 'level' => $isLivrePositionMatrizRoot, 'id_no' => $this->getByIdNoMatriz($root_raiz, ($isLivrePositionMatrizRoot - 1))['no']];
+	// 				$save->ExeCreate('matriz', $dados);
+	// 			}
+	// 		}
+	// 		//verifica se sua matriz esta preenchida
+	// 		if ($isLivrePositionMatriz > 0) {
+	// 			if ($isLivrePositionMatriz == 1) {
+	// 				$dados = ['id_user_matriz' => $root, 'id_user' => $id, 'level' => $isLivrePositionMatriz, 'id_no' => $root];
+	// 				$save->ExeCreate('matriz', $dados);
+	// 			} else if ($this->getByIdNoMatriz($root, ($isLivrePositionMatriz - 1))['status']) {
+	// 				$dados = ['id_user_matriz' => $root, 'id_user' => $id, 'level' => $isLivrePositionMatriz, 'id_no' => $this->getByIdNoMatriz($root, ($isLivrePositionMatriz - 1))['no']];
+	// 				$save->ExeCreate('matriz', $dados);
+	// 			}
+	// 		}
+	// 	}
+	// }
 
 	//função que chama a função de checar ha algum nivel livre da matriz
 	function validaLevelMatriz($root)
@@ -155,7 +256,7 @@ class Derramamento
 		}
 	}
 
-	//função para pegar o id do no ques ta com posições livres
+	//função para pegar o id do no que esta com posições livres
 	function getByIdNoMatriz($root, $level)
 	{
 		$read = new Read();

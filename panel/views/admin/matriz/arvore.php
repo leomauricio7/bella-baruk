@@ -16,7 +16,7 @@
                         ?>
 
                         <li>
-                            <a class="no <?php echo Dados::existePlanoAtivo($id_user) ? 'ativo' : 'inativo'; ?>">
+                            <a class="no">
                                 <img class="img-pai" src="https://www.shareicon.net/download/2016/05/24/770136_man_512x512.png" width="50px" alt=""><br>
                                 <span><?php echo $id_user ?></span>
                             </a>
@@ -28,7 +28,7 @@
                                     extract($dados);
                                     ?>
                                     <li>
-                                        <a class="no <?php echo Dados::existePlanoAtivo($id_user) ? 'ativo' : 'inativo'; ?>">
+                                        <a class="no">
                                             <img class="img-pai" src="https://www.shareicon.net/download/2016/05/24/770136_man_512x512.png" width="50px" alt=""><br>
                                             <span><?php echo $id_user ?></span>
                                         </a>
@@ -41,7 +41,7 @@
                                                 ?>
 
                                                 <li>
-                                                    <a class="no <?php echo Dados::existePlanoAtivo($id_user) ? 'ativo' : 'inativo'; ?>">
+                                                    <a class="no">
                                                         <img class="img-pai" src="https://www.shareicon.net/download/2016/05/24/770136_man_512x512.png" width="50px" alt=""><br>
                                                         <span><?php echo $id_user ?></span>
                                                     </a>
@@ -54,7 +54,7 @@
                                                             ?>
 
                                                             <li>
-                                                                <a class="no <?php echo Dados::existePlanoAtivo($id_user) ? 'ativo' : 'inativo'; ?>">
+                                                                <a class="no">
                                                                     <img class="img-pai" src="https://www.shareicon.net/download/2016/05/24/770136_man_512x512.png" width="50px" alt=""><br>
                                                                     <span><?php echo $id_user ?></span>
                                                                 </a>
@@ -67,7 +67,7 @@
                                                                         ?>
 
                                                                         <li>
-                                                                            <a class="no <?php echo Dados::existePlanoAtivo($id_user) ? 'ativo' : 'inativo'; ?>">
+                                                                            <a class="no">
                                                                                 <img class="img-pai" src="https://www.shareicon.net/download/2016/05/24/770136_man_512x512.png" width="50px" alt=""><br>
                                                                                 <span><?php echo $id_user ?></span>
                                                                             </a>
@@ -80,7 +80,7 @@
                                                                                     ?>
 
                                                                                     <li>
-                                                                                        <a class="no <?php echo Dados::existePlanoAtivo($id_user) ? 'ativo' : 'inativo'; ?>">
+                                                                                        <a class="no">
                                                                                             <img class="img-pai" src="https://www.shareicon.net/download/2016/05/24/770136_man_512x512.png" width="50px" alt=""><br>
                                                                                             <span><?php echo $id_user ?></span>
                                                                                         </a>
@@ -93,7 +93,7 @@
                                                                                                 ?>
 
                                                                                                 <li>
-                                                                                                    <a class="no <?php echo Dados::existePlanoAtivo($id_user) ? 'ativo' : 'inativo'; ?>">
+                                                                                                    <a class="no">
                                                                                                         <img class="img-pai" src="https://www.shareicon.net/download/2016/05/24/770136_man_512x512.png" width="50px" alt=""><br>
                                                                                                         <span><?php echo $id_user ?></span>
                                                                                                     </a>
@@ -106,7 +106,7 @@
                                                                                                             ?>
 
                                                                                                             <li>
-                                                                                                                <a class="no <?php echo Dados::existePlanoAtivo($id_user) ? 'ativo' : 'inativo'; ?>">
+                                                                                                                <a class="no">
                                                                                                                     <img class="img-pai" src="https://www.shareicon.net/download/2016/05/24/770136_man_512x512.png" width="50px" alt=""><br>
                                                                                                                     <span><?php echo $id_user ?></span>
                                                                                                                 </a>

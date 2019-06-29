@@ -3,6 +3,9 @@
         <thead>
             <tr>
                 <th scope="col">
+                    <a href="#" class="text-muted sort" data-sort="tables-first">ID</a>
+                </th>
+                <th scope="col">
                 <a href="#" class="text-muted sort" data-sort="tables-first">Nome</a>
                 </th>
                 <th scope="col">
@@ -40,6 +43,7 @@
             ?>
             <!-- users ativos -->
             <tr>
+                 <td class="tables-first"><?php echo $id ?></td>
                 <td class="tables-first"><?php echo $nome ?></td>
                 <td class="tables-last"><?php echo $cpf.''.$cnpj ?></td>
                 <td class="tables-last">
@@ -82,6 +86,7 @@
             <?php } }else{ ?>
             <!-- users inativos -->
                         <tr>
+                <td class="tables-first"><?php echo $id ?></td>
                 <td class="tables-first"><?php echo $nome ?></td>
                 <td class="tables-last"><?php echo $cpf.''.$cnpj ?></td>
                 <td class="tables-last">
