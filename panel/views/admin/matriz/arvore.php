@@ -4,7 +4,8 @@
             <li>
                 <a class="no">
                     <img class="img-pai" src="https://image.flaticon.com/icons/png/512/306/306473.png" width="50px" alt=""><br>
-                    <span><?php echo $_SESSION['idUser'] ?></span>
+                    <span><?php echo $_SESSION['idUser'] ?></span><br>
+                     <span class="text-matriz"><?php echo substr(Validation::getIndicador($_SESSION['idUser']), 0, 10); ?></span>
                 </a>
                 <!-- nivel 1 -->
                 <ul>
@@ -17,8 +18,9 @@
 
                         <li>
                             <a class="no">
-                                <img class="img-pai" src="https://www.shareicon.net/download/2016/05/24/770136_man_512x512.png" width="50px" alt=""><br>
+                                <img class="img-pai" src="https://image.flaticon.com/icons/png/512/306/306473.png" width="50px" alt=""><br>
                                 <span><?php echo $id_user ?></span>
+                                 <br><span class="text-matriz"><?php echo substr(Validation::getIndicador($id_user), 0, 10); ?></span>
                             </a>
                             <!-- nivel 2 -->
                             <ul>
@@ -29,8 +31,9 @@
                                     ?>
                                     <li>
                                         <a class="no">
-                                            <img class="img-pai" src="https://www.shareicon.net/download/2016/05/24/770136_man_512x512.png" width="50px" alt=""><br>
+                                            <img class="img-pai" src="https://image.flaticon.com/icons/png/512/306/306473.png" width="50px" alt=""><br>
                                             <span><?php echo $id_user ?></span>
+                                             <br><span class="text-matriz"><?php echo substr(Validation::getIndicador($id_user), 0, 10); ?></span>
                                         </a>
                                         <!-- nivel 3 -->
                                         <ul>
@@ -42,8 +45,9 @@
 
                                                 <li>
                                                     <a class="no">
-                                                        <img class="img-pai" src="https://www.shareicon.net/download/2016/05/24/770136_man_512x512.png" width="50px" alt=""><br>
+                                                        <img class="img-pai" src="https://image.flaticon.com/icons/png/512/306/306473.png" width="50px" alt=""><br>
                                                         <span><?php echo $id_user ?></span>
+                                                         <br><span class="text-matriz"><?php echo substr(Validation::getIndicador($id_user), 0, 10); ?></span>
                                                     </a>
                                                     <!-- nivel 4 -->
                                                     <ul>
@@ -55,8 +59,9 @@
 
                                                             <li>
                                                                 <a class="no">
-                                                                    <img class="img-pai" src="https://www.shareicon.net/download/2016/05/24/770136_man_512x512.png" width="50px" alt=""><br>
+                                                                    <img class="img-pai" src="https://image.flaticon.com/icons/png/512/306/306473.png" width="50px" alt=""><br>
                                                                     <span><?php echo $id_user ?></span>
+                                                                     <br><span class="text-matriz"><?php echo substr(Validation::getIndicador($id_user), 0, 10); ?></span>
                                                                 </a>
                                                                 <!-- nivel 5 -->
                                                                 <ul>
@@ -68,8 +73,9 @@
 
                                                                         <li>
                                                                             <a class="no">
-                                                                                <img class="img-pai" src="https://www.shareicon.net/download/2016/05/24/770136_man_512x512.png" width="50px" alt=""><br>
+                                                                                <img class="img-pai" src="https://image.flaticon.com/icons/png/512/306/306473.png" width="50px" alt=""><br>
                                                                                 <span><?php echo $id_user ?></span>
+                                                                                 <br><span class="text-matriz"><?php echo substr(Validation::getIndicador($id_user), 0, 10); ?></span>
                                                                             </a>
                                                                             <!-- nivel 6 -->
                                                                             <ul>
@@ -81,8 +87,9 @@
 
                                                                                     <li>
                                                                                         <a class="no">
-                                                                                            <img class="img-pai" src="https://www.shareicon.net/download/2016/05/24/770136_man_512x512.png" width="50px" alt=""><br>
+                                                                                            <img class="img-pai" src="https://image.flaticon.com/icons/png/512/306/306473.png" width="50px" alt=""><br>
                                                                                             <span><?php echo $id_user ?></span>
+                                                                                             <br><span class="text-matriz"><?php echo substr(Validation::getIndicador($id_user), 0, 10); ?></span>
                                                                                         </a>
                                                                                         <!-- nivel 7 -->
                                                                                         <ul>
@@ -94,8 +101,9 @@
 
                                                                                                 <li>
                                                                                                     <a class="no">
-                                                                                                        <img class="img-pai" src="https://www.shareicon.net/download/2016/05/24/770136_man_512x512.png" width="50px" alt=""><br>
+                                                                                                        <img class="img-pai" src="https://image.flaticon.com/icons/png/512/306/306473.png" width="50px" alt=""><br>
                                                                                                         <span><?php echo $id_user ?></span>
+                                                                                                         <br><span class="text-matriz"><?php echo substr(Validation::getIndicador($id_user), 0, 10); ?></span>
                                                                                                     </a>
                                                                                                     <!-- nivel 8 -->
                                                                                                     <ul>
@@ -107,8 +115,9 @@
 
                                                                                                             <li>
                                                                                                                 <a class="no">
-                                                                                                                    <img class="img-pai" src="https://www.shareicon.net/download/2016/05/24/770136_man_512x512.png" width="50px" alt=""><br>
+                                                                                                                    <img class="img-pai" src="https://image.flaticon.com/icons/png/512/306/306473.png" width="50px" alt=""><br>
                                                                                                                     <span><?php echo $id_user ?></span>
+                                                                                                                     <br><span class="text-matriz"><?php echo substr(Validation::getIndicador($id_user), 0, 10); ?></span>
                                                                                                                 </a>
 
                                                                                                             </li>
