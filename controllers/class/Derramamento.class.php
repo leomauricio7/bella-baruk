@@ -113,13 +113,14 @@ class Derramamento
 	function setHierarquiaIsPrecedente($no, $indicado){
 		$save = new Create();
 		$read = new Read();
-		$read->ExeRead('matriz', 'where id_user=:root or id_no=:no', 'root='.$no.'&no='.$no);
+		$read->ExeRead('matriz', 'where id_user=:root ', 'root='.$no);
+		//$read->ExeRead('matriz', 'where id_user=:root or id_no=:no', 'root='.$no.'&no='.$no);
 		if($read->getRowCount() > 0){
 			foreach($read->getResult() as $dados){
 				extract($dados);
 				//$level_temp = $this->validaLevelMatriz($no);
 				if (!$this->existUserMatriz($indicado, $id_user_matriz)) {
-					$dados = ['id_user_matriz' => $id_user_matriz, 'id_user' => $indicado, 'level' => $level, 'id_no' => $no];
+					$dados = ['id_user_matriz' => $id_user_matriz, 'id_user' => $indicado, 'level' => $level+1, 'id_no' => $no];
 					$save->ExeCreate('matriz', $dados);
 				}
 			}
