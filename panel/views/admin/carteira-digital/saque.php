@@ -12,10 +12,18 @@
                         </h1>
                     </div>
                     <div class="col-auto">
-                        <!-- Button -->
-                        <a href="#!" data-toggle="modal" data-target="#modal-saque" class="btn btn-sm btn-white">
-                            <i class="fa fa-money-check-alt"></i> Solicitar Saque
-                        </a>
+                        <?php
+                        if (Unilevel::isValidBonus($_SESSION['idUser'])) {
+                            ?>
+                            <!-- Button -->
+                            <a href="#!" data-toggle="modal" data-target="#modal-saque" class="btn btn-sm btn-white">
+                                <i class="fa fa-money-check-alt"></i> Solicitar Saque
+                            </a>
+                        <?php } else { ?>
+                            <br><div class="alert alert-danger" role="alert">
+                                <strong>Atenção!</strong> Para poder ter acesso a saques, você precisa possuir, no minimo 2 usuários ativos na sua rede unilevel.
+                            </div>
+                        <?php } ?>
                     </div>
                 </div>
             </div>

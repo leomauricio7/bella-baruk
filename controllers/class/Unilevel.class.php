@@ -241,4 +241,24 @@ class Unilevel
             return true;
         return false;
     }
+
+    public static function isValidBonus($root){
+        $read = new Read();
+        $read->ExeRead('users', 'where indicador=:id', 'id=' . $root);
+        if($read->getRowCount() >= 2){
+            $usersActives = 0;
+            foreach($read->getResult() as $dados){
+                extract($dados);
+                if(Dados::existePlanoAtivo($id)){
+                    $usersActives++;
+                }
+            }
+            if($usersActives >= 2){
+                return true;
+            }else{
+                return false;
+            }
+        }
+        return false;
+    }
 }

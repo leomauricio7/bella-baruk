@@ -200,6 +200,26 @@ $(function () {
         });
     }
 
+    function frete(cep, valor) {
+        $.ajax({
+            type: 'POST',
+            url: getBaseUrl() + '/controllers/class/frete.php',
+            data: 'cep=' + cep + "&valor=" + valor,
+            dataType: "json",
+        }).done(function (res) {
+            console.log(res);
+            $('#frete').val('Frete: R$ '+res.Valor);
+            $('#prazo').text(res.PrazoEntrega+' dias.');
+            $('#retorno').fadeIn('slow');
+        }).fail(function (xhr, desc, err) {
+            alert('Uups! Ocorreu algum erro!');
+            console.log(xhr);
+            console.log("Detalhes: " + desc + "nErro:" + err);
+        }).always(function () {
+            console.log('closed');
+        });
+    }
+
     $('.add-produto').click(function () {
         var idProduct = $(this).attr('alt');
         addProduct(idProduct);
@@ -255,6 +275,11 @@ $(function () {
         addProduct(idProduct);
         ativaDesconto();
         window.location.href = "./carrinho";
+    });
+
+    $('.calcular-frete').click(function(){
+        var cep = $("#cep").val();
+        frete(cep, 200);
     });
 
 });

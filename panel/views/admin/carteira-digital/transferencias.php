@@ -2,20 +2,29 @@
     <div class="card">
         <div class="card-header">
             <div class="header-body">
-            <div class="row align-items-center">
+                <div class="row align-items-center">
                     <div class="col">
                         <h6 class="header-pretitle">
                             Transferências
                         </h6>
                         <h1 class="header-title">
-                           Minhas Transferências
+                            Minhas Transferências
                         </h1>
                     </div>
                     <div class="col-auto">
-                        <!-- Button -->
-                        <a href="#!"  data-toggle="modal" data-target="#modal-transferencia" class="btn btn-sm btn-white">
-                            <i class="fa fa-money-bill-alt"></i> Nova Transferência
-                        </a>
+                        <?php
+                        if (Unilevel::isValidBonus($_SESSION['idUser'])) {
+                            ?>
+                            <!-- Button -->
+                            <a href="#!" data-toggle="modal" data-target="#modal-transferencia" class="btn btn-sm btn-white">
+                                <i class="fa fa-money-bill-alt"></i> Nova Transferência
+                            </a>
+                        <?php } else { ?>
+                            <br>
+                            <div class="alert alert-danger" role="alert">
+                                <strong>Atenção!</strong> Para poder ter acesso a transferências, você precisa possuir, no minimo 2 usuários ativos na sua rede unilevel.
+                            </div>
+                        <?php } ?>
                     </div>
                 </div>
             </div>
@@ -44,7 +53,7 @@
                                 <td><?php echo $valor ?></td>
                                 <td><?php echo $data ?></td>
                             </tr>
-                        <?php } ?> 
+                        <?php } ?>
                     </tbody>
                 </table>
             </div>
@@ -56,13 +65,13 @@
     <div class="card">
         <div class="card-header">
             <div class="header-body">
-            <div class="row align-items-center">
+                <div class="row align-items-center">
                     <div class="col">
                         <h6 class="header-pretitle">
                             Transferências
                         </h6>
                         <h1 class="header-title">
-                           Transferências Recebidas
+                            Transferências Recebidas
                         </h1>
                     </div>
                 </div>
@@ -92,7 +101,7 @@
                                 <td><?php echo $valor ?></td>
                                 <td><?php echo $data ?></td>
                             </tr>
-                        <?php } ?> 
+                        <?php } ?>
                     </tbody>
                 </table>
             </div>

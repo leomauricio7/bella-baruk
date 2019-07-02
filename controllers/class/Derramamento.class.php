@@ -117,8 +117,9 @@ class Derramamento
 		if($read->getRowCount() > 0){
 			foreach($read->getResult() as $dados){
 				extract($dados);
+				//$level_temp = $this->validaLevelMatriz($no);
 				if (!$this->existUserMatriz($indicado, $id_user_matriz)) {
-					$dados = ['id_user_matriz' => $id_user_matriz, 'id_user' => $indicado, 'level' => $level+1, 'id_no' => $no];
+					$dados = ['id_user_matriz' => $id_user_matriz, 'id_user' => $indicado, 'level' => $level, 'id_no' => $no];
 					$save->ExeCreate('matriz', $dados);
 				}
 			}
@@ -148,7 +149,7 @@ class Derramamento
 		$save = new Create();
 		$idNo = $this->getByIdNoIndicador($root, $indicado);
 		$levelNo = $this->validaLevelMatriz($idNo);
-		$dados = ['id_user_matriz' => $idNo, 'id_user' => $indicado, 'level' => $level, 'id_no' => $idNo];
+		$dados = ['id_user_matriz' => $idNo, 'id_user' => $indicado, 'level' => $levelNo, 'id_no' => $idNo];
 		$save->ExeCreate('matriz', $dados);
 	}
 	//pega o id_no indicador
@@ -266,7 +267,7 @@ class Derramamento
 			foreach ($read->getResult() as $nos) {
 				extract($nos);
 				if ($this->isvalidNo($root, $id_user)['status']) {
-					return array('status' => true, 'no' => $id_user);
+					return array('status' => true, 'no' => $id_user, 'level'=>$this->validaLevelMatriz($level));
 				}
 				$noss .= ' ' . $id_user . '=>' . $this->isvalidNo($root, $id_user)['msg'];
 			}
