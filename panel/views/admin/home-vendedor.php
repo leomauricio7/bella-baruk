@@ -10,7 +10,7 @@
                 <hr>
                 <p class="mb-0">Seu cadastro se encontra temporariamente <span class="badger badger-danger">inativo</span></p>
                 <h2><i class="fa fa-info-circle">
-                  </i><a class="badge badge-dark" href="<?php echo Url::getBase() ?>plano-carreira">Clique aqui e faça sua ativação para ter nossos descontos.</a></h2>
+                  </i><a class="badge badge-dark" href="<?php echo Url::getBase() ?>planos">Clique aqui e faça sua ativação para ter nossos descontos.</a></h2>
             </div>
         </div>
     </div>
@@ -22,7 +22,7 @@
                 <h4 class="alert-heading"><i class="fa fa-exclamation-triangle"></i> ATENÇÃO!</h4><hr>
                 <p class="badge badge-pill" style="font-size: 15px">Seu plano de ativação expirou, compre outro plano para continuar ganhando as comissões da sua equipe.</p>
                 <h2><i class="fa fa-info-circle">
-                  </i><a class="badge badge-dark" href="<?php echo Url::getBase() ?>plano-carreira">Clique aqui e faça sua ativação para ter nossos descontos.</a></h2>
+                  </i><a class="badge badge-dark" href="<?php echo Url::getBase() ?>planos">Clique aqui e faça sua ativação para ter nossos descontos.</a></h2>
             </div>
         </div>
     </div>
