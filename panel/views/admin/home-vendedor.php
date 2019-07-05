@@ -8,8 +8,9 @@
                 <h4 class="alert-heading"><i class="fa fa-exclamation-triangle"></i> ATENÇÃO</h4>
                 <p>Para ativar seu cadastro efetue uma comprar no valor de RS 160,00  ou acima.</p>
                 <hr>
-                <p class="mb-0">Seu cadastro se encontra temporariamente <span class="badger badger-danger">inativo</span><br>
-                <a class="badge badge-info" href="<?php echo Url::getBase() ?>plano-carreira">Clique aqui e faça sua ativação para ter nossos descontos.</a></p>
+                <p class="mb-0">Seu cadastro se encontra temporariamente <span class="badger badger-danger">inativo</span></p>
+                <h2><i class="fa fa-info-circle">
+                  </i><a class="badge badge-dark" href="<?php echo Url::getBase() ?>plano-carreira">Clique aqui e faça sua ativação para ter nossos descontos.</a></h2>
             </div>
         </div>
     </div>
@@ -20,6 +21,8 @@
             <div class="alert alert-danger" role="alert">
                 <h4 class="alert-heading"><i class="fa fa-exclamation-triangle"></i> ATENÇÃO!</h4><hr>
                 <p class="badge badge-pill" style="font-size: 15px">Seu plano de ativação expirou, compre outro plano para continuar ganhando as comissões da sua equipe.</p>
+                <h2><i class="fa fa-info-circle">
+                  </i><a class="badge badge-dark" href="<?php echo Url::getBase() ?>plano-carreira">Clique aqui e faça sua ativação para ter nossos descontos.</a></h2>
             </div>
         </div>
     </div>
