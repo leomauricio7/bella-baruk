@@ -33,7 +33,7 @@
                     <div class="h2 mb-0">R$</div>
                     </div>
                     <div class="col-auto">
-                    <div class="display-2 mb-0"><?php echo number_format($preco, 2, ",", ""); ?></div>
+                                        <div class="display-2 mb-0"><?php echo number_format(!Validation::getPermisionType($tipoUser) ? $preco/2 : $preco, 2, ",", ""); ?></div>
                     </div>
                 </div> <!-- / .row --> 
                 <!-- Period -->
