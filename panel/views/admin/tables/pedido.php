@@ -125,11 +125,11 @@ if ($_POST) {
                             <button type="button" data-toggle="modal" data-target="#modal-del<?php echo $id ?>" class=" btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
                         </td><?php } ?>
                     <td class="tables-handle">
-                        <?php if (number_format(Dados::getComissao($_SESSION['idUser']) , 2, ".", "") > $valor && $dado_baixa == 'nao' ) { ?>
+                        <?php if (Dados::getComissao($_SESSION['idUser']) > $valor && $dado_baixa == 'nao') { ?>
                             <button title="Pagar com bônus" alt="<?php echo $idPedido ?>" class="btn btn-warning btn-sm pg-bonus"><i class="fa fa-money-check-alt"></i></button>
                         <?php } ?>
                         <a title="visualizar extrato" href="<?php echo Url::getBase() . 'extrato/' . $idPedido ?>" class="btn btn-primary btn-sm"><i class="fa fa-file-alt"></i></a>
-                        <?php if (!Validation::getPermisionType($tipoUser) && $dado_baixa == 'nao' ) { ?>
+                        <?php if (!Validation::getPermisionType($tipoUser) && $dado_baixa == 'nao') { ?>
                             <button title="Enviar comprovante" type="button" data-toggle="modal" data-target="#modal-comprovante<?php echo $id ?>" class="btn btn-success btn-sm"><i class="fa fa-file-upload"></i></button>
                         <?php } ?>
                         <button title="visualizar detalhes" type="button" data-toggle="modal" data-target="#modal<?php echo $id ?>" class="btn btn-info btn-sm"><i class="fa fa-eye"></i></button>

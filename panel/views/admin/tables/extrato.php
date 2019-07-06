@@ -1,19 +1,22 @@
 <div class="card card-body p-5">
-    <div class="row">
+    <div class="row frete">
         <div class="col-12">
             <img src="<?php echo Url::getBase() . '../assets/img/logotipos/correios.png' ?>" alt="" class="img-fluid mx-auto d-block" width="200">
         </div><br>
-
+        <div class="col-12" id="alert-frete" style="display:none">
+            <br/><br/>
+            <div class="alert" role="alert" id="info-frete-alert"></div>
+        </div>
         <div class="col">
             <div class="form-group">
                 <label for="exampleInputEmail1">Digite Seu CEP</label>
-                <input type="text" class="form-control" id="cep" placeholder="Seu cep">
+                <input type="number" class="form-control" id="cep-frete" placeholder="CEP" maxlength="8">
                 <small class="form-text text-muted"><a href="http://www.buscacep.correios.com.br/sistemas/buscacep/buscaCepEndereco.cfm" target="_blank">Não sei meu CEP</a></small>
             </div>
             <button class="btn btn-success calcular-frete">Calcular</button>
         </div>
-        <div class="col" id="retorno" style="display:none"> 
-            <div class="form-group"> 
+        <div class="col" id="retorno" style="display:none">
+            <div class="form-group">
                 <label for="exampleInputEmail1">Informações</label>
                 <input type="text" class="form-control" readonly id="frete">
                 <small class="form-text text-muted">Prazo de entrega: <span id="prazo"></span></small>
@@ -136,15 +139,33 @@
 
                             <tr>
                                 <td class="px-0 border-top border-top-2">
-                                    <strong>Total</strong>
+                                    <strong>Subtotal</strong>
                                 </td>
                                 <td colspan="3" class="px-0 text-right border-top border-top-2">
-                                    <input type="hidden" id="total-pedido" value="<?php echo $totalPedido ?>">
+                                    <input type="hidden" id="total-pedido-sem-frete" value="<?php echo $totalPedido ?>">
                                     <span class="h3">
                                         R$ <?php echo number_format($totalPedido, 2, ",", ""); ?>
                                     </span>
                                 </td>
                             </tr>
+                            <tr>
+                                <td class="px-0 border-top border-top-2">
+                                    <strong>Frete</strong>
+                                </td>
+                                <td colspan="3" class="px-0 text-right border-top border-top-2">
+                                    <span class="h3" id="frete-extrato"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="px-0 border-top border-top-2">
+                                    <strong>Total</strong>
+                                </td>
+                                <td colspan="3" class="px-0 text-right border-top border-top-2">
+                                    <input type="hidden" id="total-pedido">
+                                    <span class="h3" id="total-pedido-frete"></span>
+                                </td>
+                            </tr>
+
                         </tbody>
                     </table>
                 </div>

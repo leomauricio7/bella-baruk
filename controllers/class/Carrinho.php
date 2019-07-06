@@ -9,6 +9,9 @@ if ($_POST) {
     $idProduct = filter_input(INPUT_POST, 'idProduct', FILTER_SANITIZE_STRING);
     $idPedido = filter_input(INPUT_POST, 'idPedido', FILTER_SANITIZE_STRING);
     $valorPedido = filter_input(INPUT_POST, 'totalPedido', FILTER_SANITIZE_STRING);
+    $frete = filter_input(INPUT_POST, 'frete', FILTER_SANITIZE_STRING);
+    $prazo = filter_input(INPUT_POST, 'prazo', FILTER_SANITIZE_STRING);
+
     switch ($type) {
             //init session
         case 1:
@@ -32,7 +35,7 @@ if ($_POST) {
             break;
             //close pedido
         case 6:
-            closePedido($idPedido, $valorPedido);
+            closePedido($idPedido, $valorPedido, $frete, $prazo);
             break;
             //da baixa
         case 7:
@@ -82,24 +85,25 @@ function saveAdesao($user, $qt)
     $start = date('Y/m/d');
     $end = date('Y/m/d', strtotime('+' . $dias . ' days'));
     $dados = ['id_user' => $user, 'data_ativacao' => $start, 'data_validade' => $end];
-    if(!isDuplicateAdesao($user,date('Y-m-d'))){
+    if (!isDuplicateAdesao($user, date('Y-m-d'))) {
         $save->ExeCreate('user_adesao', $dados);
         if ($save->getResult()) {
             return true;
         } else {
             return false;
         }
-    }else{
+    } else {
         return false;
     }
 }
 
-function isDuplicateAdesao($user, $data){
+function isDuplicateAdesao($user, $data)
+{
     $read = new Read();
-    $read->ExeRead('user_adesao', 'where id_user=:user and data_ativacao=:data_ativacao', 'user='.$user.'&data_ativacao='.$data);
-    if($read->getRowCount() > 0){
+    $read->ExeRead('user_adesao', 'where id_user=:user and data_ativacao=:data_ativacao', 'user=' . $user . '&data_ativacao=' . $data);
+    if ($read->getRowCount() > 0) {
         return true;
-    }else{
+    } else {
         return false;
     }
 }
@@ -116,7 +120,7 @@ function ativaUserAdesao($user)
     }
 }
 
-//verifica se o usurairo ja fez uma compra no valor de R$150.00
+//verifica se o usurairo ja fez uma compra no valor de R$160.00
 function verificaFirstCompra($user)
 {
     $read = new Read();
@@ -178,8 +182,11 @@ function verificaSeNoPedidoExisteMasdeUmProduto($idPedido)
     return $read->getRowCount();
 }
 //seta a pontuacao da compra efetivada
-function setPontuacao($user, $pontos)
+function setPontuacao($pedido, $user, $pontos)
 {
+    if (verificaSeExisteDePlanoAtivacaoNoPedido($pedido)) {
+        $pontos -= 60;
+    }
     $update = new Update();
     $newPontos = $pontos + Dados::getPontuacao($user);
     $dados = ["pontuacao" => $newPontos];
@@ -200,14 +207,13 @@ function daBaixa($idPedido, $payment = null)
     if ($update->getResult()) {
         $user = getUserPedido($idPedido)['user'];
         $valor = getUserPedido($idPedido)['valor'];
-        if (setPontuacao($user, $valor)) {
+        if (setPontuacao($idPedido, $user, $valor)) {
             //setando pontuacao unilevel
             $userRecebedoresUnilevel = Unilevel::getHierarquiaComissaoUnilevel($user);
             foreach ($userRecebedoresUnilevel as $unilevel) {
                 extract($unilevel);
-                setPontuacao($indicador, $valor);
+                setPontuacao($idPedido, $indicador, $valor);
             }
-
             if (verificaFirstCompra($user)) {
                 //comissão matriz
                 if (verificaSeExisteDePlanoAtivacaoNoPedido($idPedido)) {
@@ -236,7 +242,7 @@ function daBaixa($idPedido, $payment = null)
                     )
                 );
             } else {
-                if ($valor >= 150) {
+                if ($valor >= 160) {
                     if (!verificaFirstCompra($user)) {
                         $ativo = ativaUserAdesao($user);
                         if ($ativo) {
@@ -244,7 +250,7 @@ function daBaixa($idPedido, $payment = null)
                             if ($adesao) {
                                 $Derramento = new Derramamento();
                                 $Derramento->saveUserMatriz($user);
-                                $statusComissao = Dados::setComissao($user, 25, $valor - 50, null, null, 'unilevel');
+                                $statusComissao = Dados::setComissao($user, 25, $valor - 60, null, null, 'unilevel');
                                 if ($statusComissao['status']) {
                                     $userRecebedoresMatriz = Unilevel::getHierarquiaComissaoMatriz($user);
                                     foreach ($userRecebedoresMatriz as $matriz) {
@@ -272,7 +278,7 @@ function daBaixa($idPedido, $payment = null)
     }
 }
 
-function closePedido($idPedido, $valorPedido)
+function closePedido($idPedido, $valorPedido, $frete, $prazo)
 {
     $savePedido = new Create();
     $saveItemPedido = new Create();
@@ -283,6 +289,8 @@ function closePedido($idPedido, $valorPedido)
         'id_status' => 1,
         'valor' => $valorPedido,
         'dado_baixa' => 'nao',
+        'valor_frete' => str_replace(",", ".", $frete),
+        'prazo_entrega' => $prazo
     ];
 
     $savePedido->ExeCreate('pedidos', $dadosPedido);

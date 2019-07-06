@@ -383,14 +383,15 @@ class Dados
         }
     }
     // valdia comissão 
-    public static function validaComissao($id_user_recebedor,$id_user_comprador,$valor_send, $tipo){
+    public static function validaComissao($id_user_recebedor, $id_user_comprador, $valor_send, $tipo)
+    {
         $read  = new Read();
         $read->getComisaoUser("where (id_user_comprador = $id_user_comprador) and (id_user_recebedor = $id_user_recebedor) and tipo = '$tipo'");
-        if($read->getRowCount() > 0){
+        if ($read->getRowCount() > 0) {
             $now = date('Y-m-d');
-            foreach($read->getResult() as $dados){
+            foreach ($read->getResult() as $dados) {
                 extract($dados);
-                if($valor == $valor_send && $data == $now){
+                if ($valor == $valor_send && $data == $now) {
                     return false;
                 }
             }
@@ -404,7 +405,7 @@ class Dados
         $indicador = $indicador_temp == null ? Dados::getIndicador($user) : $indicador_temp;
         if ($valor > 0) {
             if (Dados::existePlanoAtivo($indicador)) {
-                if(Dados::validaComissao($indicador,$user, $valor, $tipo)){
+                if (Dados::validaComissao($indicador, $user, $valor, $tipo)) {
                     $save = new Create();
                     $dados = ['id_user_recebedor' => $indicador, 'id_user_comprador' => $user, 'valor' => $valor, 'tipo' => $tipo];
                     $save->ExeCreate('comissoes', $dados);
@@ -413,10 +414,9 @@ class Dados
                     } else {
                         return ['status' => false, 'msg' => 'Error na procesamento da comissão.'];
                     }
-                }else{
-                     return ['status' => false, 'msg' => 'Duplicate Comissão.'];
+                } else {
+                    return ['status' => false, 'msg' => 'Duplicate Comissão.'];
                 }
-                
             } else {
                 return ['status' => false, 'msg' => 'Usuário indicador esta inativo ou não existe usuário raiz.'];
             }
@@ -609,5 +609,19 @@ class Dados
         $read = new Read();
         $read->ExeRead('users', 'WHERE slug=:page', 'page=' . $page);
         return $read->getRowCount() > 0 ? true : false;
+    }
+
+    public static function verificaFirstCompra($user)
+    {
+        $read = new Read();
+        $read->ExeRead('users', 'where id=:id', 'id=' . $user);
+        foreach ($read->getResult() as $dados) {
+            extract($dados);
+            if ($fisrt_adesao == 1) {
+                return true;
+            } else {
+                return false;
+            }
+        }
     }
 }

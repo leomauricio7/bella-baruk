@@ -107,13 +107,15 @@ $(function () {
         });
     }
 
-    function closePedido(idPedido, totalPedido) {
+    function closePedido(idPedido, totalPedido, frete, prazo) {
         $.ajax({
             type: 'POST',
             url: getBaseUrl() + '/controllers/class/carrinho.php',
-            data: 'type=6&idPedido=' + idPedido + '&totalPedido=' + totalPedido,
+            data: 'type=6&idPedido=' + idPedido + '&totalPedido=' + totalPedido + '&frete=' + frete + '&prazo=' + prazo,
             dataType: "json",
         }).done(function (res) {
+            localStorage.removeItem("frete");
+            localStorage.removeItem("prazo");
             if (res.status == 200) {
                 $('#msg-toast').text(res.msg);
                 $('#modal-close-pedido').modal('hide');
@@ -143,31 +145,6 @@ $(function () {
             console.log('desconto ativado com sucesso');
         }).fail(function (xhr, desc, err) {
             alert('Uups! Ocorreu algum erro ao ativar o desconto!');
-            console.log(xhr);
-            console.log("Detalhes: " + desc + "nErro:" + err);
-        }).always(function () {
-            console.log('closed');
-        });
-    }
-    function closePedido(idPedido, totalPedido) {
-        $.ajax({
-            type: 'POST',
-            url: getBaseUrl() + '/controllers/class/carrinho.php',
-            data: 'type=6&idPedido=' + idPedido + '&totalPedido=' + totalPedido,
-            dataType: "json",
-        }).done(function (res) {
-            if (res.status == 200) {
-                $('#msg-toast').text(res.msg);
-                $('#modal-close-pedido').modal('hide');
-                $('#alert-toast').toast('show')
-
-            } else if (res.status == 500) {
-                $('#msg-toast').text(res.msg);
-                $('#alert-toast').toast('show')
-            }
-            console.log(res);
-        }).fail(function (xhr, desc, err) {
-            alert('Uups! Ocorreu algum erro!');
             console.log(xhr);
             console.log("Detalhes: " + desc + "nErro:" + err);
         }).always(function () {
@@ -208,8 +185,16 @@ $(function () {
             dataType: "json",
         }).done(function (res) {
             console.log(res);
-            $('#frete').val('Frete: R$ '+res.Valor);
-            $('#prazo').text(res.PrazoEntrega+' dias.');
+            localStorage.setItem("frete", res.Valor);
+            localStorage.setItem("prazo", res.PrazoEntrega);
+            let valorPedido = parseFloat($('#total-pedido-sem-frete').val());
+            let frete = parseFloat(res.Valor.replace(",", "."));
+            let valorTotal = frete+valorPedido;
+            $('#total-pedido').val(valorTotal);
+            $('#total-pedido-frete').text('R$ '+valorTotal);
+            $('#frete').val('Frete: R$ ' + res.Valor);
+            $('#frete-extrato').text('R$ ' + res.Valor);
+            $('#prazo').text(res.PrazoEntrega + ' dias.');
             $('#retorno').fadeIn('slow');
         }).fail(function (xhr, desc, err) {
             alert('Uups! Ocorreu algum erro!');
@@ -249,7 +234,9 @@ $(function () {
     $('#submit-pedido').click(function () {
         var idPedido = $('#id-pedido').val();
         var totalPedido = $('#total-pedido').val();
-        closePedido(idPedido, totalPedido);
+        var frete = localStorage.getItem("frete");
+        var prazo = localStorage.getItem("prazo");
+        closePedido(idPedido, totalPedido, frete, prazo);
     });
 
     $('.da-baixa').click(function () {
@@ -258,15 +245,17 @@ $(function () {
     });
     $('.pg-bonus').click(function () {
         var idPedido = $(this).attr('alt');
-        daBaixa(idPedido,'bonus');
+        daBaixa(idPedido, 'bonus');
     });
 
-
-    $('#modal-product').on('hide.bs.modal', function (event) {
-        window.location.reload();
-    });
+    // $('#modal-close-pedido').on('hide.bs.modal', function (event) {
+    //     window.location.reload();
+    // });
 
     $('#alert-toast').on('hidden.bs.toast', function () {
+        window.location.reload();
+    });
+    $('#modal-product').on('hide.bs.modal', function (event) {
         window.location.reload();
     });
 
@@ -277,9 +266,33 @@ $(function () {
         window.location.href = "./carrinho";
     });
 
-    $('.calcular-frete').click(function(){
-        var cep = $("#cep").val();
-        frete(cep, 200);
+    $('.calcular-frete').click(function () {
+        var cep = $("#cep-frete").val();
+        if (cep == '') {
+            $('#info-frete-alert').text('O campo cep não pode esta vazio.');
+            $('#info-frete-alert').addClass('alert-danger');
+            $('#alert-frete').show('slow');
+            $('#retorno').hide('slow');
+        } else if (cep.length < 8) {
+            $('#info-frete-alert').text('CEP inválido.');
+            $('#info-frete-alert').addClass('alert-danger');
+            $('#alert-frete').show('slow');
+            $('#retorno').hide('slow');
+        } else if (cep.length > 8) {
+            $('#info-frete-alert').text('CEP inválido.');
+            $('#info-frete-alert').addClass('alert-danger');
+            $('#alert-frete').show('slow');
+            $('#retorno').hide('slow');
+        } else {
+            $('#alert-frete').hide('slow');
+            frete(cep, 200);
+        }
+    });
+
+    $('.confirma-frete').click(function () {
+        $('.frete').hide('slow');
+        $('.extrato').show('slow');
+        $('#submit-pedido').show('slow');
     });
 
 });

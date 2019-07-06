@@ -112,7 +112,7 @@
 </div>
 <!--modal close pedido-->
 <div class="modal fade" id="modal-close-pedido" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title text-center" id="exampleModalCenterTitle">Extrato de pedido</h5>
@@ -124,8 +124,8 @@
         <?php require_once 'extrato.php' ?>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-        <button type="button" class="btn btn-outline-primary" id="submit-pedido">Confirmar pedido</button>
+        <button type="button" class="btn btn-dark" data-dismiss="modal">Fechar</button>
+        <button type="button" class="btn btn-outline-primary" id="submit-pedido" style="display:none">Confirmar pedido</button>
       </div>
     </div>
   </div>
