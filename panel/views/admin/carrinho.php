@@ -26,7 +26,7 @@
                                 if (!isset($_SESSION['carrinho'][$i])) {
                                     $i += 1;
                                 }
-                                $valorPedido += number_format(Dados::getValueProduct($_SESSION['carrinho'][$i]['id']) * $_SESSION['carrinho'][$i]['quantidade'], 2, ",", "");
+                                @$valorPedido += number_format(Dados::getValueProduct($_SESSION['carrinho'][$i]['id']) * $_SESSION['carrinho'][$i]['quantidade'], 2, ",", "");
                             }
                             ?>
                             <button class="btn btn-dark <?php echo $valorPedido < 160 ? 'disabled' : '' ?>" id="<?php echo $valorPedido < 160 ? '' : 'close-pedido' ?>">
@@ -51,7 +51,7 @@
                 if (!isset($_SESSION['carrinho'][$i])) {
                     $i += 1;
                 }
-                $valorPedido += number_format(Dados::getValueProduct($_SESSION['carrinho'][$i]['id']) * $_SESSION['carrinho'][$i]['quantidade'], 2, ",", "");
+                @$valorPedido += number_format(Dados::getValueProduct($_SESSION['carrinho'][$i]['id']) * $_SESSION['carrinho'][$i]['quantidade'], 2, ",", "");
             }
             ?>
             <div class="alert alert-dark" role="alert">

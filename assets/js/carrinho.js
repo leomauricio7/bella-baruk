@@ -144,7 +144,7 @@ $(function () {
         }).done(function (res) {
             console.log('desconto ativado com sucesso');
         }).fail(function (xhr, desc, err) {
-            alert('Uups! Ocorreu algum erro ao ativar o desconto!');
+            //alert('Uups! Ocorreu algum erro ao ativar o desconto!');
             console.log(xhr);
             console.log("Detalhes: " + desc + "nErro:" + err);
         }).always(function () {

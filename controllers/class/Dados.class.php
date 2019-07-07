@@ -205,10 +205,21 @@ class Dados
         $read->ExeRead('products', 'where id=:id', 'id=' . $id);
         foreach ($read->getResult() as $dados) {
             extract($dados);
-            if (Dados::verificaAdesão($_SESSION['idUser'])) {
+            if(Dados::existePlanoAtivo($_SESSION['idUser'])){
                 $value = $preco / 2;
+                return number_format($value, 2, ",", "");
+            }else if (isset($_SESSION['carrinho'])) {
+                if(Dados::verificaSeExisteDePlanoAtivacaoNoPedido()){
+                    $value = $preco / 2; 
+                    return number_format($value, 2, ",", "");
+                }else{
+                    $value = $preco;
+                    return number_format($value, 2, ",", "");
+                }
+                
             } else {
                 $value = $preco;
+                return number_format($value, 2, ",", "");
             }
         }
         return number_format($value, 2, ",", "");
@@ -618,6 +629,34 @@ class Dados
         foreach ($read->getResult() as $dados) {
             extract($dados);
             if ($fisrt_adesao == 1) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
+
+    public static function verificaSeExisteDePlanoAtivacaoNoPedido()
+    {
+
+        for ($i = 0; $i < sizeof($_SESSION['carrinho']); $i++) {
+            if (!isset($_SESSION['carrinho'][$i])) {
+                $i += 1;
+            }
+            if (Dados::verificaTipoProduto($_SESSION['carrinho'][$i]['id'])) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static function verificaTipoProduto($id_produto)
+    {
+        $read = new Read();
+        $read->ExeRead('products', 'where id=:id', 'id=' . $id_produto);
+        foreach ($read->getResult() as $dados) {
+            extract($dados);
+            if ($id_tipo == 1) {
                 return true;
             } else {
                 return false;

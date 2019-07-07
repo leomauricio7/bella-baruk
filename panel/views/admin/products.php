@@ -16,10 +16,10 @@
         <div class="col-auto">
           <!--destroy session-->
           <?php
-          if (isset($_SESSION['carrinho']) &&  sizeof($_SESSION['carrinho']) > 0) {
+          if (isset($_SESSION['carrinho'])) {
             ?>
             <button class="btn btn-danger" id="closeSession">
-              <i class="fa fa-times-circle"></i>Remover pedidos do carrinho
+              <i class="fa fa-times-circle"></i>Cancelar pedido
             </button>
           <?php } ?>
           <?php

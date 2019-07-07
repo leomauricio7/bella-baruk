@@ -325,6 +325,7 @@ function existProduct($idProduct)
 function existProductCarrinho($idProduct)
 {
     for ($i = 0; $i < sizeof($_SESSION['carrinho']); $i++) {
+        if(!isset($_SESSION['carrinho'][$i])) $i++;
         if ($_SESSION['carrinho'][$i]['id'] == $idProduct) {
             $_SESSION['carrinho'][$i] = ['id' => $idProduct, 'quantidade' => $_SESSION['carrinho'][$i]['quantidade'] + 1];
             return true;
@@ -342,6 +343,7 @@ function removeProductCarrinho($idProduct)
         }
         if ($_SESSION['carrinho'][$i]['id'] == $idProduct) {
             unset($_SESSION['carrinho'][$i]);
+            sort($_SESSION['carrinho']);
             break;
         }
     }
