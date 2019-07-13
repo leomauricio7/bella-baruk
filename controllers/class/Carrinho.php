@@ -142,7 +142,7 @@ function getUserPedido($idPedido)
     $read->ExeRead('pedidos', 'where idPedido=:id', 'id=' . $idPedido);
     foreach ($read->getResult() as $dados) {
         extract($dados);
-        return array('user' => $id_user, 'valor' => $valor);
+        return array('user' => $id_user, 'valor' => ($valor-$valor_frete));
     }
 }
 //verifica se o tipo de produto é um plano de ativação
@@ -228,7 +228,7 @@ function daBaixa($idPedido, $payment = null)
                 if (verificaSeNoPedidoExisteMasdeUmProduto($idPedido) > 0) {
                     //comissão unilevel
                     $userRecebedoresUnilevel = Unilevel::getHierarquiaComissaoUnilevel($user);
-                    $valor_bruto = verificaSeExisteDePlanoAtivacaoNoPedido($idPedido) ? $valor - 50 : $valor;
+                    $valor_bruto = verificaSeExisteDePlanoAtivacaoNoPedido($idPedido) ? $valor - 60 : $valor;
                     foreach ($userRecebedoresUnilevel as $unilevel) {
                         extract($unilevel);
                         Dados::setComissao($user, $comisao, $valor_bruto, $indicador, null, 'unilevel');

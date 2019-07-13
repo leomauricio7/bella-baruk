@@ -1,6 +1,7 @@
 <?php
 
-class Validation extends Conn {
+class Validation extends Conn
+{
 
     private $login;
     private $senha;
@@ -8,52 +9,63 @@ class Validation extends Conn {
     private $cpf;
     private $Msg;
 
-    public function setEmail($email) {
+    public function setEmail($email)
+    {
         $this->email = $email;
     }
-    public function setMsg($msg){
+    public function setMsg($msg)
+    {
         $this->Msg = $msg;
     }
 
-    public function setCpf($cpf) {
+    public function setCpf($cpf)
+    {
         $this->cpf = $cpf;
     }
 
-    public function setLogin($login) {
+    public function setLogin($login)
+    {
         $this->login = addslashes($login);
     }
 
-    public function setSenha($senha) {
+    public function setSenha($senha)
+    {
         $this->senha = addslashes($senha);
     }
 
-    function getMsg() {
+    function getMsg()
+    {
         return $this->Msg;
     }
-    
-    public function getLogin() {
+
+    public function getLogin()
+    {
         return $this->login;
     }
 
-    public function getSenha() {
+    public function getSenha()
+    {
         return $this->senha;
     }
 
-    public function getEmail() {
+    public function getEmail()
+    {
         return $this->email;
     }
 
-    public function getCpf() {
+    public function getCpf()
+    {
         return $this->cpf;
     }
 
-    public function validaEmail(){
+    public function validaEmail()
+    {
         $read = new Read();
         $email_validate = $this->getEmail();
         $read->ExeRead('users', "where email= '$email_validate'");
-        if($read->getRowCount() > 0){
+        if ($read->getRowCount() > 0) {
             return true;
-        }else{
+        } else {
             $this->Msg = '<div class="alert alert-danger alert-dismissible fade show" role="alert">
                         <strong>ATENÇÃO</strong> Email não cadastrado no sistema.
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -64,7 +76,8 @@ class Validation extends Conn {
         }
     }
 
-    public function logar() {
+    public function logar()
+    {
         $pdo = parent::getConn();
         $logar = $pdo->prepare("SELECT * FROM users WHERE slug = ?");
         $logar->bindValue(1, $this->getLogin());
@@ -84,8 +97,8 @@ class Validation extends Conn {
                 $_SESSION["sessiontime"] = time() + 60 * 20;
                 return true;
             } else {
-                $_SESSION['msg'] = 
-                '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                $_SESSION['msg'] =
+                    '<div class="alert alert-danger alert-dismissible fade show" role="alert">
                     <strong>ATENÇÃO</strong> Senha incorreta
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">×</span>
@@ -94,8 +107,8 @@ class Validation extends Conn {
                 return false;
             }
         } else {
-            $_SESSION['msg'] = 
-            '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+            $_SESSION['msg'] =
+                '<div class="alert alert-danger alert-dismissible fade show" role="alert">
                 <strong>ATENÇÃO</strong> Email não cadastrado no sistema
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">×</span>
@@ -106,37 +119,37 @@ class Validation extends Conn {
     }
 
     /* Função de recuperar senha */
-    public function recuperaSenha() {
+    public function recuperaSenha()
+    {
         $pdo = parent::getConn();
 
         $rec = $pdo->prepare("SELECT * FROM users WHERE email = ?");
         $rec->bindValue(1, $this->getEmail());
         $rec->execute();
-        if ($rec->rowCount() == 1):
+        if ($rec->rowCount() == 1) :
             $_token = hash("sha256", md5(uniqid())); //gerando uma senha aletória para o usuário
             $dados = $rec->fetch(PDO::FETCH_ASSOC);
             $this->setEmail($dados['email']); //pegando o email do usuario
-            if ($this->enviaEmail($_token, $dados['nome'])) {//enviando o email com a nova senha
-            $update = $pdo->prepare("UPDATE users SET _token = :_token WHERE email = :email");
-            $update->execute(array(
-                ':email' => $this->getEmail(),
-                ':_token' => $_token
-            ));
-            $this->Msg = '<div class="alert alert-success alert-dismissible fade show" role="alert">
+            if ($this->enviaEmail($_token, $dados['nome'])) { //enviando o email com a nova senha
+                $update = $pdo->prepare("UPDATE users SET _token = :_token WHERE email = :email");
+                $update->execute(array(
+                    ':email' => $this->getEmail(),
+                    ':_token' => $_token
+                ));
+                $this->Msg = '<div class="alert alert-success alert-dismissible fade show" role="alert">
                         <p><strong>ATENÇÃO: </strong>
-                        Foi enviado para o email: <strong>'.$this->getEmail().'</strong>,
+                        Foi enviado para o email: <strong>' . $this->getEmail() . '</strong>,
                         um link para recuperação de sua senha. Verifique sua caixa de entrada,
                         caso não tenha chegado, verifique se estar em spam.</p>
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">×</span>
                         </button>
                     </div>';
-            return true;
-        } else {
-           $_SESSION['erro'] = '<div class="alert alert-danger"><h5 align="center"><i class="fa fa-warning"></i> Erro ao enviar o email.</h5></div>';
-           return false;
-        }
-        else:
+                return true;
+            } else {
+                $_SESSION['erro'] = '<div class="alert alert-danger"><h5 align="center"><i class="fa fa-warning"></i> Erro ao enviar o email.</h5></div>';
+                return false;
+            } else :
             $this->Msg = '<div class="alert alert-danger"><h5 align="center"><i class="fa fa-warning"></i> Email incorreto.</h5></div>';
             return false;
         endif;
@@ -144,7 +157,8 @@ class Validation extends Conn {
 
     /* Função de enviar Email */
 
-    public function enviaEmail($_token, $user) {
+    public function enviaEmail($_token, $user)
+    {
         // emails para quem será enviado o formulário
         $from = "suporte@bellabaruk.com.br";
         $assunto = "Solicitação de Recuperação de Senha";
@@ -154,9 +168,9 @@ class Validation extends Conn {
         $headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
         $headers .= "De: $from";
         $msg = '
-            <h1>Ola, '.$user.'</h1>
+            <h1>Ola, ' . $user . '</h1>
             <p>Identificamos em nosso sistema, uma solicitação de recuperação de senha, caso não reconheça essa solicitação, desconsidere esse email e entre em contato com o nosso suporte.</p>
-            <a href="https://bellabaruk.com.br/password-reset?_token='.$_token.'">Clique aqui para prosseguir a recuperação de senha.</a>
+            <a href="https://bellabaruk.com.br/password-reset?_token=' . $_token . '">Clique aqui para prosseguir a recuperação de senha.</a>
             <p>Atenciosamente<br>Suporte BellaBaruk</p>
         ';
         $enviaremail = mail($destino, $assunto, $msg, $headers);
@@ -168,7 +182,8 @@ class Validation extends Conn {
         }
     }
 
-    public static function ForceHTTPS() {
+    public static function ForceHTTPS()
+    {
         if (!isset($_SERVER['HTTPS'])) {
             $url = $_SERVER['SERVER_NAME'];
             $new_url = "https://" . $url . $_SERVER['REQUEST_URI'];
@@ -177,30 +192,32 @@ class Validation extends Conn {
         }
     }
 
-    public static function deslogar() {
-        if (isset($_SESSION['logado'])):
+    public static function deslogar()
+    {
+        if (isset($_SESSION['logado'])) :
             unset($_SESSION['logado']);
             session_destroy();
             echo '<script>window.location.href="../login";</script>';
         endif;
     }
 
-    public static function validaSession() {
-        if (!isset($_SESSION['logado'])):
-            $_SESSION['msg'] = 
-            '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+    public static function validaSession()
+    {
+        if (!isset($_SESSION['logado'])) :
+            $_SESSION['msg'] =
+                '<div class="alert alert-danger alert-dismissible fade show" role="alert">
                 <strong>ATENÇÃO</strong> Área Restrita para usuários cadastrados
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
             </div>';
             echo '<script>window.location.href="../login";</script>';
-        else:
+        else :
             $pdo = parent::getConn();
             $sql = $pdo->prepare("SELECT * FROM users WHERE email = ?");
             $sql->bindValue(1, $_SESSION['email']);
             $sql->execute();
-            if ($sql->rowCount() == 1):
+            if ($sql->rowCount() == 1) :
                 $dados = $sql->fetch(PDO::FETCH_ASSOC);
                 if (!password_verify($_SESSION['senha'], $dados['senha'])) :
                     unset($_SESSION['cpf']);
@@ -215,7 +232,7 @@ class Validation extends Conn {
                     $_SESSION['msg'] = '<div class="alert alert-danger"><i class="fa fa-warning"><h5 align="center"></i> Area restrita para usuários cadastrados</h5></div>';
                     echo '<script>window.location.href="../login";</script>';
                 endif;
-            else:
+            else :
                 unset($_SESSION['cpf']);
                 unset($_SESSION['email']);
                 unset($_SESSION['cnpj']);
@@ -225,8 +242,8 @@ class Validation extends Conn {
                 unset($_SESSION['avatar']);
                 unset($_SESSION['idTipo']);
                 unset($_SESSION['idUser']);
-                $_SESSION['msg'] = 
-                '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                $_SESSION['msg'] =
+                    '<div class="alert alert-danger alert-dismissible fade show" role="alert">
                     <strong>ATENÇÃO</strong> Área Restrita para usuários cadastrados
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">×</span>
@@ -237,7 +254,8 @@ class Validation extends Conn {
         endif;
     }
 
-    public static function expiraSession() {
+    public static function expiraSession()
+    {
         if (isset($_SESSION["sessiontime"])) {
             if ($_SESSION["sessiontime"] < time()) {
                 session_unset();
@@ -250,8 +268,8 @@ class Validation extends Conn {
                 unset($_SESSION['avatar']);
                 unset($_SESSION['idTipo']);
                 unset($_SESSION['idUser']);
-                $_SESSION['msg'] = 
-                '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                $_SESSION['msg'] =
+                    '<div class="alert alert-danger alert-dismissible fade show" role="alert">
                     <strong>ATENÇÃO</strong> Sesão expirou!
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">×</span>
@@ -272,8 +290,8 @@ class Validation extends Conn {
             unset($_SESSION['avatar']);
             unset($_SESSION['idTipo']);
             unset($_SESSION['idUser']);
-            $_SESSION['msg'] = 
-            '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+            $_SESSION['msg'] =
+                '<div class="alert alert-danger alert-dismissible fade show" role="alert">
                 <strong>ATENÇÃO</strong> Sesão encerrada!
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">×</span>
@@ -307,7 +325,8 @@ class Validation extends Conn {
     //     }
     // }
 
-    public static function getTipoUsario($idTipo) {
+    public static function getTipoUsario($idTipo)
+    {
         $tipoUser = null;
         $read = new Read();
         $read->ExeRead("tipo_users", "WHERE id = $idTipo");
@@ -318,8 +337,9 @@ class Validation extends Conn {
         return $tipoUser;
     }
 
-    public static function getURI($id) {
-        $URL= null;
+    public static function getURI($id)
+    {
+        $URL = null;
         $read = new Read();
         $read->ExeRead("users", "WHERE id = $id");
         foreach ($read->getResult() as $dados) {
@@ -329,7 +349,8 @@ class Validation extends Conn {
         return $URL;
     }
 
-    public static function getNameIndicador($slug) {
+    public static function getNameIndicador($slug)
+    {
         $name = null;
         $read = new Read();
         $read->ExeRead("users", "WHERE slug = '$slug'");
@@ -341,7 +362,8 @@ class Validation extends Conn {
         return $name;
     }
 
-    public static function getIndicador($id) {
+    public static function getIndicador($id)
+    {
         $name = null;
         $read = new Read();
         $read->ExeRead("users", "WHERE id = '$id'");
@@ -353,7 +375,8 @@ class Validation extends Conn {
         return $name;
     }
 
-    public static function getIdIndicador($name) {
+    public static function getIdIndicador($name)
+    {
         $id_user = null;
         $read = new Read();
         $read->ExeRead("users", "WHERE nome = '$name'");
@@ -365,7 +388,8 @@ class Validation extends Conn {
         return $id_user;
     }
 
-    public static function getSituacaoUsario($id_situacao) {
+    public static function getSituacaoUsario($id_situacao)
+    {
         $situacaoUser = null;
         $read = new Read();
         $read->ExeRead("user_situacao", "WHERE id = $id_situacao");
@@ -376,7 +400,8 @@ class Validation extends Conn {
         return $situacaoUser;
     }
 
-    public static function geraPermisao($idPagina) {
+    public static function geraPermisao($idPagina)
+    {
         $read = new Read();
         $create = new Create();
         $read->ExeRead("user_tipo");
@@ -391,7 +416,8 @@ class Validation extends Conn {
         }
     }
 
-    public static function verificaPermisao($id_tipo, $url) {
+    public static function verificaPermisao($id_tipo, $url)
+    {
         $read = new Read();
         $read->consultaPermissoes("WHERE u.id_user_tipo = $id_tipo AND p.url = '$url'");
         foreach ($read->getResult() as $dados) {
@@ -404,43 +430,48 @@ class Validation extends Conn {
         }
     }
 
-    public static function getPermisionType($id_tipo) {
-        if ($id_tipo == 1) {//administrador
+    public static function getPermisionType($id_tipo)
+    {
+        if ($id_tipo == 1) { //administrador
             return true;
-        } else {//vendedor
+        } else { //vendedor
             return false;
-        }   
+        }
     }
 
-    public static function getPermisionTypeVendedor($id_tipo) {
-        if ($id_tipo == 1) {//administrador
+    public static function getPermisionTypeVendedor($id_tipo)
+    {
+        if ($id_tipo == 1) { //administrador
             return false;
-        } else {//vendedor
+        } else { //vendedor
             return true;
-        }   
+        }
     }
 
-    public static function limpaDados(array $dados) {
+    public static function limpaDados(array $dados)
+    {
         foreach ($dados as $indice => $value) {
             $dados[$indice] = addslashes($dados[$indice]);
         }
         return $dados;
     }
 
-    public static function verificaToken($token){
+    public static function verificaToken($token)
+    {
         $read = new Read();
-        $read->ExeRead('users',"WHERE _token = '$token'");
-        if($read->getResult()){
+        $read->ExeRead('users', "WHERE _token = '$token'");
+        if ($read->getResult()) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
 
-    public function duplicateEmail($mail){
+    public function duplicateEmail($mail)
+    {
         $read = new Read();
-        $read->ExeRead('users',"WHERE email = '$mail'");
-        if($read->getResult()){
+        $read->ExeRead('users', "WHERE email = '$mail'");
+        if ($read->getResult()) {
             $this->setMsg('<div class="alert alert-danger alert-dismissible fade show" role="alert">
                 <strong>ATENÇÃO</strong> Email já cadastrado no sistema.
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -448,12 +479,13 @@ class Validation extends Conn {
                 </button>
             </div>');
             return true;
-        }else{
+        } else {
             return false;
         }
-    } 
+    }
 
-    public static function updateSenha($token, $novaSenha){
+    public static function updateSenha($token, $novaSenha)
+    {
         $pdo = parent::getConn();
         $update = $pdo->prepare("UPDATE users SET _token = :token, senha = :novaSenha WHERE _token = :_token");
         $update->execute(array(
@@ -465,64 +497,74 @@ class Validation extends Conn {
     }
 
     //funções de controle da loja
-    public static function getImagesProdutos($id_produto){
+    public static function getImagesProdutos($id_produto)
+    {
         $nameFile = '';
         $read = new Read();
-        $read->ExeRead('image_products','where id_product = '.$id_produto.' limit 1');
-        foreach($read->getresult() as $images):
+        $read->ExeRead('image_products', 'where id_product = ' . $id_produto . ' limit 1');
+        foreach ($read->getresult() as $images) :
             extract($images);
             $nameFile = $url_image;
         endforeach;
         return $nameFile;
     }
 
-    public static function getIdProduto($slug){
+    public static function getIdProduto($slug)
+    {
         $idProduto = '';
         $read = new read();
-        $read->ExeRead('products',"where slug = '$slug'");
-        foreach($read->getresult() as $prod):
+        $read->ExeRead('products', "where slug = '$slug'");
+        foreach ($read->getresult() as $prod) :
             extract($prod);
             $idProduto = $id;
         endforeach;
         return $id;
     }
-    public static function getNameProduto($id){
+    public static function getNameProduto($id)
+    {
         $name = '';
         $read = new Read();
-        $read->ExeRead('products',"where id = $id");
-        foreach($read->getresult() as $prod):
+        $read->ExeRead('products', "where id = $id");
+        foreach ($read->getresult() as $prod) :
             extract($prod);
             $name = $titulo;
         endforeach;
         return $name;
     }
 
-    public static function getTotalProdutosCarrinho($idCarrinho){
+    public static function getTotalProdutosCarrinho($idCarrinho)
+    {
         $read = new Read();
-        $read->ExeRead('produtos_pedido', 'where id_pedido = '.$idCarrinho);
+        $read->ExeRead('produtos_pedido', 'where id_pedido = ' . $idCarrinho);
         return $read->getRowCount();
     }
 
-    public static function getClassStatus($status){
+    public static function getClassStatus($status)
+    {
         $class = null;
-        switch($status){
-            case 1: $class="warning"; break;
-            case 2:
-            case 4: 
-                $class="info"; 
+        switch ($status) {
+            case 1:
+                $class = "warning";
                 break;
-            case 3: $class="success"; break;
-            case 5: 
-            case 6: 
+            case 2:
+            case 4:
+                $class = "info";
+                break;
+            case 3:
+                $class = "success";
+                break;
+            case 5:
+            case 6:
             case 7:
             case 8:
-                $class="danger"; 
+                $class = "danger";
                 break;
         }
         return $class;
     }
 
-    public static function getStatus($id) {
+    public static function getStatus($id)
+    {
         $name = null;
         $read = new Read();
         $read->ExeRead("status_pedido", "WHERE id = $id");
@@ -533,7 +575,8 @@ class Validation extends Conn {
         return utf8_encode($name);
     }
 
-    public static function getNameUser($id) {
+    public static function getNameUser($id)
+    {
         $name = null;
         $read = new Read();
         $read->ExeRead("users", "WHERE id = $id");
@@ -544,33 +587,44 @@ class Validation extends Conn {
         return $name;
     }
 
-    public static function existComprovante($id){
+    public static function existComprovante($id)
+    {
         $read = new Read();
-        $read->ExeRead("pedidos", 'WHERE id=:id AND comprovante IS NULL', 'id='.$id);
-        if($read->getRowCount() > 0){
+        $read->ExeRead("pedidos", 'WHERE id=:id AND comprovante IS NULL', 'id=' . $id);
+        if ($read->getRowCount() > 0) {
             return true;
-        }else{
+        } else {
             return false;
-        } 
+        }
     }
-    public static function existeContaUser($id){
+    public static function existeContaUser($id)
+    {
         $read = new Read();
-        $read->ExeRead('conta_users', 'where id_user = '.$_SESSION['idUser']);
-        if($read->getRowCount() == 0 ){
+        $read->ExeRead('conta_users', 'where id_user = ' . $_SESSION['idUser']);
+        if ($read->getRowCount() == 0) {
             return false;
-        }else{
+        } else {
             return true;
         }
     }
 
-    public static function getTotalPedidos($type=null){
+    public static function getTotalPedidos($type = null)
+    {
         $read = new Read();
-        if($type != null){
-            $read->ExeRead('pedidos','where id_status=:type', 'type='.$type);
-        }else{
+        if ($type != null) {
+            $read->ExeRead('pedidos', 'where id_status=:type', 'type=' . $type);
+        } else {
             $read->ExeRead('pedidos');
         }
         return $read->getRowCount();
     }
 
+    public static function check_white_space($string)
+    {
+        if(preg_match('/\s/', $string)){
+            return true;
+        }else{
+            return false;
+        }
+    }
 }

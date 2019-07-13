@@ -7,7 +7,15 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <!-- Brand -->
-    <img title="<?php echo $_SESSION['user'] ?>" class="img-user-menu" src="<?php echo $_SESSION['avatar'] != null ? Url::getBase() . 'docs/users/' . $_SESSION['idUser'] . '/' . $_SESSION['avatar'] : Url::getBase() . '../assets/img/icons/user.png' ?>" class="avatar-img rounded-circle" alt="...">
+    <?php if ($_SESSION['avatar'] == null) { ?>
+      <div class="col-auto" style="text-align: center">
+        <div class="avatar avatar-lg">
+          <span style="background-color: #<?php echo Dados::getCor() ?>" class="avatar-title rounded-circle" title="<?php echo $_SESSION['user'] ?>"><?php echo Dados::getABreviateUser($_SESSION['user']) ?></span>
+        </div>
+      </div>
+    <?php } else { ?>
+      <img title="<?php echo $_SESSION['user'] ?>" class="img-user-menu" src="<?php echo $_SESSION['avatar'] != null ? Url::getBase() . 'docs/users/' . $_SESSION['idUser'] . '/' . $_SESSION['avatar'] : Url::getBase() . '../assets/img/icons/user.png' ?>" class="avatar-img rounded-circle" alt="...">
+    <?php } ?>
     <hr class="navbar-divider my-3">
 
     <!-- <a class="navbar-brand" href="<?php echo Url::getBase() ?>">
@@ -255,6 +263,12 @@
           <li class="nav-item">
             <a class="nav-link collapsed" href="<?php echo Url::getBase() ?>transferencias" role="button">
               <i class="fa fa-exchange-alt"></i> Transferências
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link collapsed" href="<?php echo Url::getBase() ?>cd" role="button">
+              <i class="fa fa-id-card-alt"></i> Centro de Distribuição(CD)
             </a>
           </li>
         <?php } ?>

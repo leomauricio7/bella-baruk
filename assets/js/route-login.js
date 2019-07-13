@@ -1,9 +1,9 @@
-$(function(){
+$(function () {
 
-    function getBaseUrl(){
+    function getBaseUrl() {
         // Nome do host
         var hostName = location.hostname;
-        if(hostName === "localhost"){
+        if (hostName === "localhost") {
             // Endereço após o domínio do site
             pathname = window.location.pathname;
             // Separa o pathname com uma barra transformando o resultado em um array
@@ -11,7 +11,7 @@ $(function(){
             // Obtém o segundo valor do array, que é o nome da pasta do servidor local
             path = splitPath[1];
             baseUrl = "http://" + hostName + "/" + path;
-        }else{
+        } else {
             baseUrl = "https://" + hostName;
         }
         return baseUrl;
@@ -25,48 +25,48 @@ $(function(){
         $("#loading").delay(100).fadeIn('slow')
         var user = $('#user').val();
         var senha = $('#senha').val();
-        grecaptcha.ready(function() {
-            grecaptcha.execute('6LdsxpcUAAAAAJFAakC7MSZqmMaHVI4t7omDkO2b', { action: 'homepage'}).then(function(token) {
+        grecaptcha.ready(function () {
+            grecaptcha.execute('6LdsxpcUAAAAAJFAakC7MSZqmMaHVI4t7omDkO2b', { action: 'homepage' }).then(function (token) {
                 console.log(getBaseUrl());
                 $.ajax({
                     type: 'POST',
-                    url: getBaseUrl()+'/views/site/validate.php',
-                    data: 'user='+user+'&senha='+senha+'&token='+token,
+                    url: getBaseUrl() + '/views/site/validate.php',
+                    data: 'user=' + user + '&senha=' + senha + '&token=' + token,
                     dataType: "JSON",
-                }).done(function(resposta) {
-                    if(resposta.status == 200){
+                }).done(function (resposta) {
+                    if (resposta.status == 200) {
                         $('.msg').text(resposta.msg);
                         $('#error').hide();
                         $('#success').show();
                         console.log('success');
-                        window.location = './'+resposta.paste;
-                    }else if(resposta.status == 404 || resposta.status == 500){
+                        window.location = './' + resposta.paste;
+                    } else if (resposta.status == 404 || resposta.status == 500) {
                         $('.msg').text(resposta.msg);
                         $('#error').show();
                         $('#success').hide();
                         console.log('error');
-                    }else{
+                    } else {
                         $('.msg').text('Erro no processamento dos dados. Tente novamente.');
                         $('#error').show();
                         $('#success').hide();
                     }
                     console.log(resposta);
-                }).fail(function(jqXHR, textStatus ) {
+                }).fail(function (jqXHR, textStatus) {
                     $('.msg').text('Erro no processamento dos dados. Tente novamente.');
                     $("#loading").delay(1000).fadeOut("slow");
                     $('#error').show();
                     $('#success').hide();
                     console.log('An error occurred.');
                     console.log(textStatus);
-                }).always(function() {
+                }).always(function () {
                     $("#loading").delay(1000).fadeOut("slow");
                     console.log("finalizou requisição");
                 });
-        
+
             });
         });
     });
-        
+
     //generate slug
     $("#text").stringToSlug({
         setEvents: 'keyup keydown blur',
@@ -76,21 +76,21 @@ $(function(){
 
     //view senha login
     var senha = $('#senha');
-    var olho= $("#olho");
+    var olho = $("#olho");
 
-    olho.mousedown(function() {
+    olho.mousedown(function () {
         senha.attr("type", "text");
         $('#olho').removeClass('fa-eye');
         $('#olho').addClass('fa-eye-slash');
     });
 
-    olho.mouseup(function() {
+    olho.mouseup(function () {
         senha.attr("type", "password");
         $('#olho').removeClass('fa-eye-slash');
         $('#olho').addClass('fa-eye');
     });
 
-    $( "#olho" ).mouseout(function() { 
+    $("#olho").mouseout(function () {
         $("#senha").attr("type", "password");
     });
 
@@ -104,5 +104,27 @@ $(function(){
         }
     }
     password.onchange = validatePassword;
-    confirm_password.onkeyup = validatePassword; 
+    confirm_password.onkeyup = validatePassword;
+
+    $('#name-login').keyup(function () {
+        value = $(this).val();
+        value = value.replace(/^\s+|\s+$/g, "");
+        $(this).val(retira_acentos(value.toLowerCase()))
+    });
+
+    function retira_acentos(palavra) {
+
+        com_acento = 'áàãâäéèêëíìîïóòõôöúùûüçÁÀÃÂÄÉÈÊËÍÌÎÏÓÒÕÖÔÚÙÛÜÇ';
+        sem_acento = 'aaaaaeeeeiiiiooooouuuucAAAAAEEEEIIIIOOOOOUUUUC';
+        nova = '';
+        for (i = 0; i < palavra.length; i++) {
+            if (com_acento.search(palavra.substr(i, 1)) >= 0) {
+                nova += sem_acento.substr(com_acento.search(palavra.substr(i, 1)), 1);
+            }
+            else {
+                nova += palavra.substr(i, 1);
+            }
+        }
+        return nova.replace(/^\s+|\s+$/g, "");
+    }
 });

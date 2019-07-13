@@ -205,18 +205,17 @@ class Dados
         $read->ExeRead('products', 'where id=:id', 'id=' . $id);
         foreach ($read->getResult() as $dados) {
             extract($dados);
-            if(Dados::existePlanoAtivo($_SESSION['idUser'])){
+            if (Dados::existePlanoAtivo($_SESSION['idUser'])) {
                 $value = $preco / 2;
                 return number_format($value, 2, ",", "");
-            }else if (isset($_SESSION['carrinho'])) {
-                if(Dados::verificaSeExisteDePlanoAtivacaoNoPedido()){
-                    $value = $preco / 2; 
+            } else if (isset($_SESSION['carrinho'])) {
+                if (Dados::verificaSeExisteDePlanoAtivacaoNoPedido()) {
+                    $value = $preco / 2;
                     return number_format($value, 2, ",", "");
-                }else{
+                } else {
                     $value = $preco;
                     return number_format($value, 2, ",", "");
                 }
-                
             } else {
                 $value = $preco;
                 return number_format($value, 2, ",", "");
@@ -662,5 +661,18 @@ class Dados
                 return false;
             }
         }
+    }
+
+    public static function getABreviateUser($name)
+    {
+        $string = explode(" ", $name);
+        $p1 = substr($string[0], 0, 1);
+        $p2 = substr($string[1], 0, 1);
+        return strtoupper($p1 . $p2);
+    }
+
+    public static function getCor()
+    {
+        return sprintf("%02X%02X%02X", mt_rand(0, 255), mt_rand(0, 255), mt_rand(0, 255));
     }
 }
