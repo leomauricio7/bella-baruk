@@ -4,15 +4,15 @@
             <div class="card-header">
                 <div class="header-body">
                     <h6 class="header-pretitle">
-                        CD
+                        PA
                     </h6>
                     <h1 class="header-title">
-                        Centro de Distribuição
+                        Ponto de apoio
                     </h1>
                 </div>
                 <div class="col-auto">
-                    <a href="<?php echo Url::getBase() . 'cd/create' ?>" class="btn btn-md btn-dark float-right">
-                        <i class="fa fa-user-plus"></i> Cadastrar novo CD
+                    <a href="<?php echo Url::getBase() . 'pa/create' ?>" class="btn btn-md btn-dark float-right">
+                        <i class="fa fa-user-plus"></i> Cadastrar novo PA
                     </a>
                 </div>
             </div>
@@ -35,7 +35,7 @@
                             <tbody>
                                 <?php
                                 $read = new Read();
-                                $read->ExeRead('users', 'where tipo_user = ' . 3);
+                                $read->ExeRead('users', 'where tipo_user = 4');
                                 foreach ($read->getResult() as $user) {
                                     extract($user);
                                     ?>

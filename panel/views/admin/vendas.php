@@ -1,4 +1,4 @@
-<?php if(Validation::getPermisionType($tipoUser)){ ?>
+<?php if($tipoUser == 3 || $tipoUser == 4){ ?>
 <div class="header">
     <div class="container-fluid">
         <!-- Body -->
@@ -11,7 +11,7 @@
                 </h6>
                 <!-- Title -->
                 <h1 class="header-title">
-                    Franqueados
+                    Pedidos
                 </h1>
                 </div>
                 <div class="col-auto">                
@@ -21,16 +21,15 @@
     </div>
 </div>
 <div class="container-fluid">
-    <div class="alert alert-primary" role="alert">
-        <h4 class="alert-heading">ATENÇÃO</h4>
-        <p>Nessa página você pode cadastrar um usuário.</p>
+    <div class="alert alert-dark" role="alert">
+        <p><i class="fa fa-exclamation-circle"></i> Nessa página você pode visualizar todas as suas vendas.</p>
         <hr>
-        <p class="mb-0">Cada usuário pode ser editado e removido.</p>
+        <p class="mb-0">Cada pedido pode ser detalhado.</p>
     </div>
     <div class="row">
-            <?php require_once 'forms/new-user.php'; ?>
+        <?php require_once 'tables/pedido-distribuido.php'; ?>
     </div>
 </div>
 <?php }else{
-    require_once '404.php';
+    require_once('404.php');
 } ?>

@@ -11,6 +11,7 @@ if ($_POST) {
     $valorPedido = filter_input(INPUT_POST, 'totalPedido', FILTER_SANITIZE_STRING);
     $frete = filter_input(INPUT_POST, 'frete', FILTER_SANITIZE_STRING);
     $prazo = filter_input(INPUT_POST, 'prazo', FILTER_SANITIZE_STRING);
+    $retLocal = filter_input(INPUT_POST, 'ret_local', FILTER_SANITIZE_STRING);;
 
     switch ($type) {
             //init session
@@ -35,7 +36,7 @@ if ($_POST) {
             break;
             //close pedido
         case 6:
-            closePedido($idPedido, $valorPedido, $frete, $prazo);
+            closePedido($idPedido, $valorPedido, $frete, $prazo, $retLocal);
             break;
             //da baixa
         case 7:
@@ -142,7 +143,7 @@ function getUserPedido($idPedido)
     $read->ExeRead('pedidos', 'where idPedido=:id', 'id=' . $idPedido);
     foreach ($read->getResult() as $dados) {
         extract($dados);
-        return array('user' => $id_user, 'valor' => ($valor-$valor_frete));
+        return array('user' => $id_user, 'valor' => ($valor - $valor_frete));
     }
 }
 //verifica se o tipo de produto é um plano de ativação
@@ -198,6 +199,22 @@ function setPontuacao($pedido, $user, $pontos)
     }
 }
 
+function getTipo($id)
+{
+    $read = new Read();
+    $read->ExeRead('users', 'where id=:id', 'id=' . $id);
+    return $read->getResult()[0]['tipo_user'];
+}
+
+function listProdutosPedidos($idPedido, $user){
+    $read = new Read();
+    $read->ExeRead('produtos_pedido', 'where id_pedido=:id', 'id=' . $idPedido);
+    foreach($read->getResult() as $dados){
+        extract($dados);
+        Dados::setProdutoEstoque($id_produto, $user, $quantidade);
+    }
+}
+
 //da baixa no pedido
 function daBaixa($idPedido, $payment = null)
 {
@@ -208,67 +225,75 @@ function daBaixa($idPedido, $payment = null)
         $user = getUserPedido($idPedido)['user'];
         $valor = getUserPedido($idPedido)['valor'];
         if (setPontuacao($idPedido, $user, $valor)) {
-            //setando pontuacao unilevel
-            $userRecebedoresUnilevel = Unilevel::getHierarquiaComissaoUnilevel($user);
-            foreach ($userRecebedoresUnilevel as $unilevel) {
-                extract($unilevel);
-                setPontuacao($idPedido, $indicador, $valor);
+            $tipouser = getTipo($user);
+            if($tipouser == 3 || $tipouser == 4){
+                listProdutosPedidos($idPedido, $user);
             }
-            if (verificaFirstCompra($user)) {
-                //comissão matriz
-                if (verificaSeExisteDePlanoAtivacaoNoPedido($idPedido)) {
-                    saveAdesao($user, 1);
-                    $userRecebedoresMatriz = Unilevel::getHierarquiaComissaoMatriz($user);
-                    foreach ($userRecebedoresMatriz as $matriz) {
-                        extract($matriz);
-                        Dados::setComissao($user, null, null, $indicador, $comisao, 'matriz');
-                    }
+            if ($tipouser == 2) {
+                //setando pontuacao unilevel
+                $userRecebedoresUnilevel = Unilevel::getHierarquiaComissaoUnilevel($user);
+                foreach ($userRecebedoresUnilevel as $unilevel) {
+                    extract($unilevel);
+                    setPontuacao($idPedido, $indicador, $valor);
                 }
-
-                if (verificaSeNoPedidoExisteMasdeUmProduto($idPedido) > 0) {
-                    //comissão unilevel
-                    $userRecebedoresUnilevel = Unilevel::getHierarquiaComissaoUnilevel($user);
-                    $valor_bruto = verificaSeExisteDePlanoAtivacaoNoPedido($idPedido) ? $valor - 60 : $valor;
-                    foreach ($userRecebedoresUnilevel as $unilevel) {
-                        extract($unilevel);
-                        Dados::setComissao($user, $comisao, $valor_bruto, $indicador, null, 'unilevel');
+                if (verificaFirstCompra($user)) {
+                    //comissão matriz
+                    if (verificaSeExisteDePlanoAtivacaoNoPedido($idPedido)) {
+                        saveAdesao($user, 1);
+                        $userRecebedoresMatriz = Unilevel::getHierarquiaComissaoMatriz($user);
+                        foreach ($userRecebedoresMatriz as $matriz) {
+                            extract($matriz);
+                            Dados::setComissao($user, null, null, $indicador, $comisao, 'matriz');
+                        }
                     }
-                }
 
-                echo json_encode(
-                    array(
-                        'status'    => 200,
-                        'msg'       => 'Pedido dado baixa com sucesso.<br><strong>OBS:</strong> O usuário ja efetuou a primeira compra, foi setada as comissões.'
-                    )
-                );
-            } else {
-                if ($valor >= 160) {
-                    if (!verificaFirstCompra($user)) {
-                        $ativo = ativaUserAdesao($user);
-                        if ($ativo) {
-                            $adesao = saveAdesao($user, 1);
-                            if ($adesao) {
-                                $Derramento = new Derramamento();
-                                $Derramento->saveUserMatriz($user);
-                                $statusComissao = Dados::setComissao($user, 25, $valor - 60, null, null, 'unilevel');
-                                if ($statusComissao['status']) {
-                                    $userRecebedoresMatriz = Unilevel::getHierarquiaComissaoMatriz($user);
-                                    foreach ($userRecebedoresMatriz as $matriz) {
-                                        extract($matriz);
-                                        Dados::setComissao($user, null, null, $indicador, $comisao, 'matriz');
+                    if (verificaSeNoPedidoExisteMasdeUmProduto($idPedido) > 0) {
+                        //comissão unilevel
+                        $userRecebedoresUnilevel = Unilevel::getHierarquiaComissaoUnilevel($user);
+                        $valor_bruto = verificaSeExisteDePlanoAtivacaoNoPedido($idPedido) ? $valor - 60 : $valor;
+                        foreach ($userRecebedoresUnilevel as $unilevel) {
+                            extract($unilevel);
+                            Dados::setComissao($user, $comisao, $valor_bruto, $indicador, null, 'unilevel');
+                        }
+                    }
+
+                    echo json_encode(
+                        array(
+                            'status'    => 200,
+                            'msg'       => 'Pedido dado baixa com sucesso.<br><strong>OBS:</strong> O usuário ja efetuou a primeira compra, foi setada as comissões.'
+                        )
+                    );
+                } else {
+                    if ($valor >= 160) {
+                        if (!verificaFirstCompra($user)) {
+                            $ativo = ativaUserAdesao($user);
+                            if ($ativo) {
+                                $adesao = saveAdesao($user, 1);
+                                if ($adesao) {
+                                    $Derramento = new Derramamento();
+                                    $Derramento->saveUserMatriz($user);
+                                    $statusComissao = Dados::setComissao($user, 25, $valor - 60, null, null, 'unilevel');
+                                    if ($statusComissao['status']) {
+                                        $userRecebedoresMatriz = Unilevel::getHierarquiaComissaoMatriz($user);
+                                        foreach ($userRecebedoresMatriz as $matriz) {
+                                            extract($matriz);
+                                            Dados::setComissao($user, null, null, $indicador, $comisao, 'matriz');
+                                        }
+                                        echo json_encode(array('status' => 200, 'msg' => 'Pedido dado baixa com sucesso.<br><strong>OBS:</strong> O usuário foi ativado com sucesso.'));
+                                    } else {
+                                        echo json_encode(array('status' => 200, 'msg' => 'Pedido dado baixa com sucesso.<br><strong>OBS:</strong> O usuário foi ativado com sucesso, mas a comissão não foi setada entre em contato com o suporte. ERROR:' . $statusComissao['msg']));
                                     }
-                                    echo json_encode(array('status' => 200, 'msg' => 'Pedido dado baixa com sucesso.<br><strong>OBS:</strong> O usuário foi ativado com sucesso.'));
-                                } else {
-                                    echo json_encode(array('status' => 200, 'msg' => 'Pedido dado baixa com sucesso.<br><strong>OBS:</strong> O usuário foi ativado com sucesso, mas a comissão não foi setada entre em contato com o suporte. ERROR:' . $statusComissao['msg']));
                                 }
                             }
+                        } else {
+                            echo json_encode(array('status' => 200, 'msg' => 'Pedido dado baixa com sucesso.<br><strong>OBS:</strong> Usuário ja efetuou a adesão.'));
                         }
                     } else {
-                        echo json_encode(array('status' => 200, 'msg' => 'Pedido dado baixa com sucesso.<br><strong>OBS:</strong> Usuário ja efetuou a adesão.'));
+                        echo json_encode(array('status' => 200, 'msg' => 'Pedido dado baixa com sucesso.<br><strong>OBS:</strong> Não houve checagem se a primeira compra foi realizada, devido ao valor do pedido ser menor que R$150,00.'));
                     }
-                } else {
-                    echo json_encode(array('status' => 200, 'msg' => 'Pedido dado baixa com sucesso.<br><strong>OBS:</strong> Não houve checagem se a primeira compra foi realizada, devido ao valor do pedido ser menor que R$150,00.'));
                 }
+            } else {
+                echo json_encode(array('status' => 200, 'msg' => 'Pedido dado baixa com sucesso.<br><strong>OBS:</strong> Não foi setada as comissões porque o usuário não é um distribuidor e sim um CD/PA ou um cliente Avulso.'));
             }
         } else {
             echo json_encode(array('status' => 200, 'msg' => 'Pedido dado baixa com sucesso.<br><strong>OBS:</strong> ocorreram erros ao setar a pontuaçao, entre em contato com o suporte.'));
@@ -278,19 +303,23 @@ function daBaixa($idPedido, $payment = null)
     }
 }
 
-function closePedido($idPedido, $valorPedido, $frete, $prazo)
+
+function closePedido($idPedido, $valorPedido, $frete, $prazo, $retLocal)
 {
     $savePedido = new Create();
     $saveItemPedido = new Create();
-
+    $userComprador = $_SESSION['idTipo'] == 4 || $_SESSION['idTipo'] == 3 ? isset($_SESSION['cliente']) ? $_SESSION['cliente'] : $_SESSION['idUser'] : $_SESSION['idUser'];
     $dadosPedido = [
         'idPedido' => $idPedido,
-        'id_user' => $_SESSION['idUser'],
+        'id_user' => $userComprador,
         'id_status' => 1,
         'valor' => $valorPedido,
         'dado_baixa' => 'nao',
-        'valor_frete' => str_replace(",", ".", $frete),
-        'prazo_entrega' => $prazo
+        'valor_frete' => $frete != null ? str_replace(",", ".", $frete) : null,
+        'prazo_entrega' => $prazo,
+        'ret_local' => $retLocal,
+        'responsavel' => getTipo($userComprador) != 3 && getTipo($userComprador) != 4 ? $_SESSION['idUser'] : null,
+
     ];
 
     $savePedido->ExeCreate('pedidos', $dadosPedido);
@@ -325,7 +354,7 @@ function existProduct($idProduct)
 function existProductCarrinho($idProduct)
 {
     for ($i = 0; $i < sizeof($_SESSION['carrinho']); $i++) {
-        if(!isset($_SESSION['carrinho'][$i])) $i++;
+        if (!isset($_SESSION['carrinho'][$i])) $i++;
         if ($_SESSION['carrinho'][$i]['id'] == $idProduct) {
             $_SESSION['carrinho'][$i] = ['id' => $idProduct, 'quantidade' => $_SESSION['carrinho'][$i]['quantidade'] + 1];
             return true;

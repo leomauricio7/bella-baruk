@@ -1,4 +1,9 @@
-<?php $idPedido = Url::getURL(1); ?>
+<?php
+$idPedido = Url::getURL(1);
+$pedido = Dados::getDadosPedido($idPedido);
+$dadosComprador = Dados::getDadosUser($pedido['id_user'])[0];
+$dadosBancario = Dados::getDadosBancarios($pedido['id_user']);
+?>
 <div class="row justify-content-center">
 	<div class="col-12 col-lg-10 col-xl-8">
 		<!-- Header -->
@@ -20,15 +25,16 @@
 						<button class="btn btn-white" onclick="window.print();">
 							<i class="fa fa-print"></i> Imprimir
 						</button>
-						<?php if (!Validation::getPermisionType($tipoUser)) { ?>
-							<a href="<?php echo Url::getBase() ?>meus-pedidos" class="btn btn-primary ml-2">
-								<i class="fa fa-cart-plus"></i> Meus pedidos
-							</a>
-						<?php } else { ?>
-							<a href="<?php echo Url::getBase() ?>pedidos" class="btn btn-primary ml-2">
+						<?php 
+							$url = 'pedidos';
+							if($tipoUser ==3 || $tipoUser == 4){
+								$url = 'vendas';
+							}
+						?>
+							<a href="<?php echo Url::getBase().$url?>" class="btn btn-primary ml-2">
 								<i class="fa fa-cart-plus"></i> Pedidos
 							</a>
-						<?php } ?>
+						<?php  ?>
 
 					</div>
 				</div> <!-- / .row -->
@@ -50,7 +56,7 @@
 					<img src="<?php echo Url::getBase(); ?>../assets/img/logotipos/logo-bella-baruk.png" alt="..." class="img-fluid mb-4" style="max-width: 2.5rem;">
 					<!-- Title -->
 					<h2 class="mb-2">
-						<?php echo $_SESSION['user'] ?>
+						Cliente: <?php echo $dadosComprador['nome'] ?>
 					</h2>
 					<!-- Text -->
 					<p class="text-muted mb-6">
@@ -63,30 +69,41 @@
 					<h6 class="text-uppercase text-muted">
 						Dados da conta do recebedor
 					</h6>
-					<p class="text-muted mb-4">
-						<strong class="text-body">CEF</strong><br>
-						Nome: Mauricio do Carmo Amaro<br>
-						Agência: 1026<br>
-						Conta: 00022590-3 <br>
-						Operação: 001 <br>
-						Tipo: Conta Corrente<br>
-					</p>
-					<p class="text-muted mb-4">
-						<strong class="text-body">Itáu</strong><br>
-						Nome: Mauricio do Carmo Amaro<br>
-						Agência: 5604<br>
-						Conta: 05633-2-3 <br>
-						Tipo: Conta Corrente<br>
-					</p>
+					<?php if ($tipoUser == 3 || $tipoUser == 4) { ?>
+						<p class="text-muted mb-4">
+							<strong class="text-body">CONTA</strong><br>
+							Nome: <?php echo $dadosBancario['titular'] ?><br>
+							Agência: <?php echo $dadosBancario['agencia'] ?><br>
+							Conta: <?php echo $dadosBancario['conta'] ?><br>
+							Operação: <br>
+							Tipo: <?php echo $dadosBancario['tipo_conta'] ?><br>
+						</p>
+					<?php } else { ?>
+						<p class="text-muted mb-4">
+							<strong class="text-body">CEF</strong><br>
+							Nome: Mauricio do Carmo Amaro<br>
+							Agência: 1026<br>
+							Conta: 00022590-3 <br>
+							Operação: 001 <br>
+							Tipo: Conta Corrente<br>
+						</p>
+						<p class="text-muted mb-4">
+							<strong class="text-body">Itáu</strong><br>
+							Nome: Mauricio do Carmo Amaro<br>
+							Agência: 5604<br>
+							Conta: 05633-2-3 <br>
+							Tipo: Conta Corrente<br>
+						</p>
+					<?php } ?>
 				</div>
 				<div class="col-12 col-md-6 text-md-right">
 					<h6 class="text-uppercase text-muted">
 						Dados do Comprador
 					</h6>
 					<p class="text-muted mb-4">
-						<strong class="text-body"><?php echo $dadosUser['nome'] ?></strong> <br>
+						<strong class="text-body"><?php echo $dadosComprador['nome'] ?></strong> <br>
 						<?php
-						echo $dadosUser['bairro'] . '<br>' . $dadosUser['rua'] . ' - Nº' . $dadosUser['numero'] . '<br>' . $dadosUser['cidade'] . '/' . $dadosUser['uf']
+						echo $dadosComprador['bairro'] . '<br>' . $dadosComprador['rua'] . ' - Nº' . $dadosComprador['numero'] . '<br>' . $dadosComprador['cidade'] . '/' . $dadosComprador['uf']
 						?>
 					</p>
 					<h6 class="text-uppercase text-muted">
@@ -128,16 +145,16 @@
 											<?php echo Validation::getNameProduto($id_produto) ?>
 										</td>
 										<td>
-											R$ <?php echo Dados::getValueProduct($id_produto) ?>
+											R$ <?php echo Dados::getValueProduct($id_produto, $tipoUser, null) ?>
 										</td>
 										<td class="px-0">
 											<?php echo $quantidade ?> UNID
 										</td>
 										<td class="px-0 text-right">
 											R$ <?php
-													$totalPedido += Dados::getValueProduct($id_produto) * $quantidade;
-													echo number_format((Dados::getValueProduct($id_produto) * $quantidade), 2, ",", "")
-													?>
+												$totalPedido += Dados::getValueProduct($id_produto, $tipoUser, null) * $quantidade;
+												echo number_format((Dados::getValueProduct($id_produto, $tipoUser, null) * $quantidade), 2, ",", "")
+												?>
 										</td>
 									</tr>
 								<?php }  ?>

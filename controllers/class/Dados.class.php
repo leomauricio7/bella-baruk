@@ -9,6 +9,20 @@ class Dados
         $read->ExeRead('pedidos', 'where id_user=:user and payment="bonus"', 'user=' . $user);
         return $read->getRowCount();
     }
+    //pega os dados de um pedido
+    public static function getDadosPedido($id)
+    {
+        $read = new Read();
+        $read->ExeRead('pedidos', 'where idPedido=:id', 'id=' . $id);
+        return $read->getRowCount() > 0 ? $read->getResult()[0] : null;
+    }
+    //pega od dados bancarios de um usuário
+    public static function getDadosBancarios($user)
+    {
+        $read = new Read();
+        $read->ExeRead('conta_users', 'where id_user = ' . $user);
+        return $read->getRowCount() > 0 ? $read->getResult()[0] : null;
+    }
     //pega todos os saques de um usuário
     public static function getBySaques($user)
     {
@@ -197,15 +211,78 @@ class Dados
         return false;
     }
 
+    public static function calculaDesconto($valor, $desconto)
+    {
+        $vlr_bruto = $desconto * $valor;
+        $desconto = $vlr_bruto / 100;
+        return $valor - $desconto;
+    }
+
+    public static function getDescriptionProduct($id)
+    {
+        $read = new Read();
+        $read->ExeRead('products', 'where id=:id', 'id=' . $id);
+        return $read->getResult()[0]['titulo'];
+    }
+
+    public static function getPedidosDistibuidor()
+    {
+        $read = new Read();
+        $read->ExeRead('pedidos', 'where responsavel=:user', 'user=' . $_SESSION['idUser']);
+        return $read->getResult();
+    }
+
+    public static function getVendasOneProduto($produto, $pedido)
+    {
+        $totalDeProdutosVendidos = 0;
+        $read = new Read();
+        $read->ExeRead('produtos_pedido', 'where id_produto=:produto and id_pedido=:pedido', 'produto=' . $produto . '&pedido=' . $pedido);
+        foreach ($read->getResult() as $dados) {
+            extract($dados);
+            $totalDeProdutosVendidos += $quantidade;
+        }
+        return $totalDeProdutosVendidos;
+    }
+
+    public static function produtoEstoque($produto, $quantidade)
+    {
+        $vendas = 0;
+        $pedidos = Dados::getPedidosDistibuidor();
+        foreach ($pedidos as $dados) {
+            extract($dados);
+            $vendas += Dados::getVendasOneProduto($produto, $idPedido);
+        }
+        return $quantidade - $vendas;
+    }
     //pegando o valor de um produto
-    public static function getValueProduct($id)
+    public static function getValueProduct($id, $tipo = null, $user = null)
     {
         $value = 0;
         $read = new Read();
         $read->ExeRead('products', 'where id=:id', 'id=' . $id);
         foreach ($read->getResult() as $dados) {
             extract($dados);
-            if (Dados::existePlanoAtivo($_SESSION['idUser'])) {
+            if ($user != null) {
+                if (Dados::existePlanoAtivo($user == null ? $_SESSION['idUser'] : $user)) {
+                    $value = $preco / 2;
+                    return number_format($value, 2, ",", "");
+                } else if (isset($_SESSION['carrinho'])) {
+                    if (Dados::verificaSeExisteDePlanoAtivacaoNoPedido()) {
+                        $value = $preco / 2;
+                        return number_format($value, 2, ",", "");
+                    } else {
+                        $value = $preco;
+                        return number_format($value, 2, ",", "");
+                    }
+                } else {
+                    $value = $preco;
+                    return number_format($value, 2, ",", "");
+                }
+            } else if ($tipo == 3) {
+                return number_format(Dados::calculaDesconto($preco/2, 18), 2, ",", "");
+            } else if ($tipo == 4) {
+                return number_format(Dados::calculaDesconto($preco/2, 9), 2, ",", "");
+            } else if (Dados::existePlanoAtivo($user == null ? $_SESSION['idUser'] : $user)) {
                 $value = $preco / 2;
                 return number_format($value, 2, ",", "");
             } else if (isset($_SESSION['carrinho'])) {
@@ -220,8 +297,9 @@ class Dados
                 $value = $preco;
                 return number_format($value, 2, ",", "");
             }
+
+            return number_format($value, 2, ",", "");
         }
-        return number_format($value, 2, ",", "");
     }
 
     ///verifica se existe algum plano de ativação valido
@@ -674,5 +752,39 @@ class Dados
     public static function getCor()
     {
         return sprintf("%02X%02X%02X", mt_rand(0, 255), mt_rand(0, 255), mt_rand(0, 255));
+    }
+
+    public static function getProdutosEstoque($id_user, $user)
+    {
+        $read = new Read();
+        $read->ExeRead('estoque_distribuidor', 'where id_responsavel=:id', 'id=' . $id_user);
+        return $read->getResult();
+    }
+
+    public static function existeProdutoEstoque($produto, $user)
+    {
+        $read = new Read();
+        $read->ExeRead('estoque_distribuidor', 'where id_produto=:produto and id_responsavel=:id', 'produto=' . $produto . '&id=' . $user);
+        return $read->getRowCount() > 0 ? $read->getResult()[0] : null;
+    }
+
+    public static function setProdutoEstoque($produto, $user, $quantidade)
+    {
+        $estoque = Dados::existeProdutoEstoque($produto, $user);
+        if ($estoque != null) {
+            $save = new Update();
+            $dados = [
+                'quantidade' => $quantidade+$estoque['quantidade'],
+            ];
+            $save->ExeUpdate('estoque_distribuidor', $dados, 'where id=:id', 'id='.$estoque['id']);
+        } else {
+            $save = new Create();
+            $dados = [
+                'id_produto' => $produto,
+                'quantidade' => $quantidade,
+                'id_responsavel' => $user,
+            ];
+            $save->ExeCreate('estoque_distribuidor', $dados);
+        }
     }
 }

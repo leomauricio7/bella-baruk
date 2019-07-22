@@ -22,7 +22,9 @@
 <?php 
     if(Validation::getPermisionType($tipoUser)){
         require_once 'graficos.php';
-    }else{
+    }else if($tipoUser == 2){
         require_once 'home-vendedor.php';
+    }else if($tipoUser == 3 || $tipoUser == 4 ){
+        require_once 'home-cd-pa.php';
     }
  ?>

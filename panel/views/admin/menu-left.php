@@ -7,15 +7,8 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <!-- Brand -->
-    <?php if ($_SESSION['avatar'] == null) { ?>
-      <div class="col-auto" style="text-align: center">
-        <div class="avatar avatar-lg">
-          <span style="background-color: #<?php echo Dados::getCor() ?>" class="avatar-title rounded-circle" title="<?php echo $_SESSION['user'] ?>"><?php echo Dados::getABreviateUser($_SESSION['user']) ?></span>
-        </div>
-      </div>
-    <?php } else { ?>
-      <img title="<?php echo $_SESSION['user'] ?>" class="img-user-menu" src="<?php echo $_SESSION['avatar'] != null ? Url::getBase() . 'docs/users/' . $_SESSION['idUser'] . '/' . $_SESSION['avatar'] : Url::getBase() . '../assets/img/icons/user.png' ?>" class="avatar-img rounded-circle" alt="...">
-    <?php } ?>
+      <img title="<?php echo $_SESSION['user'] ?>" style="max-height: 6rem;" src="<?php echo Url::getBase(); ?>../assets/img/icons/user.png" class="navbar-brand-img mx-auto" alt="...">
+
     <hr class="navbar-divider my-3">
 
     <!-- <a class="navbar-brand" href="<?php echo Url::getBase() ?>">
@@ -268,12 +261,18 @@
 
           <li class="nav-item">
             <a class="nav-link collapsed" href="<?php echo Url::getBase() ?>cd" role="button">
-              <i class="fa fa-id-card-alt"></i> Centro de Distribuição(CD)
+              <i class="fa fa-id-card-alt"></i> Centro de Distribuição (CD)
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link collapsed" href="<?php echo Url::getBase() ?>pa" role="button">
+              <i class="fas fa-portrait"></i> Ponto de Apoio (PA)
             </a>
           </li>
         <?php } ?>
 
-        <?php if (!Validation::getPermisionType($tipoUser)) { ?>
+        <?php if ($tipoUser == 2) { ?>
           <li class="nav-item">
             <a class="nav-link" href="<?php echo Url::getBase() ?>unilevel">
               <i class="fa fa-list-alt"></i> Unilevel
@@ -310,6 +309,31 @@
           <li class="nav-item">
             <a class="nav-link" href="<?php echo Url::getBase() ?>meus-pedidos">
               <i class="fa fa-shopping-cart"></i> Meus Pedidos
+            </a>
+          </li>
+        <?php } ?>
+        <?php if ($tipoUser == 3 || $tipoUser == 4) { ?>
+          <li class="nav-item">
+            <a class="nav-link" href="<?php echo Url::getBase() ?>products">
+              <i class="fa fa-person-booth"></i> Loja Oficial
+              <span class="badge badge-success ml-auto">
+                <?php echo isset($_SESSION['carrinho']) ? sizeof($_SESSION['carrinho']) : '0' ?>
+              </span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="<?php echo Url::getBase() ?>meus-pedidos">
+              <i class="fa fa-shopping-cart"></i> Meus Pedidos 
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="<?php echo Url::getBase() ?>vendas">
+              <i class="fa fa-portrait"></i> Minhas Vendas
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="<?php echo Url::getBase() ?>novo-pedido">
+              <i class="fa fa-cart-plus"></i> Lançar Pedido
             </a>
           </li>
         <?php } ?>

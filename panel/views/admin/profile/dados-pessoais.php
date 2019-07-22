@@ -105,7 +105,15 @@
                         <?php if(Validation::getPermisionType($tipoUser)){ ?>
                         <option <?php echo $tipo_user == "1" ? 'selected' : '' ?> value="1" data-avatar-src="<?php echo Url::getBase() ?>../assets/img/icons/admin.png">Administrador</option>
                         <?php } ?>
-                        <option <?php echo $tipo_user == "2" ? 'selected' : '' ?> value="2" data-avatar-src="<?php echo Url::getBase() ?>../assets/img/icons/master.png">Vendedor</option>
+                        <?php if($tipoUser == 2){ ?>
+                            <option <?php echo $tipo_user == "2" ? 'selected' : '' ?> value="2" data-avatar-src="<?php echo Url::getBase() ?>../assets/img/icons/master.png">Vendedor</option>
+                        <?php }?>
+                        <?php if($tipoUser == 3){ ?>
+                            <option <?php echo $tipo_user == "3" ? 'selected' : '' ?> value="3" data-avatar-src="<?php echo Url::getBase() ?>../assets/img/icons/master.png">Centro de Distribuição (CD)</option>
+                        <?php }?>
+                        <?php if($tipoUser == 4){ ?>
+                            <option <?php echo $tipo_user == "4" ? 'selected' : '' ?> value="4" data-avatar-src="<?php echo Url::getBase() ?>../assets/img/icons/master.png">Ponto de Apoio (PA)</option>
+                        <?php }?>
                     </select>
                 </div>
             </div>

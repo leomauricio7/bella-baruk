@@ -32,13 +32,19 @@
     <div class="row">
         <div class="col">
             <?php
-            if (Url::getURL(1) == 'create') {
-                require_once 'forms/plano.php';
-            }
-            if (Url::getURL(1) == null) {
-                require_once 'tables/planos.php';
-            }
-
+            if ($tipoUser == 1 || $tipoUser == 2) {
+                if (Url::getURL(1) == 'create') {
+                    if ($tipoUser == 1) {
+                        require_once 'forms/plano.php';
+                    } else {
+                        require_once '404.php';
+                    }
+                } else if (Url::getURL(1) == null) {
+                    require_once 'tables/planos.php';
+                } else {
+                    require_once '404.php';
+                }
+            } else {  require_once '404.php'; }
             ?>
         </div>
     </div>

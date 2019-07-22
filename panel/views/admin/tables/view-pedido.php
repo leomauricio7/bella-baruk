@@ -25,7 +25,7 @@
                         Valor Unitário
                     </h6>
                     <span class="h2 mb-0">
-                    R$ <?php echo Dados::getValueProduct($id_produto) ?>
+                    R$ <?php echo Dados::getValueProduct($id_produto, null, $id_user) ?>
                     </span>
                     </div>
                     <!-- col -->
@@ -43,7 +43,7 @@
                         Valor Total
                     </h6>
                     <span class="h2 mb-0">
-                    R$ <?php echo number_format(Dados::getValueProduct($id_produto) * $quantidade) ?>
+                    R$ <?php echo number_format(Dados::getValueProduct($id_produto, null, $id_user) * $quantidade) ?>
                     </span>
                     </div>
                 </div> <!-- / .row -->

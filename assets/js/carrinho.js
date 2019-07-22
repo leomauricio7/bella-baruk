@@ -107,11 +107,11 @@ $(function () {
         });
     }
 
-    function closePedido(idPedido, totalPedido, frete, prazo) {
+    function closePedido(idPedido, totalPedido, frete, prazo, retLocal) {
         $.ajax({
             type: 'POST',
             url: getBaseUrl() + '/controllers/class/carrinho.php',
-            data: 'type=6&idPedido=' + idPedido + '&totalPedido=' + totalPedido + '&frete=' + frete + '&prazo=' + prazo,
+            data: 'type=6&idPedido=' + idPedido + '&totalPedido=' + totalPedido + '&frete=' + frete + '&prazo=' + prazo+'&ret_local='+retLocal,
             dataType: "json",
         }).done(function (res) {
             localStorage.removeItem("frete");
@@ -152,7 +152,7 @@ $(function () {
         });
     }
 
-    function daBaixa(idPedido, payment = null) {
+    function daBaixa(idPedido, payment = 'dinheiro') {
         $.ajax({
             type: 'POST',
             url: getBaseUrl() + '/controllers/class/carrinho.php',
@@ -189,15 +189,41 @@ $(function () {
             localStorage.setItem("prazo", res.PrazoEntrega);
             let valorPedido = parseFloat($('#total-pedido-sem-frete').val());
             let frete = parseFloat(res.Valor.replace(",", "."));
-            let valorTotal = frete+valorPedido;
+            let valorTotal = frete + valorPedido;
             $('#total-pedido').val(valorTotal);
-            $('#total-pedido-frete').text('R$ '+valorTotal);
+            $('#total-pedido-frete').text('R$ ' + valorTotal);
             $('#frete').val('Frete: R$ ' + res.Valor);
             $('#frete-extrato').text('R$ ' + res.Valor);
             $('#prazo').text(res.PrazoEntrega + ' dias.');
             $('#retorno').fadeIn('slow');
         }).fail(function (xhr, desc, err) {
             alert('Uups! Ocorreu algum erro!');
+            console.log(xhr);
+            console.log("Detalhes: " + desc + "nErro:" + err);
+        }).always(function () {
+            console.log('closed');
+        });
+    }
+
+    function newUser(data) {
+        $.ajax({
+            type: 'POST',
+            url: getBaseUrl() + '/controllers/class/user.php',
+            data: data,
+            dataType: "json",
+        }).done(function (res) {
+            console.log(res);
+            $('#loading-new-user').hide('slow');
+            if(res.status == 500){
+                $('#modal-form-new-user').show('slow')
+            }
+            $('div.alert').remove();
+            $('#modal-form-new-user').prepend(res.msg);
+        }).fail(function (xhr, desc, err) {
+            $('#loading-new-user').hide('slow');
+            $('#modal-form-new-user').show('slow')
+            $('div.alert').remove();
+            $('#modal-form-new-user').prepend('<div class="alert alert-danger">'+xhr.responseText+'</div>');
             console.log(xhr);
             console.log("Detalhes: " + desc + "nErro:" + err);
         }).always(function () {
@@ -234,9 +260,10 @@ $(function () {
     $('#submit-pedido').click(function () {
         var idPedido = $('#id-pedido').val();
         var totalPedido = $('#total-pedido').val();
-        var frete = localStorage.getItem("frete");
-        var prazo = localStorage.getItem("prazo");
-        closePedido(idPedido, totalPedido, frete, prazo);
+        var frete = localStorage.getItem("frete") ? localStorage.getItem("frete") : 0;
+        var prazo = localStorage.getItem("prazo") ? localStorage.getItem("prazo") : 0;
+        var retLocal = localStorage.getItem('ret_local');
+        closePedido(idPedido, totalPedido, frete, prazo, retLocal);
     });
 
     $('.da-baixa').click(function () {
@@ -248,9 +275,9 @@ $(function () {
         daBaixa(idPedido, 'bonus');
     });
 
-    // $('#modal-close-pedido').on('hide.bs.modal', function (event) {
-    //     window.location.reload();
-    // });
+    $('#modal-new-user').on('hide.bs.modal', function (event) {
+        window.location.reload();
+    });
 
     $('#alert-toast').on('hidden.bs.toast', function () {
         window.location.reload();
@@ -259,6 +286,25 @@ $(function () {
         window.location.reload();
     });
 
+    $('.tipo-frete').click(function () {
+        var tipo = $(this).attr('alt');
+        $('.card').removeClass('active-retirada');
+        $(this).addClass('active-retirada');
+        if (tipo == 1) {
+            localStorage.setItem('ret_local', 'sim')
+            $('#correio').hide('slow');
+            $('.extrato').show('slow');
+            $('#submit-pedido').show('slow');
+            let valorPedido = parseFloat($('#total-pedido-sem-frete').val());
+            $('#total-pedido').val(valorPedido);
+            $('#total-pedido-frete').text('R$ ' + valorPedido);
+            $('#frete').val('Frete: R$ ' + 0);
+            $('#frete-extrato').text('R$ ' + 0);
+        } else {
+            localStorage.setItem('ret_local', 'nao')
+            $('#correio').show('slow');
+        }
+    })
     $('.add-ativacao').click(function () {
         var idProduct = $(this).attr('alt');
         addProduct(idProduct);
@@ -295,4 +341,11 @@ $(function () {
         $('#submit-pedido').show('slow');
     });
 
+    $("#modal-form-new-user").submit(function (event) {
+        event.preventDefault();
+        var data = $(this).serialize();
+        $(this).hide('slow');
+        $('#loading-new-user').show('slow');
+        newUser(data)
+    });
 });

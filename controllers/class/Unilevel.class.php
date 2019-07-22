@@ -35,6 +35,31 @@ class Unilevel
         return $total;
     }
 
+    public static function getTotalTypeUserInativos($type)
+    {
+        return 0;
+    }
+
+    public static function getTotalTypeUserAtivos($type)
+    {
+        $total = 0;
+        $read = new Read();
+        $read->ExeRead('users',  'where tipo_user=:tipo', 'tipo=' . $type);
+        if ($read->getRowCount() > 0) {
+            $total += 1;    
+        }
+        return $total;
+    }
+
+    public static function getTotalTypeUser($type)
+    {
+        $total = 0;
+        $read = new Read();
+        $read->ExeRead('users', 'where tipo_user=:tipo', 'tipo=' . $type);
+        return $read->getRowCount();
+        
+    }
+
     public static function getTotalUsersIndicados($id)
     {
         $read = new Read();

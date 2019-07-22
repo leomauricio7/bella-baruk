@@ -15,9 +15,18 @@
                         </h1>
                     </div>
                     <div class="col-auto">
-                        <a href="<?php echo Url::getBase() ?>products" class="btn btn-success">
+                        <?php
+                        $url = 'products';
+                        $cliente = null;
+                        if (isset($_SESSION['cliente'])) {
+                            $cliente = $_SESSION['cliente'];
+                            $url = 'novo-pedido';
+                        }
+                        ?>
+                        <a href="<?php echo Url::getBase() . $url ?>" class="btn btn-success">
                             <i class="fa fa-shopping-cart"></i> Continuar Comprando
                         </a>
+
                         <?php
                         if (isset($_SESSION['carrinho']) && sizeof($_SESSION['carrinho']) > 0) {
                             $valorPedido = 0;
@@ -26,12 +35,42 @@
                                 if (!isset($_SESSION['carrinho'][$i])) {
                                     $i += 1;
                                 }
-                                @$valorPedido += number_format(Dados::getValueProduct($_SESSION['carrinho'][$i]['id']) * $_SESSION['carrinho'][$i]['quantidade'], 2, ",", "");
+                                if ($tipoUser == 3 || $tipoUser == 4) {
+                                    @$valorPedido += Dados::getValueProduct($_SESSION['carrinho'][$i]['id'], $tipoUser, $cliente) * $_SESSION['carrinho'][$i]['quantidade'];
+                                } else {
+                                    @$valorPedido += Dados::getValueProduct($_SESSION['carrinho'][$i]['id'], null, $cliente) * $_SESSION['carrinho'][$i]['quantidade'];
+                                }
                             }
                             ?>
-                            <button class="btn btn-dark <?php echo $valorPedido < 160 ? 'disabled' : '' ?>" id="<?php echo $valorPedido < 160 ? '' : 'close-pedido' ?>">
-                                <i class="fa fa-save"></i> Finalizar pedido
-                            </button>
+                            <?php
+                            if ($cliente != null) {
+                                $valorMinimo = 1;
+                                ?>
+                                <button class="btn btn-dark <?php echo $valorPedido < $valorMinimo ? 'disabled' : '' ?>" id="<?php echo $valorPedido <  $valorMinimo ? '' : 'close-pedido' ?>">
+                                    <i class="fa fa-save"></i> Finalizar pedido
+                                </button>
+                            <?php
+                            } else if ($tipoUser == 3 || $tipoUser == 4) {
+
+                                if (Dados::verificaFirstCompra($_SESSION['idUser'])) {
+                                    $valorMinimo = 3000;
+                                } else {
+                                    $valorMinimo = $tipoUser == 3 ? 10000 : 3000;
+                                }
+                                ?>
+                                <button class="btn btn-dark <?php echo $valorPedido < $valorMinimo ? 'disabled' : '' ?>" id="<?php echo $valorPedido <  $valorMinimo ? '' : 'close-pedido' ?>">
+                                    <i class="fa fa-save"></i> Finalizar pedido
+                                </button>
+
+                            <?php } else if (Dados::verificaFirstCompra($_SESSION['idUser'])) { ?>
+                                <button class="btn btn-dark" id="close-pedido">
+                                    <i class="fa fa-save"></i> Finalizar pedido
+                                </button>
+                            <?php } else { ?>
+                                <button class="btn btn-dark <?php echo $valorPedido < 160 ? 'disabled' : '' ?>" id="<?php echo $valorPedido < 160 ? '' : 'close-pedido' ?>">
+                                    <i class="fa fa-save"></i> Finalizar pedido
+                                </button>
+                            <?php   } ?>
                         <?php } ?>
                     </div>
                 </div> <!-- / .row -->
@@ -39,7 +78,33 @@
         </div>
     </div>
     <div class="container-fluid">
-        <?php if (Dados::verificaFirstCompra($_SESSION['idUser'])) {
+        <?php if ($tipoUser == 3 || $tipoUser == 4) {
+            $valorPedido = 0;
+            for ($i = 0; $i < sizeof($_SESSION['carrinho']); $i++) {
+                //verifica se o indice é valido
+                if (!isset($_SESSION['carrinho'][$i])) {
+                    $i += 1;
+                }
+                @$valorPedido += Dados::getValueProduct($_SESSION['carrinho'][$i]['id'], $tipoUser) * $_SESSION['carrinho'][$i]['quantidade'];
+            }
+            ?>
+            <div class="alert alert-dark" role="alert">
+                <?php if ($tipoUser == 3) {
+                    if ($valorPedido < $valorMinimo) { ?>
+                        <p><i class="fa fa-exclamation-circle"></i><strong>Atenção!</strong> Para realizar um pedido, o valor minimo é de <span class="badge badge-danger">R$ <?php echo $valorMinimo ?></span></p>
+                    <?php } else { ?>
+                        <p><i class="fa fa-exclamation-circle"></i><strong>Atenção!</strong> Seu pedido já esta com o valor minimo de <span class="badge badge-success">R$ <?php echo $valorMinimo ?></span>, finalize seu pedido para ter acesso aos nossos descontos.</p>
+                    <?php }
+                } else {
+                    if ($valorPedido < $valorMinimo) { ?>
+                        <p><i class="fa fa-exclamation-circle"></i><strong>Atenção!</strong> Para realizar um pedido, o valor minimo é de <span class="badge badge-danger">R$ <?php echo $valorMinimo ?></span></p>
+                    <?php } else { ?>
+                        <p><i class="fa fa-exclamation-circle"></i><strong>Atenção!</strong> Seu pedido já esta com o valor minimo de <span class="badge badge-success">R$ <?php echo $valorMinimo ?></span>, finalize seu pedido para ter acesso aos nossos descontos.</p>
+                    <?php }
+                } ?>
+
+            </div>
+        <?php } else if (Dados::verificaFirstCompra($_SESSION['idUser'])) {
             ?>
             <div class="alert alert-dark" role="alert">
                 <p><i class="fa fa-exclamation-circle"></i> Nessa página você pode visualizar os produtos adicionados no carrinho.</p>
@@ -51,14 +116,14 @@
                 if (!isset($_SESSION['carrinho'][$i])) {
                     $i += 1;
                 }
-                @$valorPedido += number_format(Dados::getValueProduct($_SESSION['carrinho'][$i]['id']) * $_SESSION['carrinho'][$i]['quantidade'], 2, ",", "");
+                @$valorPedido += number_format(Dados::getValueProduct($_SESSION['carrinho'][$i]['id'], null, $cliente) * $_SESSION['carrinho'][$i]['quantidade'], 2, ",", "");
             }
             ?>
             <div class="alert alert-dark" role="alert">
                 <?php if ($valorPedido < 160) { ?>
                     <p><i class="fa fa-exclamation-circle"></i><strong>Atenção!</strong> Para ter acesso ao nossos descontos, faça um pedido no valor minimo de <span class="badge badge-danger">R$ 160.00</span></p>
                 <?php } else { ?>
-                    <p><i class="fa fa-exclamation-circle"></i><strong>Atenção!</strong> Seu pedido ja esta com o valor minimo de <span class="badge badge-success">R$ 160.00</span>, finalize seu pedido e tenha acesso aos nossos descontos.</p>
+                    <p><i class="fa fa-exclamation-circle"></i><strong>Atenção!</strong> Seu pedido já esta com o valor minimo de <span class="badge badge-success">R$ 160.00</span>, finalize seu pedido e tenha acesso aos nossos descontos.</p>
                 <?php } ?>
             </div>
         <?php } ?>

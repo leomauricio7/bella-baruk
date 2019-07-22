@@ -257,7 +257,7 @@ $(function () {
         })
     };
 
-    function validaUser(dados) {
+    function validaUser(dados, type = 'tf') {
         $.ajax({
             method: 'POST',
             url: getBaseUrl() + '/controllers/class/valida-user.php',
@@ -265,24 +265,50 @@ $(function () {
             dataType: 'json',
             success: function (res) {
                 console.log(res);
+                //getEstoque(res.id);
                 if (res.status == 200) {
-                    $('#id_user_destino').removeClass('is-invalid');
-                    $('#id_user_destino').addClass('is-valid');
-                    $('#status-user').removeClass('invalid-feedback');
-                    $('#status-user').addClass('valid-feedback');
-                    $('#status-user').text(res.msg);
-                    $('#btn-transferencia').attr('disabled', false);
-                    $('#valor_transferencia').attr('disabled', false);
-                    $('input[name=id_user_recebedor]').val(res.id);
+                    if (type == 'tf') {
+                        $('#id_user_destino').removeClass('is-invalid');
+                        $('#id_user_destino').addClass('is-valid');
+                        $('#status-user').removeClass('invalid-feedback');
+                        $('#status-user').addClass('valid-feedback');
+                        $('#status-user').text(res.msg);
+                        $('#btn-transferencia').attr('disabled', false);
+                        $('#valor_transferencia').attr('disabled', false);
+                        $('input[name=id_user_recebedor]').val(res.id);
+                    } else if (type == 'vd') {
+                        $('#user-cliente-pedido').removeClass('is-invalid');
+                        $('#user-cliente-pedido').addClass('is-valid');
+                        $('#status-user-cliente').removeClass('invalid-feedback');
+                        $('#status-user-cliente').addClass('valid-feedback');
+                        $('#status-user-cliente').text(res.msg);
+                        $('#btn-modal-new-user').attr('disabled', false);
+                        $('input[name=id_cliente]').val(res.id);
+                        $('#cliente-info').text(res.msg);
+                        localStorage.setItem('nome-cliente', res.msg);
+                        localStorage.setItem('id-cliente', res.id);
+                    }
                 } else if (res.status == 500) {
-                    $('#id_user_destino').removeClass('is-valid');
-                    $('#id_user_destino').addClass('is-invalid');
-                    $('#status-user').removeClass('valid-feedback');
-                    $('#status-user').addClass('invalid-feedback');
-                    $('#status-user').text(res.msg);
-                    $('#btn-transferencia').attr('disabled', true);
-                    $('#valor_transferencia').attr('disabled', true);
-                    $('input[name=id_user_recebedor]').val(undefined);
+                    if (type == 'tf') {
+                        $('#id_user_destino').removeClass('is-valid');
+                        $('#id_user_destino').addClass('is-invalid');
+                        $('#status-user').removeClass('valid-feedback');
+                        $('#status-user').addClass('invalid-feedback');
+                        $('#status-user').text(res.msg);
+                        $('#btn-transferencia').attr('disabled', true);
+                        $('#valor_transferencia').attr('disabled', true);
+                        $('input[name=id_user_recebedor]').val(undefined);
+                    } else if (type == 'vd') {
+                        $('#user-cliente-pedido').removeClass('is-valid');
+                        $('#user-cliente-pedido').addClass('is-invalid');
+                        $('#status-user-cliente').removeClass('valid-feedback');
+                        $('#status-user-cliente').addClass('invalid-feedback');
+                        $('#status-user-cliente').text(res.msg);
+                        $('#btn-modal-new-user').attr('disabled', true);
+                        $('input[name=id_cliente]').val(undefined);
+                        localStorage.removeItem('nome-cliente');
+                        localStorage.removeItem('id-cliente');
+                    }
                 }
             }, error: function (err) {
                 console.log(err);
@@ -294,6 +320,22 @@ $(function () {
                     '</button>' +
                     '</div>');
                 $("#form-transferencia").insertAfter(".alert");
+            }
+        })
+    };
+
+    function getEstoque(cliente=null) {
+        $.ajax({
+            method: 'POST',
+            url: getBaseUrl() + '/controllers/class/produtos.php',
+            data: 'cliente='+cliente,
+            dataType: 'json',
+            success: function (res) {
+                console.log(res)
+                //$("#tbody-produtos").empty();
+                //$("#tbody-produtos").html(res.data);
+            }, error: function (err) {
+                console.error(err);
             }
         })
     };
@@ -358,6 +400,35 @@ $(function () {
     $("#id_user_destino").keyup(function (event) {
         let res = $('#id_user_destino').val();
         let data = { id_user_destino: res };
-        validaUser(data);
+        validaUser(data, 'tf');
     });
+
+    $("#user-cliente-pedido").keyup(function (event) {
+        let res = $('#user-cliente-pedido').val();
+        let data = { id_user_destino: res };
+        validaUser(data, 'vd');
+    });
+
+    $('#btn-modal-new-user').click(function () {
+        $('#form-mod-user').toggle('right');
+        $('#produtos').toggle('left');
+        window.location.reload();
+    });
+
+    $('#cancel-pedido').click(function () {
+        $('#form-mod-user').toggle('right');
+        $('#produtos').toggle('left');
+        localStorage.clear();
+        getEstoque()
+    });
+
+    function existPedidoAtivo() {
+        if(localStorage.getItem('id-cliente') != null){
+            $('#form-mod-user').toggle('right');
+            $('#produtos').toggle('left');
+            $('#cliente-info').text(localStorage.getItem('nome-cliente'));
+            //getEstoque(localStorage.getItem('id-cliente'));
+        }
+    };
+    existPedidoAtivo();
 });

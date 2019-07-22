@@ -7,8 +7,8 @@ $slug = filter_input(INPUT_POST, "id_user_destino", FILTER_SANITIZE_MAGIC_QUOTES
 //trantando os valores dos campos enviados do form
 $read = new Read();
 $read->ExeRead('users', 'where slug=:slug','slug='.$slug);
-
 if ($read->getRowCount() > 0) {
+    $_SESSION['cliente'] = $read->getResult()[0]['id'];
     echo json_encode(array('status' => 200, 'msg' => $read->getResult()[0]['nome'],'id'=>$read->getResult()[0]['id']));
 } else {
     echo json_encode(array('status' => 500, 'msg' => 'Login Invalido.'));

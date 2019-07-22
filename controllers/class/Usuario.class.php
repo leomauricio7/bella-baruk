@@ -1,6 +1,7 @@
 <?php
 
-class User {
+class User
+{
 
     public $Titulo;
     public $Conteudo;
@@ -8,23 +9,26 @@ class User {
 
     const Entity = 'users';
 
-    function createUser(array $Dados) {
+    function createUser(array $Dados)
+    {
         $this->Dados = $Dados;
         $this->Dados['avatar'] = isset($this->Dados['avatar']) ? $this->Dados['avatar']['name'] : null;
 
         $create = new Create();
         $create->ExeCreate(self::Entity, $this->Dados);
-        if ($create->getResult()):
-            $this->enviaEmail($this->Dados['nome'],$this->Dados['email']);
+        if ($create->getResult()) :
+            if (!Valida::isDev()) {
+                $this->enviaEmail($this->Dados['nome'], $this->Dados['email']);
+            }
             $this->Result = $create->getResult();
             $this->Msg =
-            '<div class="alert alert-success alert-dismissible fade show" role="alert">
+                '<div class="alert alert-success alert-dismissible fade show" role="alert">
                 <strong>ATENÇÃO!</strong> Cadastro realizado com sucesso.
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">×</span>
                 </button>
             </div>';
-        else:
+        else :
             $this->Result = $create->getResult();
             $this->Msg =
                 '<div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -36,7 +40,8 @@ class User {
         endif;
     }
 
-    public function enviaEmail($user, $email) {
+    public function enviaEmail($user, $email)
+    {
         // emails para quem será enviado o formulário
         $from = "suporte@bellabaruk.com.br";
         $assunto = "Seja bem vindo a plataforma BellaBaruk";
@@ -46,7 +51,7 @@ class User {
         $headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
         $headers .= "De: $from";
         $msg = '
-            <h4>Ola, '.$user.', obrigado por seu cadastro na Bella Baruk. </h4>
+            <h4>Ola, ' . $user . ', obrigado por seu cadastro na Bella Baruk. </h4>
             <p>
                 A Bella Baruk tem a honra de contar com você nesta caminhada de sucesso, que só é possível porque Deus é Fiel.<br>
                 Mantenha sempre seu cadastro ativo.<br> 
@@ -70,12 +75,13 @@ class User {
         }
     }
 
-    function getResult() {
+    function getResult()
+    {
         return $this->Result;
     }
 
-    function getMsg() {
+    function getMsg()
+    {
         return $this->Msg;
     }
-
 }

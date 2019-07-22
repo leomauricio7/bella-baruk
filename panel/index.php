@@ -47,8 +47,6 @@ $dadosUser = Dados::getDadosUser($_SESSION['idUser'])[0];
             display: none;
         }
     </style>
-
-
     <title>Bella Baruk - BackOffice</title>
 </head>
 
@@ -100,7 +98,9 @@ $dadosUser = Dados::getDadosUser($_SESSION['idUser'])[0];
     <script type="text/javascript">
         $(document).ready(function() {
             let url = $('a#url').attr('href');
-            $('#copiar').attr({'data-clipboard-text': url});
+            $('#copiar').attr({
+                'data-clipboard-text': url
+            });
             let clipboard = new ClipboardJS('#copiar');
             clipboard.on('success', function(e) {
                 $('#copiar').tooltip('toggle')

@@ -13,6 +13,14 @@
     font-weight: 900;
     margin-right: 10px;
 }
+
+.active-retirada {
+    border: 2px solid #f9bf2c;
+    box-shadow: 2px 2px 2px 2px #cecece;
+}
+.bg-person{
+    background-color: #ededed;
+}
 /*style input:file*/
 .inputfile {
 	width: 0.1px;
