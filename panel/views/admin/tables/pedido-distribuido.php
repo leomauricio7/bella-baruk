@@ -88,7 +88,7 @@ if ($_POST) {
                         <?php if ($dado_baixa == 'nao') { ?> 
                             <button title="Dar baixar" alt="<?php echo $idPedido ?>" class="btn btn-danger btn-sm da-baixa"><i class="fa fa-save"></i></button>
                         <?php } ?>
-                        <button type="button" data-toggle="modal" data-target="#modal-del<?php echo $id ?>" class=" btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
+                        <!-- <button type="button" data-toggle="modal" data-target="#modal-del<?php echo $id ?>" class=" btn btn-danger btn-sm"><i class="fa fa-trash"></i></button> -->
                     </td>
 
                     <td class="tables-handle">

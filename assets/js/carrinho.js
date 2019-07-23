@@ -38,12 +38,12 @@ $(function () {
         });
     }
 
-    function addProduct(idProduct) {
+    function addProduct(idProduct, quantidade = 1) {
         startSession();
         $.ajax({
             type: 'POST',
             url: getBaseUrl() + '/controllers/class/carrinho.php',
-            data: 'type=2&idProduct=' + idProduct,
+            data: 'type=2&idProduct=' + idProduct + '&quantidade=' + quantidade,
             dataType: "json",
         }).done(function (res) {
             $("#loading").delay(100).fadeOut('slow');
@@ -111,7 +111,7 @@ $(function () {
         $.ajax({
             type: 'POST',
             url: getBaseUrl() + '/controllers/class/carrinho.php',
-            data: 'type=6&idPedido=' + idPedido + '&totalPedido=' + totalPedido + '&frete=' + frete + '&prazo=' + prazo+'&ret_local='+retLocal,
+            data: 'type=6&idPedido=' + idPedido + '&totalPedido=' + totalPedido + '&frete=' + frete + '&prazo=' + prazo + '&ret_local=' + retLocal,
             dataType: "json",
         }).done(function (res) {
             localStorage.removeItem("frete");
@@ -214,7 +214,7 @@ $(function () {
         }).done(function (res) {
             console.log(res);
             $('#loading-new-user').hide('slow');
-            if(res.status == 500){
+            if (res.status == 500) {
                 $('#modal-form-new-user').show('slow')
             }
             $('div.alert').remove();
@@ -223,7 +223,7 @@ $(function () {
             $('#loading-new-user').hide('slow');
             $('#modal-form-new-user').show('slow')
             $('div.alert').remove();
-            $('#modal-form-new-user').prepend('<div class="alert alert-danger">'+xhr.responseText+'</div>');
+            $('#modal-form-new-user').prepend('<div class="alert alert-danger">' + xhr.responseText + '</div>');
             console.log(xhr);
             console.log("Detalhes: " + desc + "nErro:" + err);
         }).always(function () {
@@ -233,7 +233,32 @@ $(function () {
 
     $('.add-produto').click(function () {
         var idProduct = $(this).attr('alt');
-        addProduct(idProduct);
+        var tipo = $(this).attr('tipo');
+        var estoque = $(this).attr('estoque');
+        var quantidade = $('.qtd-' + idProduct).val()
+        console.log(idProduct, tipo, quantidade, estoque);
+        if (tipo == 2) {
+            if (quantidade > 0) {
+                if (quantidade <= estoque) {
+                    addProduct(idProduct, quantidade);
+                } else {
+                    alert('Você inseriu uma quantidade acima do que temos no estoque! Tente novamente.');
+                }
+            } else {
+                alert('Informe a quantidade de produtos');
+            }
+        } else
+            if (tipo == 0) {
+                if (quantidade > 0) {
+                    addProduct(idProduct, quantidade);
+                } else {
+                    alert('Informe a quantidade de produtos');
+                }
+
+            } else {
+                addProduct(idProduct, 1);
+            }
+
     });
 
     $('.remove-product').click(function () {

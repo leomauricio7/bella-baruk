@@ -19,16 +19,16 @@ foreach ($read->getResult() as $product) {
             <li class="list-group-item d-flex align-items-center justify-content-between px-0">
               <small>Produto</small> <small><?php echo $titulo ?></small>
             </li>
-            
+
             <li class="list-group-item d-flex align-items-center justify-content-between px-0">
               <small>Codigo Produto</small> <small><?php echo $id ?></small>
             </li>
 
             <!-- <?php if (Validation::getPermisionType($tipoUser)) { ?>
-                          <li class="list-group-item d-flex align-items-center justify-content-between px-0">
-                            <small>Preço</small> <small><strong style="font-size:15px;">R$ <?php echo number_format($preco, 2, ",", ""); ?></strong></small>
-                          </li>
-                  <?php } ?> -->
+                              <li class="list-group-item d-flex align-items-center justify-content-between px-0">
+                                <small>Preço</small> <small><strong style="font-size:15px;">R$ <?php echo number_format($preco, 2, ",", ""); ?></strong></small>
+                              </li>
+                    <?php } ?> -->
 
             <?php if ($tipoUser == 3 || $tipoUser == 4) { ?>
               <li class="list-group-item d-flex align-items-center justify-content-between px-0">
@@ -67,8 +67,8 @@ foreach ($read->getResult() as $product) {
             <?php } ?>
 
             <!-- <li class="list-group-item d-flex align-items-center justify-content-between px-0">
-                    <small>Publicado em:</small> <small><?php echo date('d/m/Y', strtotime($created)) ?></small>
-                  </li> -->
+                      <small>Publicado em:</small> <small><?php echo date('d/m/Y', strtotime($created)) ?></small>
+                    </li> -->
             <!-- <li class="list-group-item d-flex align-items-center justify-content-between px-0">
                     <small>Vendidos</small> <small>0 und</small>
                   </li> -->
@@ -81,13 +81,15 @@ foreach ($read->getResult() as $product) {
           <a href="#!" class="btn btn-block btn-success">
             <i class="fa fa-eye"></i> Detalhar
           </a>
-        <?php } else { ?>
-          
-          <button <?php if ($quantidade == 0) {
-                    echo 'disabled';
-                  } ?> alt="<?php echo $id ?>" class="btn btn-block btn-dark add-produto">
-            <i class="fa fa-cart-plus"></i> Adicionar ao carrinho
-          </button>
+        <?php } else if($tipoUser == 2 || $tipoUser == 3 || $tipoUser == 4){ ?>
+          <div class="col-auto">
+            <input type="number" value="1" min="1" class="form-control form-control-sm float-left qtd qtd-<?php echo $id ?>">
+            <button title="adicionar no carrinho" <?php if ($quantidade == 0) {
+                      echo 'disabled';
+                    } ?> alt="<?php echo $id ?>" class="btn btn-bb btn-sm add-produto float-right" tipo="0">
+              <i class="fa fa-cart-plus"></i> Comprar
+            </button>
+          </div>
 
         <?php } ?>
       </div>

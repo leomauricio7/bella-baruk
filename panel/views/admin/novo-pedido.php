@@ -23,7 +23,7 @@ if ($tipoUser == 3 || $tipoUser == 4) { ?>
     </div>
     <div class="container-fluid">
         <div class="alert alert-dark" role="alert">
-            <p class="badge badge-soft-info"><i class="fa fa-exclamation-circle"></i>Aqui você pode lançar novos pedidos para usuários cadastrados e não cadastrados.</p>
+            Aqui você pode lançar novos pedidos para usuários cadastrados e não cadastrados
         </div>
         <div class="row">
             <div class="col-12">

@@ -18,17 +18,22 @@
           <?php
           if (isset($_SESSION['carrinho'])) {
             ?>
-            <button class="btn btn-danger" id="closeSession">
+            <button class="btn btn-danger btn-sm" id="closeSession">
               <i class="fa fa-times-circle"></i>Cancelar pedido
             </button>
+
+            <button class="btn btn-info btn-sm" >
+              <i class="fa fa-dollar-sign"></i><?php echo Dados::getValuePedidoTemp($tipoUser, null) ?>
+            </button>
+
           <?php } ?>
           <?php
           if (!Validation::getPermisionType($tipoUser) && isset($_SESSION['carrinho'])) {
             ?>
             <!-- Button -->
-            <a href="<?php echo Url::getBase() ?>carrinho" class="btn btn-outline-dark">
+            <a href="<?php echo Url::getBase() ?>carrinho" class="btn btn-dark btn-sm">
               <i class="fa fa-shopping-cart" id="icon-carrinho"></i>
-              <span class="badge badge-pill badge-soft-secondary">
+              <span class="badge badge-success">
                 <?php echo isset($_SESSION['carrinho']) ? sizeof($_SESSION['carrinho']) : 0 ?>
               </span>
             </a>

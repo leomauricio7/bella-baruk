@@ -34,11 +34,7 @@
                                         </h6>
                                         <!-- Heading -->
                                         <span class="h2 mb-0">
-                                            0
-                                        </span>
-                                        <!-- Badge -->
-                                        <span class="badge badge-soft-success mt-n1">
-                                            +3.5%
+                                            <?php echo Dados::getTotalPedidosDistribuidor($_SESSION['idUser']) ?>
                                         </span>
                                     </div>
     
@@ -59,7 +55,7 @@
                                         </h6>
                                         <!-- Heading -->
                                         <span class="h2 mb-0">
-                                           0
+                                        <?php echo Dados::getCompras($_SESSION['idUser']) ?>
                                         </span>
                                     </div>
         
@@ -82,7 +78,7 @@
                                             <div class="col-auto">
                                                 <!-- Heading -->
                                                 <span class="h2 mr-2 mb-0">
-                                                    0
+                                                   <?php echo count(Dados::getProdutosEstoque($_SESSION['idUser'])) ?>
                                                 </span>
                                             </div>
                                         </div> <!-- / .row -->

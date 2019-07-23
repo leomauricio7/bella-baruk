@@ -1,3 +1,19 @@
+.btn-bb{
+    background-color: #dc366e;
+    border: 1px solid #dc356d;
+    color: #FFF;
+}
+.btn-bb:hover{
+    background-color: #dc366e;
+    border: 1px solid #dc356d;
+    color: #FFF;
+}
+.qtd{
+    width: 60px;
+    display: inline;
+    text-align: center;
+    color: #009688;
+}
 .title-p1{
     font-weight: 800;
 }

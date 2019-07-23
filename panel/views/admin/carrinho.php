@@ -18,12 +18,13 @@
                         <?php
                         $url = 'products';
                         $cliente = null;
+                        $valorMinimo = 0;
                         if (isset($_SESSION['cliente'])) {
                             $cliente = $_SESSION['cliente'];
                             $url = 'novo-pedido';
                         }
                         ?>
-                        <a href="<?php echo Url::getBase() . $url ?>" class="btn btn-success">
+                        <a href="<?php echo Url::getBase() . $url ?>" class="btn btn-success btn-sm">
                             <i class="fa fa-shopping-cart"></i> Continuar Comprando
                         </a>
 
@@ -46,7 +47,7 @@
                             if ($cliente != null) {
                                 $valorMinimo = 1;
                                 ?>
-                                <button class="btn btn-dark <?php echo $valorPedido < $valorMinimo ? 'disabled' : '' ?>" id="<?php echo $valorPedido <  $valorMinimo ? '' : 'close-pedido' ?>">
+                                <button class="btn btn-dark btn-sm <?php echo $valorPedido < $valorMinimo ? 'disabled' : '' ?>" id="<?php echo $valorPedido <  $valorMinimo ? '' : 'close-pedido' ?>">
                                     <i class="fa fa-save"></i> Finalizar pedido
                                 </button>
                             <?php
@@ -58,16 +59,16 @@
                                     $valorMinimo = $tipoUser == 3 ? 10000 : 3000;
                                 }
                                 ?>
-                                <button class="btn btn-dark <?php echo $valorPedido < $valorMinimo ? 'disabled' : '' ?>" id="<?php echo $valorPedido <  $valorMinimo ? '' : 'close-pedido' ?>">
+                                <button class="btn btn-dark btn-sm <?php echo $valorPedido < $valorMinimo ? 'disabled' : '' ?>" id="<?php echo $valorPedido <  $valorMinimo ? '' : 'close-pedido' ?>">
                                     <i class="fa fa-save"></i> Finalizar pedido
                                 </button>
 
                             <?php } else if (Dados::verificaFirstCompra($_SESSION['idUser'])) { ?>
-                                <button class="btn btn-dark" id="close-pedido">
+                                <button class="btn btn-dark btn-sm" id="close-pedido">
                                     <i class="fa fa-save"></i> Finalizar pedido
                                 </button>
                             <?php } else { ?>
-                                <button class="btn btn-dark <?php echo $valorPedido < 160 ? 'disabled' : '' ?>" id="<?php echo $valorPedido < 160 ? '' : 'close-pedido' ?>">
+                                <button class="btn btn-dark btn-sm <?php echo $valorPedido < 160 ? 'disabled' : '' ?>" id="<?php echo $valorPedido < 160 ? '' : 'close-pedido' ?>">
                                     <i class="fa fa-save"></i> Finalizar pedido
                                 </button>
                             <?php   } ?>

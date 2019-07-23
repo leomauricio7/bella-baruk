@@ -279,9 +279,9 @@ class Dados
                     return number_format($value, 2, ",", "");
                 }
             } else if ($tipo == 3) {
-                return number_format(Dados::calculaDesconto($preco/2, 18), 2, ",", "");
+                return number_format(Dados::calculaDesconto($preco / 2, 18), 2, ",", "");
             } else if ($tipo == 4) {
-                return number_format(Dados::calculaDesconto($preco/2, 9), 2, ",", "");
+                return number_format(Dados::calculaDesconto($preco / 2, 9), 2, ",", "");
             } else if (Dados::existePlanoAtivo($user == null ? $_SESSION['idUser'] : $user)) {
                 $value = $preco / 2;
                 return number_format($value, 2, ",", "");
@@ -754,7 +754,7 @@ class Dados
         return sprintf("%02X%02X%02X", mt_rand(0, 255), mt_rand(0, 255), mt_rand(0, 255));
     }
 
-    public static function getProdutosEstoque($id_user, $user)
+    public static function getProdutosEstoque($id_user, $user=null)
     {
         $read = new Read();
         $read->ExeRead('estoque_distribuidor', 'where id_responsavel=:id', 'id=' . $id_user);
@@ -774,9 +774,9 @@ class Dados
         if ($estoque != null) {
             $save = new Update();
             $dados = [
-                'quantidade' => $quantidade+$estoque['quantidade'],
+                'quantidade' => $quantidade + $estoque['quantidade'],
             ];
-            $save->ExeUpdate('estoque_distribuidor', $dados, 'where id=:id', 'id='.$estoque['id']);
+            $save->ExeUpdate('estoque_distribuidor', $dados, 'where id=:id', 'id=' . $estoque['id']);
         } else {
             $save = new Create();
             $dados = [
@@ -786,5 +786,31 @@ class Dados
             ];
             $save->ExeCreate('estoque_distribuidor', $dados);
         }
+    }
+
+    public static function getValuePedidoTemp($tipoUser, $cliente=null)
+    {
+        $valorPedido = 0;
+        if (isset($_SESSION['carrinho'])) {
+
+            for ($i = 0; $i < sizeof($_SESSION['carrinho']); $i++) {
+                //verifica se o indice é valido
+                if (!isset($_SESSION['carrinho'][$i])) {
+                    $i += 1;
+                }
+                if ($tipoUser == 3 || $tipoUser == 4) {
+                    $valorPedido += Dados::getValueProduct($_SESSION['carrinho'][$i]['id'], $tipoUser, $cliente) * $_SESSION['carrinho'][$i]['quantidade'];
+                } else {
+                    $valorPedido += Dados::getValueProduct($_SESSION['carrinho'][$i]['id'], null, $cliente) * $_SESSION['carrinho'][$i]['quantidade'];
+                }
+            }
+        }
+        return number_format($valorPedido,2,",","");
+    }
+
+    public static function getTotalPedidosDistribuidor($id){
+        $read = new Read();
+        $read->ExeRead('pedidos', 'where responsavel = ' . $id);
+        return $read->getRowCount();
     }
 }

@@ -11,7 +11,8 @@ if ($_POST) {
     $valorPedido = filter_input(INPUT_POST, 'totalPedido', FILTER_SANITIZE_STRING);
     $frete = filter_input(INPUT_POST, 'frete', FILTER_SANITIZE_STRING);
     $prazo = filter_input(INPUT_POST, 'prazo', FILTER_SANITIZE_STRING);
-    $retLocal = filter_input(INPUT_POST, 'ret_local', FILTER_SANITIZE_STRING);;
+    $retLocal = filter_input(INPUT_POST, 'ret_local', FILTER_SANITIZE_STRING);
+    $quantidade = filter_input(INPUT_POST, 'quantidade', FILTER_SANITIZE_STRING);
 
     switch ($type) {
             //init session
@@ -20,7 +21,7 @@ if ($_POST) {
             break;
             //add product
         case 2:
-            addProduct($idProduct);
+            addProduct($idProduct,$quantidade);
             break;
             //remove product
         case 3:
@@ -351,12 +352,12 @@ function existProduct($idProduct)
     }
 }
 
-function existProductCarrinho($idProduct)
+function existProductCarrinho($idProduct, $quantidade)
 {
     for ($i = 0; $i < sizeof($_SESSION['carrinho']); $i++) {
         if (!isset($_SESSION['carrinho'][$i])) $i++;
         if ($_SESSION['carrinho'][$i]['id'] == $idProduct) {
-            $_SESSION['carrinho'][$i] = ['id' => $idProduct, 'quantidade' => $_SESSION['carrinho'][$i]['quantidade'] + 1];
+            $_SESSION['carrinho'][$i] = ['id' => $idProduct, 'quantidade' => $_SESSION['carrinho'][$i]['quantidade'] + $quantidade];
             return true;
             break;
         }
@@ -391,11 +392,11 @@ function removeOneProductCarrinho($idProduct)
     }
 }
 
-function addProduct($idProduct)
+function addProduct($idProduct, $quantidade)
 {
     if (existProduct($idProduct)) {
-        if (!existProductCarrinho($idProduct)) {
-            $_SESSION['carrinho'][] = ['id' => $idProduct, 'quantidade' => 1];
+        if (!existProductCarrinho($idProduct,$quantidade)) {
+            $_SESSION['carrinho'][] = ['id' => $idProduct, 'quantidade' => $quantidade];
         }
         echo json_encode(array('status' => 200, 'msg' => 'Produto adicionado ao carrinho.', 'carrinho' => $_SESSION['carrinho']));
     } else {

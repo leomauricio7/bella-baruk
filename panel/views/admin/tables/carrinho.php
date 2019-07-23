@@ -85,7 +85,7 @@
                               $valorPedido += Dados::getValueProduct($_SESSION['carrinho'][$i]['id'], $tipoUser, $cliente) * $_SESSION['carrinho'][$i]['quantidade'];
                               echo Dados::getValueProduct($_SESSION['carrinho'][$i]['id'], $tipoUser, $cliente) * $_SESSION['carrinho'][$i]['quantidade'];
                             } else {
-                              $valorPedido = +Dados::getValueProduct($_SESSION['carrinho'][$i]['id'], null, $cliente) * $_SESSION['carrinho'][$i]['quantidade'];
+                              $valorPedido += Dados::getValueProduct($_SESSION['carrinho'][$i]['id'], null, $cliente) * $_SESSION['carrinho'][$i]['quantidade'];
                               echo Dados::getValueProduct($_SESSION['carrinho'][$i]['id'], null, $cliente) * $_SESSION['carrinho'][$i]['quantidade'];
                             }
 
@@ -97,12 +97,13 @@
                 </div>
                 <div class="col-auto">
 
-                  <button <?php echo $_SESSION['carrinho'][$i]['quantidade'] == 0 ? 'disabled' : '' ?> alt="<?php echo $_SESSION['carrinho'][$i]['id'] ?>" class="btn btn-sm btn-info remove-one-product"><i class="fa fa-minus-square"></i> -1</button>
-
-                  <button alt="<?php echo $_SESSION['carrinho'][$i]['id'] ?>" class="btn btn-sm btn-success add-produto"><i class="fa fa-plus-square"></i> +1</button>
+                  <button <?php echo $_SESSION['carrinho'][$i]['quantidade'] == 0 ? 'disabled' : '' ?> alt="<?php echo $_SESSION['carrinho'][$i]['id'] ?>" class="btn btn-sm btn-light remove-one-product"><i class="fa fa-arrow-down"></i></button>
+                  <button alt="<?php echo $_SESSION['carrinho'][$i]['id'] ?>" class="btn btn-sm btn-light add-produto" tipo="1"><i class="fa fa-arrow-up"></i></button>
+                  <input type="number" min="1" value="1" class="form-control form-control-sm qtd qtd-<?php echo $_SESSION['carrinho'][$i]['id'] ?>">
+                  <button alt="<?php echo $_SESSION['carrinho'][$i]['id'] ?>" class="btn btn-sm btn-light add-produto" tipo="0"><i class="fa fa-plus"></i></button>
                   <!-- Button -->
                   <button alt="<?php echo $_SESSION['carrinho'][$i]['id'] ?>" class="btn btn-sm btn-danger remove-product">
-                    <i class="fa fa-times-circle"></i> Remover produto
+                    <i class="fa fa-trash"></i>
                   </button>
                 </div>
               </div> <!-- / .row -->
@@ -156,8 +157,8 @@
         <?php require_once 'extrato.php' ?>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-dark" data-dismiss="modal"><i class="fa fa-times"></i> Fechar</button>
-        <button type="button" class="btn btn-outline-primary" id="submit-pedido" style="display:none">Confirmar pedido</button>
+        <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal"><i class="fa fa-times"></i> Fechar</button>
+        <button type="button" class="btn btn-primary btn-sm" id="submit-pedido" style="display:none">Confirmar pedido</button>
       </div>
     </div>
   </div>

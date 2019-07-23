@@ -17,14 +17,17 @@
                     <button class="btn btn-danger btn-sm" id="closeSession">
                         <i class="fa fa-trash"></i>Esvaziar carrinho
                     </button>
+                    <button class="btn btn-info btn-sm">
+                        <i class="fa fa-dollar-sign"></i><?php echo Dados::getValuePedidoTemp($tipoUser, $_SESSION['cliente']) ?>
+                    </button>
                 <?php } ?>
                 <?php
                 if (!Validation::getPermisionType($tipoUser) && isset($_SESSION['carrinho'])) {
                     ?>
                     <!-- Button -->
-                    <a href="<?php echo Url::getBase() ?>carrinho" class="btn btn-success btn-sm">
+                    <a href="<?php echo Url::getBase() ?>carrinho" class="btn btn-dark btn-sm">
                         <i class="fa fa-shopping-cart" id="icon-carrinho"></i>
-                        <span class="badge badge-pill badge-soft-secondary">
+                        <span class="badge badge-pill badge-success">
                             <?php echo isset($_SESSION['carrinho']) ? sizeof($_SESSION['carrinho']) : 0 ?>
                         </span>
                     </a>
@@ -86,8 +89,9 @@
                                         <?php echo $status ?>
                                     </div>
                                 </td>
-                                <td class="text-right align-middle">
-                                    <button <?php echo Dados::produtoEstoque($id_produto, $quantidade) > 0 ? '' : 'disabled' ?> class="btn btn-sm btn-<?php echo Dados::produtoEstoque($id_produto, $quantidade) > 0 ? 'success' : 'danger' ?> add-produto" alt="<?php echo $id_produto ?>"><i class="fa fa-<?php echo Dados::produtoEstoque($id_produto, $quantidade) > 0 ? 'plus' : 'times-circle' ?>"></i> Adicionar no carrinho</button>
+                                <td class="text-right align-middle col-auto">
+                                    <input type="number" value="1" min="1" class="form-control form-control-sm float-left qtd qtd-<?php echo $id_produto ?>">
+                                    <button estoque="<?php echo Dados::produtoEstoque($id_produto, $quantidade) ?>" <?php echo Dados::produtoEstoque($id_produto, $quantidade) > 0 ? '' : 'disabled' ?> tipo="2" class="btn btn-sm btn-<?php echo Dados::produtoEstoque($id_produto, $quantidade) > 0 ? 'bb' : 'danger' ?> add-produto" alt="<?php echo $id_produto ?>"><i class="fa fa-<?php echo Dados::produtoEstoque($id_produto, $quantidade) > 0 ? 'cart-plus' : 'times-circle' ?>"></i> Adicionar no carrinho</button>
                                 </td>
                             </tr>
                         <?php
