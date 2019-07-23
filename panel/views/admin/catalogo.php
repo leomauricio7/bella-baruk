@@ -43,7 +43,7 @@ foreach ($read->getResult() as $product) {
                 <li class="list-group-item d-flex align-items-center justify-content-between px-0">
                   <small>Preço</small> <small><strong style="font-size:15px;">R$ <?php echo number_format($preco * 0.5, 2, ",", ""); ?></strong></small>
                 </li>
-              <?php } else if ($tipoUser == 3 || $tipoUser == 4) { ?>
+              <?php } else{ ?>
                 <li class="list-group-item d-flex align-items-center justify-content-between px-0">
                   <small>Preço</small> <small><strong style="font-size:15px;">R$ <?php echo Dados::getValueProduct($id, $tipoUser); ?></strong></small>
                 </li>

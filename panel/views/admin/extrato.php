@@ -145,15 +145,15 @@ $dadosBancario = Dados::getDadosBancarios($pedido['id_user']);
 											<?php echo Validation::getNameProduto($id_produto) ?>
 										</td>
 										<td>
-											R$ <?php echo Dados::getValueProduct($id_produto, $tipoUser, $dadosComprador['id']) ?>
+											R$ <?php echo Dados::getValueProduct($id_produto, $tipoUser, $pedido['responsavel'] == null ? null : $dadosComprador['id']) ?>
 										</td>
 										<td class="px-0">
 											<?php echo $quantidade ?> UNID
 										</td>
 										<td class="px-0 text-right">
 											R$ <?php
-												$totalPedido += Dados::getValueProduct($id_produto, $tipoUser, $dadosComprador['id']) * $quantidade;
-												echo number_format((Dados::getValueProduct($id_produto, $tipoUser, $dadosComprador['id']) * $quantidade), 2, ",", "")
+												$totalPedido += Dados::getValueProduct($id_produto, $tipoUser, $pedido['responsavel'] == null ? null : $dadosComprador['id']) * $quantidade;
+												echo number_format((Dados::getValueProduct($id_produto, $tipoUser, $pedido['responsavel'] == null ? null : $dadosComprador['id']) * $quantidade), 2, ",", "")
 												?>
 										</td>
 									</tr>
