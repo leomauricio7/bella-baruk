@@ -12,7 +12,7 @@ $(function () {
             path = splitPath[1];
             baseUrl = "http://" + hostName + "/" + path;
         } else {
-            baseUrl = "https://" + hostName;
+            baseUrl = "https://" + hostName + "/escritorio/";
         }
         return baseUrl;
     }
