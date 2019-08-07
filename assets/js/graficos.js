@@ -10,7 +10,7 @@ $(function () {
             path = splitPath[1];
             baseUrl = "http://" + hostName + "/" + path;
         } else {
-            baseUrl = "https://" + hostName + "/escritorio/";
+            baseUrl = "https://" + hostName;
         }
         return baseUrl;
     }
