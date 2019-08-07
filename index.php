@@ -3,6 +3,9 @@
 require_once './controllers/conf.php';
 require_once './vendor/autoload.php';
 if(DOMAIN != 'localhost'){Validation::forceHTTPS();}
+if(empty(Url::getURL(0))){
+    echo '<script>window.location.href="./site"</script>';
+}
 ?>
 <!doctype html>
 <html lang="pt-br">
